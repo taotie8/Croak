@@ -128,7 +128,7 @@
                         <constraint firstItem="KSM-Fn-epz" firstAttribute="top" secondItem="qfM-ZB-A8u" secondAttribute="top" id="sMK-OE-yYH"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DIc-5k-tfn">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DIc-5k-tfn">
                     <rect key="frame" x="99" y="584" width="195" height="59"/>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal" image="login_tap"/>
