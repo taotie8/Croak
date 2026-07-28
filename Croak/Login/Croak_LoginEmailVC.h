@@ -10,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Croak_LoginEmailVC : UIViewController
-
+@property (nonatomic, assign) BOOL croak_login;
 @end
 
 NS_ASSUME_NONNULL_END

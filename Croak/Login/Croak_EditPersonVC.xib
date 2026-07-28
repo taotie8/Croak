@@ -10,6 +10,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Croak_EditPersonVC">
             <connections>
+                <outlet property="croak_name_textfiled" destination="nUs-Cp-g3V" id="Klx-XC-3cf"/>
+                <outlet property="croak_user_imageView" destination="Y6g-bh-8vZ" id="cnc-3g-vRw"/>
+                <outlet property="croak_years_label" destination="LgU-yI-o6x" id="xEv-Nb-cM6"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -28,6 +31,9 @@
                             </constraints>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" image="croak_back"/>
+                            <connections>
+                                <action selector="croak_backAction:" destination="-1" eventType="touchUpInside" id="oky-MY-50R"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -50,15 +56,26 @@
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="croak_carmea" translatesAutoresizingMaskIntoConstraints="NO" id="Krg-Me-4tR">
                             <rect key="frame" x="60" y="61" width="83" height="35"/>
                         </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v4p-i6-XjM">
+                            <rect key="frame" x="0.0" y="0.0" width="135" height="100"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <connections>
+                                <action selector="croak_selectUserHeaderImageView:" destination="-1" eventType="touchUpInside" id="CBf-sG-YX7"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="Krg-Me-4tR" secondAttribute="trailing" constant="-8" id="0tF-IF-7xD"/>
                         <constraint firstItem="1Ga-fa-g82" firstAttribute="leading" secondItem="EJV-mQ-G6M" secondAttribute="leading" id="4jL-Ej-xor"/>
                         <constraint firstItem="Y6g-bh-8vZ" firstAttribute="top" secondItem="EJV-mQ-G6M" secondAttribute="top" constant="9" id="BtP-uI-OFF"/>
+                        <constraint firstItem="v4p-i6-XjM" firstAttribute="leading" secondItem="EJV-mQ-G6M" secondAttribute="leading" id="GSR-Jr-Wt7"/>
                         <constraint firstAttribute="height" constant="100" id="INR-5U-xhs"/>
+                        <constraint firstItem="v4p-i6-XjM" firstAttribute="top" secondItem="EJV-mQ-G6M" secondAttribute="top" id="QQk-H5-C07"/>
                         <constraint firstItem="Krg-Me-4tR" firstAttribute="top" secondItem="EJV-mQ-G6M" secondAttribute="top" constant="61" id="au1-VF-vh6"/>
                         <constraint firstItem="1Ga-fa-g82" firstAttribute="top" secondItem="EJV-mQ-G6M" secondAttribute="top" id="bKt-FC-i3e"/>
+                        <constraint firstAttribute="trailing" secondItem="v4p-i6-XjM" secondAttribute="trailing" id="crf-Kr-Zk3"/>
+                        <constraint firstAttribute="bottom" secondItem="v4p-i6-XjM" secondAttribute="bottom" id="hiw-RX-ZcJ"/>
                         <constraint firstAttribute="width" constant="135" id="hqV-tM-knb"/>
                         <constraint firstAttribute="trailing" secondItem="1Ga-fa-g82" secondAttribute="trailing" id="tLH-ef-XTm"/>
                         <constraint firstItem="Y6g-bh-8vZ" firstAttribute="centerX" secondItem="EJV-mQ-G6M" secondAttribute="centerX" id="z94-lZ-pJl"/>
@@ -79,26 +96,38 @@
                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Please enter" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7rK-rA-3jl">
-                            <rect key="frame" x="106" y="0.0" width="239" height="44"/>
-                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LgU-yI-o6x">
+                            <rect key="frame" x="106" y="0.0" width="205" height="44"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
-                        </textField>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P3X-8U-adt">
+                            <rect key="frame" x="311" y="0.0" width="50" height="44"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="croak_down"/>
+                            <connections>
+                                <action selector="croak_selectYearsAction:" destination="-1" eventType="touchUpInside" id="AQu-GR-Zx0"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="oSx-SD-YH4" secondAttribute="trailing" id="8ZC-OR-IET"/>
                         <constraint firstItem="oSx-SD-YH4" firstAttribute="leading" secondItem="tnm-Wa-AWh" secondAttribute="leading" id="CPu-F1-oLs"/>
                         <constraint firstAttribute="height" constant="44" id="CRD-Q5-vhB"/>
-                        <constraint firstItem="7rK-rA-3jl" firstAttribute="top" secondItem="tnm-Wa-AWh" secondAttribute="top" id="IGc-e1-jao"/>
+                        <constraint firstAttribute="bottom" secondItem="P3X-8U-adt" secondAttribute="bottom" id="DWv-qr-rlK"/>
                         <constraint firstAttribute="bottom" secondItem="oSx-SD-YH4" secondAttribute="bottom" id="TKz-aN-M1b"/>
+                        <constraint firstItem="LgU-yI-o6x" firstAttribute="top" secondItem="tnm-Wa-AWh" secondAttribute="top" id="XEN-Bu-Xhm"/>
                         <constraint firstAttribute="bottom" secondItem="eMq-ui-j7L" secondAttribute="bottom" id="ewY-dU-f7u"/>
+                        <constraint firstItem="P3X-8U-adt" firstAttribute="top" secondItem="tnm-Wa-AWh" secondAttribute="top" id="fUe-DA-brJ"/>
+                        <constraint firstAttribute="trailing" secondItem="LgU-yI-o6x" secondAttribute="trailing" constant="50" id="fzk-CW-0aG"/>
+                        <constraint firstItem="P3X-8U-adt" firstAttribute="leading" secondItem="LgU-yI-o6x" secondAttribute="trailing" id="l7R-Fz-U6z"/>
                         <constraint firstItem="oSx-SD-YH4" firstAttribute="top" secondItem="tnm-Wa-AWh" secondAttribute="top" id="mlD-bZ-YJf"/>
-                        <constraint firstAttribute="trailing" secondItem="7rK-rA-3jl" secondAttribute="trailing" constant="16" id="nCS-g8-8hL"/>
-                        <constraint firstItem="7rK-rA-3jl" firstAttribute="leading" secondItem="eMq-ui-j7L" secondAttribute="trailing" constant="16" id="oaU-Jz-G5S"/>
-                        <constraint firstAttribute="bottom" secondItem="7rK-rA-3jl" secondAttribute="bottom" id="tP2-pj-IUD"/>
+                        <constraint firstItem="LgU-yI-o6x" firstAttribute="leading" secondItem="eMq-ui-j7L" secondAttribute="trailing" constant="16" id="ohC-47-WAZ"/>
+                        <constraint firstAttribute="bottom" secondItem="LgU-yI-o6x" secondAttribute="bottom" id="rJH-Ye-ydD"/>
                         <constraint firstItem="eMq-ui-j7L" firstAttribute="leading" secondItem="tnm-Wa-AWh" secondAttribute="leading" constant="13" id="tv4-Iv-jY9"/>
+                        <constraint firstAttribute="trailing" secondItem="P3X-8U-adt" secondAttribute="trailing" id="x0s-g9-b2e"/>
                         <constraint firstItem="eMq-ui-j7L" firstAttribute="top" secondItem="tnm-Wa-AWh" secondAttribute="top" id="xq6-Ar-vKE"/>
                     </constraints>
                 </view>
@@ -150,6 +179,9 @@
                     <rect key="frame" x="99" y="700" width="195" height="59"/>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal" image="croak_save"/>
+                    <connections>
+                        <action selector="croak_saveAction:" destination="-1" eventType="touchUpInside" id="R7X-SK-2In"/>
+                    </connections>
                 </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
@@ -171,13 +203,14 @@
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="nwC-20-rdb" secondAttribute="bottom" constant="25" id="w52-Qx-IbB"/>
                 <constraint firstItem="tnm-Wa-AWh" firstAttribute="top" secondItem="5bV-1a-QrQ" secondAttribute="bottom" constant="16" id="wgA-m8-0Z1"/>
             </constraints>
-            <point key="canvasLocation" x="108" y="230"/>
+            <point key="canvasLocation" x="-1648" y="246"/>
         </view>
     </objects>
     <resources>
         <image name="croak_avatar" width="72" height="72"/>
         <image name="croak_back" width="28" height="28"/>
         <image name="croak_carmea" width="83" height="35"/>
+        <image name="croak_down" width="15" height="16"/>
         <image name="croak_gray" width="343" height="44"/>
         <image name="croak_line" width="140" height="78"/>
         <image name="croak_save" width="195" height="59"/>

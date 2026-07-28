@@ -10,6 +10,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Croak_LoginEmailVC">
             <connections>
+                <outlet property="croak_button" destination="DIc-5k-tfn" id="BI4-XL-Tsr"/>
+                <outlet property="croak_email_textfiled" destination="iKN-JK-grl" id="o7d-zY-4Eb"/>
+                <outlet property="croak_password_textfiled" destination="KSM-Fn-epz" id="xY8-ba-eZC"/>
+                <outlet property="croak_title_label" destination="fua-eJ-VlS" id="ApP-VT-NkQ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -31,6 +35,9 @@
                             </constraints>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" image="croak_back"/>
+                            <connections>
+                                <action selector="corak_backAction:" destination="-1" eventType="touchUpInside" id="4JT-s2-CHY"/>
+                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign up" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fua-eJ-VlS">
                             <rect key="frame" x="52" y="12" width="56" height="20"/>
@@ -132,6 +139,9 @@
                     <rect key="frame" x="99" y="584" width="195" height="59"/>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal" image="login_tap"/>
+                    <connections>
+                        <action selector="croak_loginSignupAction:" destination="-1" eventType="touchUpInside" id="VJO-94-MHB"/>
+                    </connections>
                 </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
@@ -154,7 +164,7 @@
                 <constraint firstItem="wH2-Kh-BKK" firstAttribute="top" secondItem="qNj-tb-utc" secondAttribute="bottom" constant="20" id="qY8-GW-e0y"/>
                 <constraint firstItem="qfM-ZB-A8u" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="sbj-cv-EEP"/>
             </constraints>
-            <point key="canvasLocation" x="160" y="344"/>
+            <point key="canvasLocation" x="-73" y="389"/>
         </view>
     </objects>
     <resources>
