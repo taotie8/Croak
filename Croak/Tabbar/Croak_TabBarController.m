@@ -1,4 +1,5 @@
 #import "Croak_TabBarController.h"
+#import "Croak_MessageListVC.h"
 
 static UIColor *CroakColorFromHex(NSInteger hex) {
     return [UIColor colorWithRed:((hex >> 16) & 0xFF) / 255.0
@@ -186,7 +187,7 @@ static UIColor *CroakColorFromHex(NSInteger hex) {
 
 @end
 
-@interface Croak_TabBarController () <Croak_CustomTabBarDelegate>
+@interface Croak_TabBarController () <Croak_CustomTabBarDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, strong) Croak_CustomTabBar *croak_customTabBar;
 
@@ -214,12 +215,14 @@ static UIColor *CroakColorFromHex(NSInteger hex) {
     [super viewDidLayoutSubviews];
     self.tabBar.hidden = YES;
     [self.view bringSubviewToFront:self.croak_customTabBar];
+    [self croak_updateCustomTabBarForSelectedControllerAnimated:NO];
 }
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex {
     [super setSelectedIndex:selectedIndex];
     self.croak_customTabBar.selectedIndex = selectedIndex;
     [self.view bringSubviewToFront:self.croak_customTabBar];
+    [self croak_updateCustomTabBarForSelectedControllerAnimated:NO];
 }
 
 - (NSArray<NSDictionary<NSString *, NSString *> *> *)croak_tabItems {
@@ -265,15 +268,68 @@ static UIColor *CroakColorFromHex(NSInteger hex) {
 }
 
 - (UIViewController *)croak_viewControllerWithTitle:(NSString *)title {
-    Croak_TabPageViewController *pageViewController = [[Croak_TabPageViewController alloc] initWithTitle:title];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:pageViewController];
+    UIViewController *rootViewController = nil;
+    if ([title isEqualToString:@"Messages"]) {
+        rootViewController = [[Croak_MessageListVC alloc] init];
+    } else {
+        rootViewController = [[Croak_TabPageViewController alloc] initWithTitle:title];
+    }
+
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
     navigationController.navigationBarHidden = YES;
     navigationController.additionalSafeAreaInsets = UIEdgeInsetsMake(0.0, 0.0, 98.0, 0.0);
+    navigationController.delegate = self;
     return navigationController;
 }
 
 - (void)croak_customTabBar:(Croak_CustomTabBar *)tabBar didSelectIndex:(NSUInteger)index {
     self.selectedIndex = index;
+}
+
+- (void)navigationController:(UINavigationController *)navigationController
+      willShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated {
+    BOOL isRootViewController = viewController == navigationController.viewControllers.firstObject;
+    BOOL shouldHideCustomTabBar = !isRootViewController || viewController.hidesBottomBarWhenPushed;
+    navigationController.additionalSafeAreaInsets = shouldHideCustomTabBar ? UIEdgeInsetsZero : UIEdgeInsetsMake(0.0, 0.0, 98.0, 0.0);
+
+    if (navigationController == self.selectedViewController) {
+        [self croak_setCustomTabBarHidden:shouldHideCustomTabBar animated:animated];
+    }
+}
+
+- (void)croak_updateCustomTabBarForSelectedControllerAnimated:(BOOL)animated {
+    UINavigationController *navigationController = (UINavigationController *)self.selectedViewController;
+    if (![navigationController isKindOfClass:UINavigationController.class]) {
+        [self croak_setCustomTabBarHidden:NO animated:animated];
+        return;
+    }
+
+    UIViewController *visibleViewController = navigationController.visibleViewController;
+    BOOL isRootViewController = visibleViewController == navigationController.viewControllers.firstObject;
+    BOOL shouldHideCustomTabBar = !isRootViewController || visibleViewController.hidesBottomBarWhenPushed;
+    navigationController.additionalSafeAreaInsets = shouldHideCustomTabBar ? UIEdgeInsetsZero : UIEdgeInsetsMake(0.0, 0.0, 98.0, 0.0);
+    [self croak_setCustomTabBarHidden:shouldHideCustomTabBar animated:animated];
+}
+
+- (void)croak_setCustomTabBarHidden:(BOOL)hidden animated:(BOOL)animated {
+    if (!self.croak_customTabBar) {
+        return;
+    }
+
+    if (!hidden) {
+        self.croak_customTabBar.hidden = NO;
+    }
+    self.croak_customTabBar.userInteractionEnabled = !hidden;
+
+    NSTimeInterval duration = animated ? 0.25 : 0.0;
+    [UIView animateWithDuration:duration
+                     animations:^{
+        self.croak_customTabBar.alpha = hidden ? 0.0 : 1.0;
+        self.croak_customTabBar.transform = hidden ? CGAffineTransformMakeTranslation(0.0, 90.0) : CGAffineTransformIdentity;
+    } completion:^(BOOL finished) {
+        self.croak_customTabBar.hidden = hidden;
+    }];
 }
 
 @end

@@ -66,35 +66,20 @@
                         <action selector="croak_selectPrivacyWithUserAndPolicyAction:" destination="-1" eventType="touchUpInside" id="0nq-g1-Fjg"/>
                     </connections>
                 </button>
-<<<<<<< HEAD
-                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P7Q-1e-Nie">
-=======
                 <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P7Q-1e-Nie">
->>>>>>> 6cdc69dfae03157684f1b27d2fdecd58bb3d2ffe
                     <rect key="frame" x="74.666666666666686" y="658.66666666666663" width="244" height="60"/>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal" image="croak_sig_up"/>
                     <connections>
-<<<<<<< HEAD
-                        <action selector="croak_loginWithSingupAction:" destination="-1" eventType="touchUpInside" id="BAT-yN-37k"/>
-                    </connections>
-                </button>
-                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PqI-Db-90B">
-=======
                         <action selector="croak_loginWithSignupAction:" destination="-1" eventType="touchUpInside" id="0RR-hc-tjK"/>
                     </connections>
                 </button>
                 <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PqI-Db-90B">
->>>>>>> 6cdc69dfae03157684f1b27d2fdecd58bb3d2ffe
                     <rect key="frame" x="75" y="606.66666666666663" width="243" height="44"/>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal" image="croak_login"/>
                     <connections>
-<<<<<<< HEAD
-                        <action selector="croak_loginWithSingupAction:" destination="-1" eventType="touchUpInside" id="NVW-xn-NI5"/>
-=======
                         <action selector="croak_loginWithSignupAction:" destination="-1" eventType="touchUpInside" id="UQz-0n-0ub"/>
->>>>>>> 6cdc69dfae03157684f1b27d2fdecd58bb3d2ffe
                     </connections>
                 </button>
             </subviews>

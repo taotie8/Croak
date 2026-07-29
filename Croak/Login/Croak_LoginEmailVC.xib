@@ -10,14 +10,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Croak_LoginEmailVC">
             <connections>
-<<<<<<< HEAD
-                <outlet property="croak_email_textfiled" destination="iKN-JK-grl" id="cro-em-tfd"/>
-=======
                 <outlet property="croak_button" destination="DIc-5k-tfn" id="BI4-XL-Tsr"/>
                 <outlet property="croak_email_textfiled" destination="iKN-JK-grl" id="o7d-zY-4Eb"/>
                 <outlet property="croak_password_textfiled" destination="KSM-Fn-epz" id="xY8-ba-eZC"/>
                 <outlet property="croak_title_label" destination="fua-eJ-VlS" id="ApP-VT-NkQ"/>
->>>>>>> 6cdc69dfae03157684f1b27d2fdecd58bb3d2ffe
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -40,11 +36,7 @@
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" image="croak_back"/>
                             <connections>
-<<<<<<< HEAD
-                                <action selector="croak_backAction:" destination="-2" eventType="touchUpInside" id="lf0-mK-Pya"/>
-=======
-                                <action selector="corak_backAction:" destination="-1" eventType="touchUpInside" id="4JT-s2-CHY"/>
->>>>>>> 6cdc69dfae03157684f1b27d2fdecd58bb3d2ffe
+                                <action selector="croak_backAction:" destination="-1" eventType="touchUpInside" id="4JT-s2-CHY"/>
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign up" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fua-eJ-VlS">
@@ -172,11 +164,7 @@
                 <constraint firstItem="wH2-Kh-BKK" firstAttribute="top" secondItem="qNj-tb-utc" secondAttribute="bottom" constant="20" id="qY8-GW-e0y"/>
                 <constraint firstItem="qfM-ZB-A8u" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="sbj-cv-EEP"/>
             </constraints>
-<<<<<<< HEAD
-            <point key="canvasLocation" x="153" y="361"/>
-=======
             <point key="canvasLocation" x="-73" y="389"/>
->>>>>>> 6cdc69dfae03157684f1b27d2fdecd58bb3d2ffe
         </view>
     </objects>
     <resources>

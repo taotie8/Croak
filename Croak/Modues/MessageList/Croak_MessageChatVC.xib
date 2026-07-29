@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Croak_MessageChatVC">
+            <connections>
+                <outlet property="croak_avatarImageView" destination="ZQk-XJ-cr0" id="chat-av-img"/>
+                <outlet property="croak_inputContentView" destination="xnV-FT-Pc7" id="chat-input-view"/>
+                <outlet property="croak_inputTextField" destination="jC6-d1-9yl" id="chat-input-text"/>
+                <outlet property="croak_nameLabel" destination="Iyi-gj-3bt" id="chat-name-lbl"/>
+                <outlet property="croak_tableView" destination="GQl-Au-Iom" id="chat-table-view"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oaE-Fh-lI0">
+                    <rect key="frame" x="0.0" y="124" width="393" height="44"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mAj-AB-MsE">
+                            <rect key="frame" x="0.0" y="0.0" width="55" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="55" id="M3q-M8-Gyb"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="croak_back"/>
+                            <connections>
+                                <action selector="croak_backAction:" destination="-1" eventType="touchUpInside" id="chat-back-act"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iyi-gj-3bt">
+                            <rect key="frame" x="52" y="12" width="41" height="20"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZQk-XJ-cr0">
+                            <rect key="frame" x="345" y="6" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="5ea-gB-xbe"/>
+                                <constraint firstAttribute="width" constant="32" id="wO8-Gq-gfP"/>
+                            </constraints>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q6C-Za-hwG">
+                            <rect key="frame" x="293" y="6" width="32" height="32"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="croak_call_icon"/>
+                            <connections>
+                                <action selector="croak_callAction:" destination="-1" eventType="touchUpInside" id="chat-call-act"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="Iyi-gj-3bt" firstAttribute="leading" secondItem="oaE-Fh-lI0" secondAttribute="leading" constant="52" id="69h-ct-roz"/>
+                        <constraint firstItem="q6C-Za-hwG" firstAttribute="centerY" secondItem="oaE-Fh-lI0" secondAttribute="centerY" id="6zw-Qs-jNs"/>
+                        <constraint firstAttribute="trailing" secondItem="ZQk-XJ-cr0" secondAttribute="trailing" constant="16" id="CBQ-Ih-4ZD"/>
+                        <constraint firstItem="Iyi-gj-3bt" firstAttribute="centerY" secondItem="mAj-AB-MsE" secondAttribute="centerY" id="GDg-W4-td7"/>
+                        <constraint firstItem="ZQk-XJ-cr0" firstAttribute="centerY" secondItem="oaE-Fh-lI0" secondAttribute="centerY" id="U99-ju-wqh"/>
+                        <constraint firstItem="ZQk-XJ-cr0" firstAttribute="leading" secondItem="q6C-Za-hwG" secondAttribute="trailing" constant="20" id="erC-uy-1zc"/>
+                        <constraint firstAttribute="height" constant="44" id="fdR-3G-F7Y"/>
+                        <constraint firstItem="mAj-AB-MsE" firstAttribute="leading" secondItem="oaE-Fh-lI0" secondAttribute="leading" id="lig-Vj-HuY"/>
+                        <constraint firstItem="mAj-AB-MsE" firstAttribute="top" secondItem="oaE-Fh-lI0" secondAttribute="top" id="vos-cF-t8l"/>
+                        <constraint firstAttribute="bottom" secondItem="mAj-AB-MsE" secondAttribute="bottom" id="wmL-nU-K9W"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BFi-WJ-cTd">
+                    <rect key="frame" x="0.0" y="722" width="393" height="130"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xnV-FT-Pc7">
+                            <rect key="frame" x="16" y="44" width="361" height="44"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mnP-rJ-X5w">
+                                    <rect key="frame" x="321" y="0.0" width="36" height="44"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="36" id="IaV-pd-orh"/>
+                                    </constraints>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" image="croak_voice_icon"/>
+                                    <connections>
+                                        <action selector="croak_voiceAction:" destination="-1" eventType="touchUpInside" id="chat-voice-act"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zsg-Kf-mW1">
+                                    <rect key="frame" x="278" y="0.0" width="38" height="44"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="38" id="1b0-oZ-Fg1"/>
+                                    </constraints>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" image="croak_send_icon"/>
+                                    <connections>
+                                        <action selector="croak_sendAction:" destination="-1" eventType="touchUpInside" id="chat-send-act"/>
+                                    </connections>
+                                </button>
+                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Please enter…" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jC6-d1-9yl">
+                                    <rect key="frame" x="12" y="0.0" width="254" height="44"/>
+                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="chat-text-delegate"/>
+                                    </connections>
+                                </textField>
+                            </subviews>
+                            <color key="backgroundColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="Zsg-Kf-mW1" secondAttribute="bottom" id="18g-mp-xMO"/>
+                                <constraint firstAttribute="height" constant="44" id="3cS-uc-8DO"/>
+                                <constraint firstAttribute="bottom" secondItem="mnP-rJ-X5w" secondAttribute="bottom" id="PLS-ai-lEi"/>
+                                <constraint firstItem="Zsg-Kf-mW1" firstAttribute="leading" secondItem="jC6-d1-9yl" secondAttribute="trailing" constant="12" id="R0x-Gw-3ny"/>
+                                <constraint firstItem="jC6-d1-9yl" firstAttribute="leading" secondItem="xnV-FT-Pc7" secondAttribute="leading" constant="12" id="SqV-6X-n15"/>
+                                <constraint firstItem="jC6-d1-9yl" firstAttribute="top" secondItem="xnV-FT-Pc7" secondAttribute="top" id="Zm2-H8-d5O"/>
+                                <constraint firstAttribute="bottom" secondItem="jC6-d1-9yl" secondAttribute="bottom" id="eQu-Ge-M59"/>
+                                <constraint firstItem="mnP-rJ-X5w" firstAttribute="top" secondItem="xnV-FT-Pc7" secondAttribute="top" id="ecV-nr-eHe"/>
+                                <constraint firstItem="Zsg-Kf-mW1" firstAttribute="top" secondItem="xnV-FT-Pc7" secondAttribute="top" id="jSW-Xu-Ovc"/>
+                                <constraint firstAttribute="trailing" secondItem="mnP-rJ-X5w" secondAttribute="trailing" constant="4" id="qHR-fd-H9w"/>
+                                <constraint firstItem="mnP-rJ-X5w" firstAttribute="leading" secondItem="Zsg-Kf-mW1" secondAttribute="trailing" constant="5" id="xD8-0O-FkH"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yZm-Ba-3KQ">
+                            <rect key="frame" x="10" y="0.0" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="44" id="cId-nW-UCx"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="croak_picture_icon"/>
+                            <connections>
+                                <action selector="croak_pictureAction:" destination="-1" eventType="touchUpInside" id="chat-picture-act"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="yZm-Ba-3KQ" firstAttribute="leading" secondItem="BFi-WJ-cTd" secondAttribute="leading" constant="10" id="1j9-pf-eCF"/>
+                        <constraint firstItem="xnV-FT-Pc7" firstAttribute="top" secondItem="BFi-WJ-cTd" secondAttribute="top" constant="44" id="6QK-cW-4tc"/>
+                        <constraint firstAttribute="trailing" secondItem="xnV-FT-Pc7" secondAttribute="trailing" constant="16" id="IVd-KS-HBj"/>
+                        <constraint firstItem="yZm-Ba-3KQ" firstAttribute="top" secondItem="BFi-WJ-cTd" secondAttribute="top" id="QcY-0P-GF8"/>
+                        <constraint firstAttribute="height" constant="130" id="TmY-cM-mrg"/>
+                        <constraint firstItem="xnV-FT-Pc7" firstAttribute="top" secondItem="yZm-Ba-3KQ" secondAttribute="bottom" id="aDy-dg-Rf9"/>
+                        <constraint firstItem="xnV-FT-Pc7" firstAttribute="leading" secondItem="BFi-WJ-cTd" secondAttribute="leading" constant="16" id="fPI-cd-PXX"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="GQl-Au-Iom">
+                    <rect key="frame" x="0.0" y="173" width="393" height="544"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="chat-table-data"/>
+                        <outlet property="delegate" destination="-1" id="chat-table-delegate"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="GQl-Au-Iom" secondAttribute="trailing" id="4rX-2R-bkZ"/>
+                <constraint firstItem="oaE-Fh-lI0" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="6" id="8Gn-vX-M4q"/>
+                <constraint firstAttribute="bottom" secondItem="BFi-WJ-cTd" secondAttribute="bottom" id="DOa-Mb-JQy"/>
+                <constraint firstItem="GQl-Au-Iom" firstAttribute="top" secondItem="oaE-Fh-lI0" secondAttribute="bottom" constant="5" id="Hd4-M2-T9L"/>
+                <constraint firstItem="GQl-Au-Iom" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="MNK-TS-kIa"/>
+                <constraint firstItem="oaE-Fh-lI0" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="OSm-zh-wWU"/>
+                <constraint firstItem="oaE-Fh-lI0" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="heg-fT-szu"/>
+                <constraint firstItem="BFi-WJ-cTd" firstAttribute="top" secondItem="GQl-Au-Iom" secondAttribute="bottom" constant="5" id="kX8-Oc-HLm"/>
+                <constraint firstItem="BFi-WJ-cTd" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="oBm-1l-dvK"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="BFi-WJ-cTd" secondAttribute="trailing" id="xpI-H4-3FE"/>
+            </constraints>
+            <point key="canvasLocation" x="50" y="106"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="croak_back" width="28" height="28"/>
+        <image name="croak_call_icon" width="32" height="32"/>
+        <image name="croak_picture_icon" width="28" height="28"/>
+        <image name="croak_send_icon" width="32" height="32"/>
+        <image name="croak_voice_icon" width="24" height="24"/>
+    </resources>
+</document>

@@ -14,11 +14,8 @@
     
     [SVProgressHUD setMaximumDismissTimeInterval:1.5];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-<<<<<<< HEAD
-    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[Croak_ViewController alloc] init]];
-=======
-    self.window.rootViewController = [Croak_TabBarController new];//[[UINavigationController alloc] initWithRootViewController:[[Croak_ViewController alloc] init]];
->>>>>>> 6cdc69dfae03157684f1b27d2fdecd58bb3d2ffe
+//    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[Croak_ViewController alloc] init]];
+    self.window.rootViewController = [Croak_TabBarController new];
     [self.window makeKeyAndVisible];
     return YES;
 }
