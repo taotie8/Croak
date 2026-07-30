@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Croak_RequestFriendsVC">
+            <connections>
+                <outlet property="croak_tableView" destination="cBK-ki-ezg" id="request-friends-table"/>
+                <outlet property="croak_titleLabel" destination="1bW-f8-xae" id="request-friends-title"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R0V-H4-XJb">
+                    <rect key="frame" x="0.0" y="118" width="393" height="44"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HVi-Oo-sz1">
+                            <rect key="frame" x="0.0" y="0.0" width="55" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="55" id="h2X-De-21U"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="croak_back"/>
+                            <connections>
+                                <action selector="croak_backAction:" destination="-1" eventType="touchUpInside" id="request-friends-back-action"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Friend" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1bW-f8-xae">
+                            <rect key="frame" x="52" y="12" width="81" height="20"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="HVi-Oo-sz1" secondAttribute="bottom" id="20M-cL-xOr"/>
+                        <constraint firstItem="1bW-f8-xae" firstAttribute="centerY" secondItem="HVi-Oo-sz1" secondAttribute="centerY" id="Fk0-dt-6Hi"/>
+                        <constraint firstItem="HVi-Oo-sz1" firstAttribute="leading" secondItem="R0V-H4-XJb" secondAttribute="leading" id="VIe-aq-h8k"/>
+                        <constraint firstItem="HVi-Oo-sz1" firstAttribute="top" secondItem="R0V-H4-XJb" secondAttribute="top" id="chV-Pr-UAN"/>
+                        <constraint firstItem="1bW-f8-xae" firstAttribute="leading" secondItem="R0V-H4-XJb" secondAttribute="leading" constant="52" id="m88-QH-9TT"/>
+                        <constraint firstAttribute="height" constant="44" id="pIX-37-Avg"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="cBK-ki-ezg">
+                    <rect key="frame" x="0.0" y="172" width="393" height="612"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="request-friends-table-data"/>
+                        <outlet property="delegate" destination="-1" id="request-friends-table-delegate"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="R0V-H4-XJb" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="7Sh-bB-Qfp"/>
+                <constraint firstItem="R0V-H4-XJb" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="B9K-PE-m8W"/>
+                <constraint firstItem="R0V-H4-XJb" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="JQG-Ul-2vg"/>
+                <constraint firstItem="cBK-ki-ezg" firstAttribute="top" secondItem="R0V-H4-XJb" secondAttribute="bottom" constant="10" id="Rhr-UG-8az"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="cBK-ki-ezg" secondAttribute="bottom" id="h87-29-BS1"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="cBK-ki-ezg" secondAttribute="trailing" id="lWk-RE-6Zz"/>
+                <constraint firstItem="cBK-ki-ezg" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="pcI-qa-Kdk"/>
+            </constraints>
+            <point key="canvasLocation" x="-19" y="106"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="croak_back" width="28" height="28"/>
+    </resources>
+</document>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Croak_DiamondsVC">
+            <connections>
+                <outlet property="croak_diamondsLabel" destination="MOf-Vz-hlb" id="diamonds-balance"/>
+                <outlet property="croak_headerImageView" destination="GtE-4n-L3G" id="diamonds-header"/>
+                <outlet property="croak_tableView" destination="kI0-wv-qxG" id="diamonds-table"/>
+                <outlet property="croak_titleLabel" destination="wCE-y2-Jav" id="diamonds-title"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="croak_header" translatesAutoresizingMaskIntoConstraints="NO" id="GtE-4n-L3G">
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="204"/>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="umH-ly-5Ma">
+                    <rect key="frame" x="0.0" y="118" width="393" height="44"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fQ9-8f-YuN">
+                            <rect key="frame" x="0.0" y="0.0" width="55" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="55" id="PSg-O6-rf4"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="croak_back"/>
+                            <connections>
+                                <action selector="croak_backAction:" destination="-1" eventType="touchUpInside" id="diamonds-back-action"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blacklist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wCE-y2-Jav">
+                            <rect key="frame" x="55" y="12.333333333333341" width="60.333333333333343" height="19.333333333333329"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <color key="textColor" red="0.015686274510000001" green="0.023529411760000001" blue="0.070588235289999995" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="fQ9-8f-YuN" firstAttribute="leading" secondItem="umH-ly-5Ma" secondAttribute="leading" id="0hD-He-HUJ"/>
+                        <constraint firstAttribute="height" constant="44" id="3tK-oV-99P"/>
+                        <constraint firstItem="wCE-y2-Jav" firstAttribute="centerY" secondItem="fQ9-8f-YuN" secondAttribute="centerY" id="Jdd-ZN-V0D"/>
+                        <constraint firstItem="fQ9-8f-YuN" firstAttribute="top" secondItem="umH-ly-5Ma" secondAttribute="top" id="P4x-8b-gyr"/>
+                        <constraint firstAttribute="bottom" secondItem="fQ9-8f-YuN" secondAttribute="bottom" id="Uhv-K3-rKl"/>
+                        <constraint firstItem="wCE-y2-Jav" firstAttribute="leading" secondItem="fQ9-8f-YuN" secondAttribute="trailing" id="l6S-ib-v53"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RCc-q5-ZH9">
+                    <rect key="frame" x="16" y="182" width="361" height="99"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mine_diamonds" translatesAutoresizingMaskIntoConstraints="NO" id="Mgd-if-8fh">
+                            <rect key="frame" x="0.0" y="0.0" width="361" height="99"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Diamonds" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4i8-tH-m5I">
+                            <rect key="frame" x="196.66666666666666" y="20" width="104.33333333333334" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MOf-Vz-hlb">
+                            <rect key="frame" x="196.66666666666666" y="43" width="58" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="BxE-x3-2sH"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="4i8-tH-m5I" firstAttribute="top" secondItem="RCc-q5-ZH9" secondAttribute="top" constant="20" id="61H-2a-imc"/>
+                        <constraint firstAttribute="bottom" secondItem="Mgd-if-8fh" secondAttribute="bottom" id="7VD-rd-7rr"/>
+                        <constraint firstItem="MOf-Vz-hlb" firstAttribute="top" secondItem="4i8-tH-m5I" secondAttribute="bottom" constant="2" id="9cy-OV-rEY"/>
+                        <constraint firstItem="MOf-Vz-hlb" firstAttribute="leading" secondItem="4i8-tH-m5I" secondAttribute="leading" id="Su1-Se-ykA"/>
+                        <constraint firstItem="Mgd-if-8fh" firstAttribute="top" secondItem="RCc-q5-ZH9" secondAttribute="top" id="eVT-qZ-V86"/>
+                        <constraint firstAttribute="trailing" secondItem="Mgd-if-8fh" secondAttribute="trailing" id="g59-Sp-AEj"/>
+                        <constraint firstAttribute="height" constant="99" id="ixo-Dl-jh4"/>
+                        <constraint firstAttribute="trailing" secondItem="4i8-tH-m5I" secondAttribute="trailing" constant="60" id="rqR-6V-Qyz"/>
+                        <constraint firstItem="Mgd-if-8fh" firstAttribute="leading" secondItem="RCc-q5-ZH9" secondAttribute="leading" id="xNl-yM-5cY"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="kI0-wv-qxG">
+                    <rect key="frame" x="0.0" y="291" width="393" height="561"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="diamonds-table-data"/>
+                        <outlet property="delegate" destination="-1" id="diamonds-table-delegate"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="kI0-wv-qxG" secondAttribute="trailing" id="4gt-38-sms"/>
+                <constraint firstItem="umH-ly-5Ma" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="Cfo-Gh-oq7"/>
+                <constraint firstItem="umH-ly-5Ma" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="Pfx-hl-QSc"/>
+                <constraint firstItem="kI0-wv-qxG" firstAttribute="top" secondItem="RCc-q5-ZH9" secondAttribute="bottom" constant="10" id="SlV-nZ-JVi"/>
+                <constraint firstItem="GtE-4n-L3G" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="TRW-v5-vIs"/>
+                <constraint firstItem="GtE-4n-L3G" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Vvp-e6-aRu"/>
+                <constraint firstItem="RCc-q5-ZH9" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="aCx-4h-tLY"/>
+                <constraint firstItem="RCc-q5-ZH9" firstAttribute="top" secondItem="umH-ly-5Ma" secondAttribute="bottom" constant="20" id="amS-Wt-u75"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="RCc-q5-ZH9" secondAttribute="trailing" constant="16" id="cpb-3O-8nn"/>
+                <constraint firstAttribute="bottom" secondItem="kI0-wv-qxG" secondAttribute="bottom" id="hbi-w6-nER"/>
+                <constraint firstItem="umH-ly-5Ma" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="mlz-qs-okW"/>
+                <constraint firstAttribute="trailing" secondItem="GtE-4n-L3G" secondAttribute="trailing" id="oRK-aA-fR2"/>
+                <constraint firstItem="kI0-wv-qxG" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="xQV-hx-mKo"/>
+            </constraints>
+            <point key="canvasLocation" x="-19" y="106"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="croak_back" width="28" height="28"/>
+        <image name="croak_header" width="375" height="204"/>
+        <image name="mine_diamonds" width="342" height="99"/>
+    </resources>
+</document>

@@ -1,5 +1,8 @@
 #import "Croak_TabBarController.h"
 #import "Croak_MessageListVC.h"
+#import "Croak_FriendsSquareVC.h"
+#import "Croak_FriendsListVC.h"
+#import "Croak_MineVC.h"
 
 static UIColor *CroakColorFromHex(NSInteger hex) {
     return [UIColor colorWithRed:((hex >> 16) & 0xFF) / 255.0
@@ -149,43 +152,6 @@ static UIColor *CroakColorFromHex(NSInteger hex) {
 
 @end
 
-@interface Croak_TabPageViewController : UIViewController
-
-@property (nonatomic, copy) NSString *croak_title;
-
-- (instancetype)initWithTitle:(NSString *)title;
-
-@end
-
-@implementation Croak_TabPageViewController
-
-- (instancetype)initWithTitle:(NSString *)title {
-    self = [super init];
-    if (self) {
-        _croak_title = [title copy];
-    }
-    return self;
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-
-    self.view.backgroundColor = CroakColorFromHex(0xF7F7FA);
-
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    titleLabel.text = self.croak_title;
-    titleLabel.textColor = CroakColorFromHex(0x171722);
-    titleLabel.font = [UIFont systemFontOfSize:14.0 weight:UIFontWeightMedium];
-    [self.view addSubview:titleLabel];
-
-    [NSLayoutConstraint activateConstraints:@[
-        [titleLabel.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:24.0],
-        [titleLabel.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:32.0]
-    ]];
-}
-
-@end
 
 @interface Croak_TabBarController () <Croak_CustomTabBarDelegate, UINavigationControllerDelegate>
 
@@ -271,8 +237,15 @@ static UIColor *CroakColorFromHex(NSInteger hex) {
     UIViewController *rootViewController = nil;
     if ([title isEqualToString:@"Messages"]) {
         rootViewController = [[Croak_MessageListVC alloc] init];
-    } else {
-        rootViewController = [[Croak_TabPageViewController alloc] initWithTitle:title];
+    }
+    else if ([title isEqualToString:@"Square"]) {
+        rootViewController = [[Croak_FriendsSquareVC alloc] init];
+    }
+    else if ([title isEqualToString:@"Friends"]) {
+        rootViewController = [[Croak_FriendsListVC alloc] init];
+    }
+    else {
+        rootViewController = [[Croak_MineVC alloc] init];
     }
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];

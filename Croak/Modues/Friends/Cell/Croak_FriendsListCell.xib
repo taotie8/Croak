@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Croak_FriendsListCell" rowHeight="72" id="KGk-i7-Jjw" customClass="Croak_FriendsListCell">
+            <rect key="frame" x="0.0" y="0.0" width="381" height="72"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="381" height="72"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="S51-Ri-xeX">
+                        <rect key="frame" x="16" y="8" width="48" height="48"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="48" id="9Ah-B0-DRX"/>
+                            <constraint firstAttribute="height" constant="48" id="giQ-f6-Zhh"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="24"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fj5-M9-mRd">
+                        <rect key="frame" x="80" y="22.333333333333336" width="41.333333333333343" height="19.333333333333336"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                        <color key="textColor" red="0.082352941176470587" green="0.090196078431372548" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="S51-Ri-xeX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="AV8-Zd-HEB"/>
+                    <constraint firstItem="S51-Ri-xeX" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="FdA-Gx-M66"/>
+                    <constraint firstItem="fj5-M9-mRd" firstAttribute="centerY" secondItem="S51-Ri-xeX" secondAttribute="centerY" id="FWt-IX-3xO"/>
+                    <constraint firstItem="fj5-M9-mRd" firstAttribute="leading" secondItem="S51-Ri-xeX" secondAttribute="trailing" constant="16" id="WLY-Bn-Vku"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="croak_avatarImageView" destination="S51-Ri-xeX" id="friends-list-cell-avatar"/>
+                <outlet property="croak_nameLabel" destination="fj5-M9-mRd" id="friends-list-cell-name"/>
+            </connections>
+            <point key="canvasLocation" x="185" y="75"/>
+        </tableViewCell>
+    </objects>
+</document>

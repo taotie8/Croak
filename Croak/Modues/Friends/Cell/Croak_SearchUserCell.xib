@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Croak_SearchUserCell" rowHeight="68" id="KGk-i7-Jjw" customClass="Croak_SearchUserCell">
+            <rect key="frame" x="0.0" y="0.0" width="377" height="68"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="377" height="68"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HuW-bx-6jv">
+                        <rect key="frame" x="16" y="10" width="48" height="48"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="48" id="c1c-Mx-dFq"/>
+                            <constraint firstAttribute="width" constant="48" id="dIX-dq-OI7"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="24"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Ks-MQ-pgV">
+                        <rect key="frame" x="72" y="11.999999999999998" width="15.333333333333329" height="19.333333333333329"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" red="0.082352941176470587" green="0.090196078431372548" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aaI-nI-kpm">
+                        <rect key="frame" x="95.333333333333329" y="11.333333333333336" width="44.999999999999986" height="21"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="croak_boy_color" translatesAutoresizingMaskIntoConstraints="NO" id="Xrf-Md-xxQ">
+                                <rect key="frame" x="0.0" y="0.0" width="45" height="21"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="croak_boy_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Dke-jE-g1p">
+                                <rect key="frame" x="6" y="4.6666666666666652" width="12" height="11.333333333333336"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="89k-EH-gCa">
+                                <rect key="frame" x="20" y="2" width="17" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" red="0.16862745100000001" green="0.19215686269999999" blue="0.23921568630000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="89k-EH-gCa" firstAttribute="leading" secondItem="Dke-jE-g1p" secondAttribute="trailing" constant="2" id="4I8-FT-JXm"/>
+                            <constraint firstItem="Dke-jE-g1p" firstAttribute="centerY" secondItem="aaI-nI-kpm" secondAttribute="centerY" id="G0t-9N-WzE"/>
+                            <constraint firstItem="Xrf-Md-xxQ" firstAttribute="leading" secondItem="aaI-nI-kpm" secondAttribute="leading" id="IgX-Xt-1Rt"/>
+                            <constraint firstAttribute="height" constant="21" id="MML-0s-aqc"/>
+                            <constraint firstAttribute="bottom" secondItem="Xrf-Md-xxQ" secondAttribute="bottom" id="UCh-AW-vdv"/>
+                            <constraint firstItem="Xrf-Md-xxQ" firstAttribute="top" secondItem="aaI-nI-kpm" secondAttribute="top" id="Yic-bU-YBL"/>
+                            <constraint firstAttribute="width" constant="45" id="at0-8b-SPt"/>
+                            <constraint firstItem="Dke-jE-g1p" firstAttribute="leading" secondItem="aaI-nI-kpm" secondAttribute="leading" constant="6" id="hP1-KK-OcD"/>
+                            <constraint firstItem="89k-EH-gCa" firstAttribute="centerY" secondItem="aaI-nI-kpm" secondAttribute="centerY" id="oCA-tg-qOl"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cvw-mx-Xh2">
+                        <rect key="frame" x="72" y="33.333333333333336" width="21" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123456" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C3P-yo-oTI">
+                        <rect key="frame" x="93" y="33.333333333333336" width="49.666666666666657" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.61960784310000006" green="0.83529411760000005" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dm2-mV-kdC">
+                        <rect key="frame" x="247" y="16.666666666666671" width="114" height="35"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="35" id="914-Qm-kYE"/>
+                            <constraint firstAttribute="width" constant="114" id="sZY-RL-LpF"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" title="+ Add Friend"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="18"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="croak_addFriendAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="search-user-cell-add-action"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="C3P-yo-oTI" firstAttribute="leading" secondItem="cvw-mx-Xh2" secondAttribute="trailing" id="8Kb-bd-6jh"/>
+                    <constraint firstItem="HuW-bx-6jv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="ALf-mP-X6g"/>
+                    <constraint firstAttribute="bottom" secondItem="HuW-bx-6jv" secondAttribute="bottom" constant="10" id="C4e-IC-HNz"/>
+                    <constraint firstItem="dm2-mV-kdC" firstAttribute="centerY" secondItem="HuW-bx-6jv" secondAttribute="centerY" id="TEG-R6-u4F"/>
+                    <constraint firstAttribute="trailing" secondItem="dm2-mV-kdC" secondAttribute="trailing" constant="16" id="YWT-2O-OIO"/>
+                    <constraint firstItem="2Ks-MQ-pgV" firstAttribute="leading" secondItem="HuW-bx-6jv" secondAttribute="trailing" constant="8" id="agS-NE-ure"/>
+                    <constraint firstItem="2Ks-MQ-pgV" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="eVm-Ie-6cp"/>
+                    <constraint firstItem="HuW-bx-6jv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="exs-wB-u9e"/>
+                    <constraint firstItem="aaI-nI-kpm" firstAttribute="leading" secondItem="2Ks-MQ-pgV" secondAttribute="trailing" constant="8" id="ilT-Ia-Kye"/>
+                    <constraint firstItem="cvw-mx-Xh2" firstAttribute="top" secondItem="2Ks-MQ-pgV" secondAttribute="bottom" constant="2" id="ufg-h7-7Gg"/>
+                    <constraint firstItem="C3P-yo-oTI" firstAttribute="centerY" secondItem="cvw-mx-Xh2" secondAttribute="centerY" id="vFN-u9-iLz"/>
+                    <constraint firstItem="aaI-nI-kpm" firstAttribute="centerY" secondItem="2Ks-MQ-pgV" secondAttribute="centerY" id="w1f-33-idq"/>
+                    <constraint firstItem="cvw-mx-Xh2" firstAttribute="leading" secondItem="HuW-bx-6jv" secondAttribute="trailing" constant="8" id="w5F-cQ-aNK"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="croak_ageLabel" destination="89k-EH-gCa" id="search-user-cell-age"/>
+                <outlet property="croak_avatarImageView" destination="HuW-bx-6jv" id="search-user-cell-avatar"/>
+                <outlet property="croak_nameLabel" destination="2Ks-MQ-pgV" id="search-user-cell-name"/>
+                <outlet property="croak_userIdLabel" destination="C3P-yo-oTI" id="search-user-cell-id"/>
+            </connections>
+            <point key="canvasLocation" x="167.17557251908397" y="107.04225352112677"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="croak_boy_color" width="45" height="21"/>
+        <image name="croak_boy_icon" width="12" height="11.333333015441895"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

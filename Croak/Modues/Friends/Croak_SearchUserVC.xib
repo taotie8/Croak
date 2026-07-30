@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Croak_SearchUserVC">
+            <connections>
+                <outlet property="croak_searchContentView" destination="GdO-co-h7o" id="search-user-search-content"/>
+                <outlet property="croak_searchTextField" destination="E9Q-bb-YT6" id="search-user-textfield"/>
+                <outlet property="croak_tableView" destination="m3c-TD-qnl" id="search-user-table"/>
+                <outlet property="croak_titleLabel" destination="bzq-fi-35u" id="search-user-title"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6U8-y4-c8Q">
+                    <rect key="frame" x="0.0" y="118" width="393" height="44"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qXX-yr-Ea7">
+                            <rect key="frame" x="0.0" y="0.0" width="55" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="55" id="gjF-ki-32k"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="croak_back"/>
+                            <connections>
+                                <action selector="croak_backAction:" destination="-1" eventType="touchUpInside" id="search-user-back-action"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Friend" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bzq-fi-35u">
+                            <rect key="frame" x="52" y="12" width="81" height="20"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="bzq-fi-35u" firstAttribute="centerY" secondItem="qXX-yr-Ea7" secondAttribute="centerY" id="1AX-ei-IKs"/>
+                        <constraint firstItem="bzq-fi-35u" firstAttribute="leading" secondItem="6U8-y4-c8Q" secondAttribute="leading" constant="52" id="1CU-Gx-4Au"/>
+                        <constraint firstAttribute="bottom" secondItem="qXX-yr-Ea7" secondAttribute="bottom" id="CSf-fr-ylT"/>
+                        <constraint firstItem="qXX-yr-Ea7" firstAttribute="leading" secondItem="6U8-y4-c8Q" secondAttribute="leading" id="SS0-sf-pkc"/>
+                        <constraint firstItem="qXX-yr-Ea7" firstAttribute="top" secondItem="6U8-y4-c8Q" secondAttribute="top" id="kYf-Gf-4fn"/>
+                        <constraint firstAttribute="height" constant="44" id="yGz-7a-Rls"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GdO-co-h7o">
+                    <rect key="frame" x="16" y="170" width="361" height="44"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="80h-TS-vGC">
+                            <rect key="frame" x="305" y="0.0" width="56" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="56" id="Oqf-wv-imj"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="croak_search"/>
+                            <connections>
+                                <action selector="croak_searchAction:" destination="-1" eventType="touchUpInside" id="search-user-search-action"/>
+                            </connections>
+                        </button>
+                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search name or chat." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="E9Q-bb-YT6">
+                            <rect key="frame" x="12" y="0.0" width="291" height="44"/>
+                            <color key="textColor" red="0.015686274510000001" green="0.023529411760000001" blue="0.070588235289999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="search"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="search-user-textfield-delegate"/>
+                            </connections>
+                        </textField>
+                    </subviews>
+                    <color key="backgroundColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="5Ih-GB-YEf"/>
+                        <constraint firstAttribute="trailing" secondItem="80h-TS-vGC" secondAttribute="trailing" id="5ys-9A-zWE"/>
+                        <constraint firstAttribute="bottom" secondItem="80h-TS-vGC" secondAttribute="bottom" id="78R-Rb-nVp"/>
+                        <constraint firstItem="80h-TS-vGC" firstAttribute="leading" secondItem="E9Q-bb-YT6" secondAttribute="trailing" constant="2" id="EuH-fL-0rm"/>
+                        <constraint firstAttribute="bottom" secondItem="E9Q-bb-YT6" secondAttribute="bottom" id="Zf2-Ix-Hhz"/>
+                        <constraint firstItem="80h-TS-vGC" firstAttribute="top" secondItem="GdO-co-h7o" secondAttribute="top" id="cz3-1o-sIF"/>
+                        <constraint firstItem="E9Q-bb-YT6" firstAttribute="top" secondItem="GdO-co-h7o" secondAttribute="top" id="qH4-PM-IKM"/>
+                        <constraint firstItem="E9Q-bb-YT6" firstAttribute="leading" secondItem="GdO-co-h7o" secondAttribute="leading" constant="12" id="ygh-tk-2Dd"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="m3c-TD-qnl">
+                    <rect key="frame" x="0.0" y="230" width="393" height="554"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="search-user-table-data"/>
+                        <outlet property="delegate" destination="-1" id="search-user-table-delegate"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="GdO-co-h7o" firstAttribute="top" secondItem="6U8-y4-c8Q" secondAttribute="bottom" constant="8" id="168-2d-8hZ"/>
+                <constraint firstItem="GdO-co-h7o" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="T4u-JS-I5r"/>
+                <constraint firstItem="m3c-TD-qnl" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="WK5-gH-1hJ"/>
+                <constraint firstItem="6U8-y4-c8Q" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="YCO-tQ-UKW"/>
+                <constraint firstItem="6U8-y4-c8Q" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="Z9X-D2-3xr"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="GdO-co-h7o" secondAttribute="trailing" constant="16" id="ahq-Q1-8i1"/>
+                <constraint firstItem="m3c-TD-qnl" firstAttribute="top" secondItem="GdO-co-h7o" secondAttribute="bottom" constant="16" id="kyw-Y0-rET"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="m3c-TD-qnl" secondAttribute="bottom" id="pi5-S7-Lde"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="m3c-TD-qnl" secondAttribute="trailing" id="qxq-Hf-QII"/>
+                <constraint firstItem="6U8-y4-c8Q" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="tm3-m9-A8d"/>
+            </constraints>
+            <point key="canvasLocation" x="-19.083969465648853" y="105.63380281690141"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="croak_back" width="28" height="28"/>
+        <image name="croak_search" width="28" height="28"/>
+    </resources>
+</document>
