@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24128" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24063"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Croak_SettingVC">
             <connections>
+                <outlet property="croak_deleteContentView" destination="i9z-d9-JQV" id="setting-delete-content"/>
+                <outlet property="croak_deleteView" destination="G6T-rW-WoA" id="Kd8-O1-yVd"/>
                 <outlet property="croak_titleLabel" destination="PMe-U1-gjp" id="setting-title"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -173,10 +175,75 @@
                 <constraint firstItem="9OE-G1-hVo" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="mGU-OJ-G4e"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="9OE-G1-hVo" secondAttribute="trailing" constant="16" id="v4n-OT-v01"/>
             </constraints>
-            <point key="canvasLocation" x="-19" y="106"/>
+            <point key="canvasLocation" x="-839" y="91"/>
+        </view>
+        <view contentMode="scaleToFill" id="G6T-rW-WoA">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IN3-CE-sgD">
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i9z-d9-JQV">
+                    <rect key="frame" x="54.666666666666657" y="261.66666666666669" width="284" height="329.00000000000006"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="croak_delete" translatesAutoresizingMaskIntoConstraints="NO" id="3sT-cM-Br2">
+                            <rect key="frame" x="0.0" y="0.0" width="284" height="329"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6DK-LF-mN2">
+                            <rect key="frame" x="119" y="186" width="132" height="43"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="43" id="U74-ga-UP8"/>
+                                <constraint firstAttribute="width" constant="132" id="l4S-CV-z7G"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <connections>
+                                <action selector="croak_confirmDeleteViewAction:" destination="-1" eventType="touchUpInside" id="setting-delete-confirm-action"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QBu-J4-yhU">
+                            <rect key="frame" x="28" y="185" width="80" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="aDj-Gc-Stc"/>
+                                <constraint firstAttribute="width" constant="80" id="tgb-wX-mDM"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <connections>
+                                <action selector="croak_cancelDeleteViewAction:" destination="-1" eventType="touchUpInside" id="setting-delete-cancel-action"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="QBu-J4-yhU" firstAttribute="top" secondItem="i9z-d9-JQV" secondAttribute="top" constant="185" id="0NX-k5-vdv"/>
+                        <constraint firstAttribute="bottom" secondItem="3sT-cM-Br2" secondAttribute="bottom" id="FaR-6t-Ei1"/>
+                        <constraint firstAttribute="trailing" secondItem="3sT-cM-Br2" secondAttribute="trailing" id="MTy-V4-eJ4"/>
+                        <constraint firstAttribute="width" constant="284" id="PtC-Sw-buO"/>
+                        <constraint firstItem="QBu-J4-yhU" firstAttribute="leading" secondItem="i9z-d9-JQV" secondAttribute="leading" constant="28" id="S7f-Wb-UuJ"/>
+                        <constraint firstAttribute="height" constant="329" id="Thp-vj-QzV"/>
+                        <constraint firstItem="3sT-cM-Br2" firstAttribute="top" secondItem="i9z-d9-JQV" secondAttribute="top" id="eXN-Ix-YCW"/>
+                        <constraint firstAttribute="trailing" secondItem="6DK-LF-mN2" secondAttribute="trailing" constant="33" id="kyz-Wo-gub"/>
+                        <constraint firstItem="6DK-LF-mN2" firstAttribute="top" secondItem="i9z-d9-JQV" secondAttribute="top" constant="186" id="luC-N5-0p0"/>
+                        <constraint firstItem="3sT-cM-Br2" firstAttribute="leading" secondItem="i9z-d9-JQV" secondAttribute="leading" id="psM-EW-PBj"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Q0V-rR-YXE"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="IN3-CE-sgD" firstAttribute="top" secondItem="G6T-rW-WoA" secondAttribute="top" id="6bk-Jy-1kd"/>
+                <constraint firstAttribute="bottom" secondItem="IN3-CE-sgD" secondAttribute="bottom" id="8Ot-cI-h7b"/>
+                <constraint firstItem="i9z-d9-JQV" firstAttribute="centerX" secondItem="G6T-rW-WoA" secondAttribute="centerX" id="B5c-oM-jGH"/>
+                <constraint firstItem="IN3-CE-sgD" firstAttribute="trailing" secondItem="Q0V-rR-YXE" secondAttribute="trailing" id="GhH-ZN-LxA"/>
+                <constraint firstItem="i9z-d9-JQV" firstAttribute="centerY" secondItem="G6T-rW-WoA" secondAttribute="centerY" id="rkO-Bs-dDN"/>
+                <constraint firstItem="IN3-CE-sgD" firstAttribute="leading" secondItem="Q0V-rR-YXE" secondAttribute="leading" id="uf9-77-msm"/>
+            </constraints>
+            <point key="canvasLocation" x="-89" y="91"/>
         </view>
     </objects>
     <resources>
         <image name="croak_back" width="28" height="28"/>
+        <image name="croak_delete" width="284" height="329.33334350585938"/>
     </resources>
 </document>

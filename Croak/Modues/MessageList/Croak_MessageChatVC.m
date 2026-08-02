@@ -2,6 +2,7 @@
 #import "Croak_MessageChatVC.h"
 #import "Croak_MessageChatCell.h"
 #import "Croak_MessageImageCell.h"
+#import "Croak_VideoCallsVC.h"
 
 static NSString * const CroakMessageChatCellIdentifier = @"Croak_MessageChatCell";
 static NSString * const CroakMessageImageCellIdentifier = @"Croak_MessageImageCell";
@@ -58,6 +59,9 @@ static NSString * const CroakMessageTypeImage = @"image";
 }
 
 - (IBAction)croak_callAction:(id)sender {
+    Croak_VideoCallsVC *calls = [Croak_VideoCallsVC new];
+    calls.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:calls animated:true completion:nil];
     [self.view endEditing:YES];
 }
 

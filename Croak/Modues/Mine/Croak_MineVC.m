@@ -2,6 +2,7 @@
 #import "Croak_MineVC.h"
 #import "Croak_SettingVC.h"
 #import "Croak_DiamondsVC.h"
+#import "Croak_EditPersonVC.h"
 #import "Croak_SquareTableViewCell.h"
 
 static NSString * const CroakMineSquareCellIdentifier = @"Croak_SquareTableViewCell";
@@ -53,7 +54,7 @@ static NSString * const CroakMineSquareCellNibName = @"Croak_SquareTableViewCell
 }
 
 - (IBAction)croak_editAction:(id)sender {
-    [self.navigationController pushViewController:[Croak_SettingVC new] animated:YES];
+    [self.navigationController pushViewController:[Croak_EditPersonVC new] animated:YES];
 }
 
 - (IBAction)croak_settingAction:(id)sender {

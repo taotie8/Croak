@@ -1,6 +1,7 @@
 
 #import "Croak_ViewController.h"
 #import "Croak_LoginEmailVC.h"
+#import "Croak_AgreementLinks.h"
 #import "SVProgressHUD.h"
 
 @interface Croak_ViewController ()
@@ -44,10 +45,10 @@
         }
     }
     else if (sender.tag == 4) {
-        
+        [Croak_AgreementLinks croak_openUserAgreementFromViewController:self];
     }
     else {
-        
+        [Croak_AgreementLinks croak_openPrivacyPolicyFromViewController:self];
     }
 }
 
