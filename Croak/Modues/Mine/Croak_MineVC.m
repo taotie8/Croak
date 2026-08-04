@@ -52,7 +52,6 @@ static NSString * const CroakMineSquareCellNibName = @"Croak_SquareTableViewCell
                 forCellReuseIdentifier:CroakMineSquareCellIdentifier];
     self.croak_tableView.delegate = self;
     self.croak_tableView.dataSource = self;
-    self.croak_tableView.rowHeight = 381.0;
     self.croak_tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.croak_tableView reloadData];
 }
@@ -182,7 +181,8 @@ static NSString * const CroakMineSquareCellNibName = @"Croak_SquareTableViewCell
 
     self.croak_nameLabel.text = [self croak_displayNameFromUserInfo:userInfo];
     self.croak_ageLabel.text = [self croak_ageTextFromUserInfo:userInfo];
-    self.croak_userIdLabel.text = [NSString stringWithFormat:@"ID:%@", [self croak_shortIdFromUserInfo:userInfo]];
+    NSString *shortUserId = [self croak_shortIdFromUserInfo:userInfo];
+    self.croak_userIdLabel.text = shortUserId.length > 0 ? [NSString stringWithFormat:@"ID:%@", shortUserId] : @"";
     self.croak_diamondsLabel.text = [self croak_diamondsTextFromUserInfo:userInfo];
     [self croak_setProfileImageWithName:[self croak_avatarNameFromUserInfo:userInfo]];
     [self croak_updateMyPostsWithUserInfo:userInfo];
