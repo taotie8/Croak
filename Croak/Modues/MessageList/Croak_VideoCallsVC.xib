@@ -10,6 +10,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Croak_VideoCallsVC">
             <connections>
+                <outlet property="croak_avatarImageView" destination="zrJ-8u-I3w" id="video-avatar-outlet"/>
+                <outlet property="croak_backgroundImageView" destination="i2D-Lw-QB7" id="video-background-outlet"/>
+                <outlet property="croak_nameLabel" destination="djY-2c-z62" id="video-name-outlet"/>
+                <outlet property="croak_statusLabel" destination="fV8-1f-stc" id="video-status-outlet"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

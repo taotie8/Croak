@@ -2,6 +2,10 @@
 #import "Croak_SettingVC.h"
 #import "Croak_BlackListVC.h"
 #import "Croak_AgreementLinks.h"
+#import "Croak_AppDataStore.h"
+#import "Croak_UserSession.h"
+#import "Croak_ViewController.h"
+#import "SVProgressHUD.h"
 
 @interface Croak_SettingVC ()
 
@@ -170,6 +174,8 @@
 
 - (IBAction)croak_confirmLogoutViewAction:(id)sender {
     [self croak_hideLogoutView];
+    [Croak_UserSession croak_clearSession];
+    [self croak_showLoginInterface];
 }
 
 - (void)croak_hideLogoutView {
@@ -189,6 +195,27 @@
 
 - (IBAction)croak_confirmDeleteViewAction:(id)sender {
     [self croak_hideDeleteView];
+
+    NSString *account = [self croak_trimmedString:Croak_UserSession.croak_currentAccount];
+    if (account.length == 0) {
+        [Croak_UserSession croak_clearSession];
+        [self croak_showLoginInterface];
+        return;
+    }
+
+    [SVProgressHUD showWithStatus:@"Deleting account..."];
+    [[Croak_AppDataStore sharedStore] croak_deleteAccount:account
+                                               completion:^(NSError *error) {
+        [SVProgressHUD dismiss];
+        if (error) {
+            [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+            return;
+        }
+
+        [Croak_UserSession croak_clearSession];
+        [SVProgressHUD showSuccessWithStatus:@"Account deleted."];
+        [self croak_showLoginInterface];
+    }];
 }
 
 - (void)croak_showDeleteView {
@@ -224,6 +251,29 @@
         self.croak_deleteContentView.transform = CGAffineTransformIdentity;
         [self.croak_deleteView removeFromSuperview];
     }];
+}
+
+- (void)croak_showLoginInterface {
+    UIWindow *window = self.view.window ?: UIApplication.sharedApplication.delegate.window;
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[[Croak_ViewController alloc] init]];
+    window.rootViewController = navigationController;
+    [window makeKeyAndVisible];
+
+    [UIView transitionWithView:window
+                      duration:0.25
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:nil
+                    completion:nil];
+}
+
+- (NSString *)croak_trimmedString:(id)value {
+    if ([value isKindOfClass:NSString.class]) {
+        return [value stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
+    }
+    if ([value isKindOfClass:NSNumber.class]) {
+        return [[value stringValue] stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
+    }
+    return @"";
 }
 
 

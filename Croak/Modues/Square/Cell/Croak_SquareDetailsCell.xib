@@ -90,6 +90,9 @@
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                         <state key="normal" image="croak_love"/>
                         <state key="selected" image="croak_love_s"/>
+                        <connections>
+                            <action selector="croak_loveAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="details-cell-love-action"/>
+                        </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YoL-1H-sE6">
                         <rect key="frame" x="60" y="446" width="304" height="19.333333333333314"/>
@@ -132,6 +135,14 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="croak_avatarImageView" destination="1ds-U6-Yr7" id="details-cell-avatar"/>
+                <outlet property="croak_contentLabel" destination="pL4-XA-3f0" id="details-cell-content"/>
+                <outlet property="croak_likeNamesLabel" destination="YoL-1H-sE6" id="details-cell-like-names"/>
+                <outlet property="croak_loveButton" destination="kT3-xA-oTB" id="details-cell-love-button"/>
+                <outlet property="croak_nameLabel" destination="Eh5-qC-nmt" id="details-cell-name"/>
+                <outlet property="croak_postImageView" destination="Q8G-Q6-pmP" id="details-cell-post-image"/>
+            </connections>
             <point key="canvasLocation" x="103.81679389312977" y="266.90140845070425"/>
         </tableViewCell>
     </objects>

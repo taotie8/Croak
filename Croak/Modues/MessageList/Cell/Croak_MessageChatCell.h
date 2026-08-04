@@ -16,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *croak_messageLabel;
 
 - (void)croak_configureWithMessage:(NSString *)message avatarName:(NSString *)avatarName;
+- (void)croak_configureWithMessage:(NSString *)message
+                         avatarName:(NSString *)avatarName
+                           outgoing:(BOOL)outgoing;
 
 @end
 

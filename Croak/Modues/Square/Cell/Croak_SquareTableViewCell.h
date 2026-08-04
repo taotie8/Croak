@@ -17,6 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIImageView *croak_postImageView;
 @property (weak, nonatomic) IBOutlet UILabel *croak_contentLabel;
 @property (weak, nonatomic) IBOutlet UILabel *croak_likeCountLabel;
+@property (weak, nonatomic) IBOutlet UIButton *croak_loveButton;
+@property (nonatomic, copy, nullable) void (^croak_loveActionHandler)(Croak_SquareTableViewCell *cell);
+@property (nonatomic, copy, nullable) void (^croak_avatarActionHandler)(Croak_SquareTableViewCell *cell);
+@property (nonatomic, copy, nullable) void (^croak_moreActionHandler)(Croak_SquareTableViewCell *cell);
 
 - (void)croak_configureWithName:(NSString *)name
                            time:(NSString *)time
@@ -24,6 +28,14 @@ NS_ASSUME_NONNULL_BEGIN
                       imageName:(NSString *)imageName
                      avatarName:(NSString *)avatarName
                       likeCount:(NSString *)likeCount;
+
+- (void)croak_configureWithName:(NSString *)name
+                           time:(NSString *)time
+                        content:(NSString *)content
+                      imageName:(NSString *)imageName
+                     avatarName:(NSString *)avatarName
+                      likeCount:(NSString *)likeCount
+                           liked:(BOOL)liked;
 
 @end
 

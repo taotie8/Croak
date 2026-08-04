@@ -15,11 +15,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *croak_nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *croak_ageLabel;
 @property (weak, nonatomic) IBOutlet UILabel *croak_userIdLabel;
+@property (weak, nonatomic) IBOutlet UIButton *croak_addButton;
+@property (nonatomic, copy, nullable) void (^croak_addFriendHandler)(void);
 
 - (void)croak_configureWithName:(NSString *)name
                             age:(NSString *)age
                          userId:(NSString *)userId
-                     avatarName:(NSString *)avatarName;
+                     avatarName:(NSString *)avatarName
+                     buttonText:(NSString *)buttonText
+                  buttonEnabled:(BOOL)buttonEnabled;
 
 @end
 

@@ -13,6 +13,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *croak_name;
 @property (nonatomic, copy) NSString *croak_avatarName;
+@property (nonatomic, copy) NSString *croak_sessionId;
+@property (nonatomic, copy, nullable) NSString *croak_currentUserId;
+@property (nonatomic, copy, nullable) NSString *croak_currentAvatarName;
+@property (nonatomic, strong, nullable) NSArray<NSDictionary<NSString *, id> *> *croak_chatMessages;
 
 @end
 

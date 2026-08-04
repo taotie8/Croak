@@ -3,6 +3,7 @@
 #import "Croak_ViewController.h"
 #import "SVProgressHUD.h"
 #import "Croak_TabBarController.h"
+#import "Croak_UserSession.h"
 @interface AppDelegate ()
 
 @end
@@ -14,8 +15,11 @@
     
     [SVProgressHUD setMaximumDismissTimeInterval:1.5];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-//    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[Croak_ViewController alloc] init]];
-    self.window.rootViewController = [Croak_TabBarController new];
+    if (Croak_UserSession.croak_currentAccount.length > 0) {
+        self.window.rootViewController = [[Croak_TabBarController alloc] init];
+    } else {
+        self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[Croak_ViewController alloc] init]];
+    }
     [self.window makeKeyAndVisible];
     return YES;
 }

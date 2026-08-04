@@ -11,6 +11,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Croak_BlackListCell : UITableViewCell
 
+@property (nonatomic, copy, nullable) void (^croak_unblockActionHandler)(Croak_BlackListCell *cell);
+
+- (void)croak_configureWithUserInfo:(NSDictionary<NSString *, id> *)userInfo;
+
 @end
 
 NS_ASSUME_NONNULL_END

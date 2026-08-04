@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24128" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24063"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Croak_FriendsCenterVC">
             <connections>
                 <outlet property="croak_age_label" destination="bBu-6i-Y5a" id="hok-79-dJb"/>
+                <outlet property="croak_backgroundImageView" destination="QBP-RV-8sZ" id="friends-center-background"/>
                 <outlet property="croak_headerView" destination="dLh-EU-Xbb" id="1GX-as-53a"/>
                 <outlet property="croak_id_label" destination="vZR-e7-fFk" id="dMr-a4-NEY"/>
                 <outlet property="croak_name_label" destination="tXY-Wc-hkX" id="8Dp-kZ-U0D"/>
@@ -199,6 +200,7 @@
                 <constraint firstItem="fbe-GW-JvL" firstAttribute="top" secondItem="4Id-Rs-Ie1" secondAttribute="bottom" constant="5" id="RXG-sS-Lgj"/>
                 <constraint firstItem="s7g-Mj-Hfo" firstAttribute="top" secondItem="Dgs-jc-igB" secondAttribute="bottom" constant="68" id="V0i-LS-uFa"/>
                 <constraint firstItem="Nwi-dy-ugk" firstAttribute="top" secondItem="Dgs-jc-igB" secondAttribute="bottom" constant="113" id="WkW-Hh-n1s"/>
+                <constraint firstItem="4Id-Rs-Ie1" firstAttribute="top" secondItem="Nwi-dy-ugk" secondAttribute="bottom" id="YWs-8Q-uvw"/>
                 <constraint firstItem="OX0-Mz-Qom" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="aQJ-ox-RaC"/>
                 <constraint firstItem="s7g-Mj-Hfo" firstAttribute="centerX" secondItem="Dgs-jc-igB" secondAttribute="centerX" id="b5C-hp-zQ6"/>
                 <constraint firstItem="4Id-Rs-Ie1" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="hRs-xH-VFn"/>
@@ -206,7 +208,6 @@
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="Nwi-dy-ugk" secondAttribute="trailing" id="lPx-RQ-kLA"/>
                 <constraint firstItem="Dgs-jc-igB" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="oGC-Yo-f1i"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="4Id-Rs-Ie1" secondAttribute="trailing" id="sq5-ur-fzW"/>
-                <constraint firstItem="4Id-Rs-Ie1" firstAttribute="top" secondItem="QBP-RV-8sZ" secondAttribute="bottom" id="ybh-BV-m31"/>
                 <constraint firstItem="QBP-RV-8sZ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="z62-Ze-2Ey"/>
             </constraints>
             <point key="canvasLocation" x="-827" y="149"/>

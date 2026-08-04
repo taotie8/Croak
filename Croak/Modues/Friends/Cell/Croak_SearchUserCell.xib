@@ -115,6 +115,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
+                <outlet property="croak_addButton" destination="dm2-mV-kdC" id="search-user-cell-add-button"/>
                 <outlet property="croak_ageLabel" destination="89k-EH-gCa" id="search-user-cell-age"/>
                 <outlet property="croak_avatarImageView" destination="HuW-bx-6jv" id="search-user-cell-avatar"/>
                 <outlet property="croak_nameLabel" destination="2Ks-MQ-pgV" id="search-user-cell-name"/>

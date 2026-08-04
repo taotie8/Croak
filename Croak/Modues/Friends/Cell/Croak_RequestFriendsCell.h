@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (weak, nonatomic) IBOutlet UIImageView *croak_avatarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *croak_nameLabel;
+@property (nonatomic, copy, nullable) void (^croak_addFriendHandler)(void);
 
 - (void)croak_configureWithName:(NSString *)name avatarName:(NSString *)avatarName;
 

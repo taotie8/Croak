@@ -50,15 +50,28 @@
                                 <color key="textColor" red="0.082352941176470587" green="0.090196078431372548" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b8l-JP-lUP">
+                                <rect key="frame" x="0.0" y="0.0" width="100" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="ZEy-Gw-8MT"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <connections>
+                                    <action selector="croak_avatarButtonAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="square-cell-avatar-action"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="b8l-JP-lUP" firstAttribute="top" secondItem="Ifh-1c-Lt5" secondAttribute="top" id="BFJ-K9-b9H"/>
                             <constraint firstItem="iHL-5S-O7y" firstAttribute="top" secondItem="Ifh-1c-Lt5" secondAttribute="top" constant="2" id="JLG-0M-oqw"/>
+                            <constraint firstItem="b8l-JP-lUP" firstAttribute="leading" secondItem="Ifh-1c-Lt5" secondAttribute="leading" id="RkE-vV-p1S"/>
                             <constraint firstItem="YGB-D6-nOk" firstAttribute="top" secondItem="iHL-5S-O7y" secondAttribute="bottom" constant="2" id="SnS-VK-Xs1"/>
                             <constraint firstItem="iHL-5S-O7y" firstAttribute="leading" secondItem="5Cg-Bf-Aif" secondAttribute="trailing" constant="12" id="T1o-9q-WGT"/>
                             <constraint firstItem="5Cg-Bf-Aif" firstAttribute="leading" secondItem="Ifh-1c-Lt5" secondAttribute="leading" id="TGK-QN-mWw"/>
                             <constraint firstAttribute="height" constant="48" id="UH1-6D-7y3"/>
                             <constraint firstItem="5Cg-Bf-Aif" firstAttribute="top" secondItem="Ifh-1c-Lt5" secondAttribute="top" id="afH-rm-nDr"/>
+                            <constraint firstAttribute="bottom" secondItem="b8l-JP-lUP" secondAttribute="bottom" id="hRD-YX-P0Y"/>
                             <constraint firstItem="YGB-D6-nOk" firstAttribute="leading" secondItem="5Cg-Bf-Aif" secondAttribute="trailing" constant="12" id="ipz-3n-ye8"/>
                             <constraint firstAttribute="bottom" secondItem="5Cg-Bf-Aif" secondAttribute="bottom" id="oUt-rz-M2f"/>
                         </constraints>
@@ -75,17 +88,17 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a2Y-YU-bMz">
-                        <rect key="frame" x="76" y="259" width="31" height="17"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="17" id="aae-8U-qqy"/>
-                        </constraints>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a2Y-YU-bMz">
+                        <rect key="frame" x="76" y="259" width="31" height="14.333333333333314"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bt2-ns-MVo">
-                        <rect key="frame" x="367" y="253.66666666666663" width="28" height="28"/>
+                        <rect key="frame" x="367" y="252.33333333333337" width="28" height="28"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="28" id="KJ7-eD-FOJ"/>
+                        </constraints>
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                         <state key="normal" image="croak_more"/>
                         <connections>
@@ -93,7 +106,7 @@
                         </connections>
                     </button>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L2W-T1-YK2">
-                        <rect key="frame" x="76" y="289" width="319" height="82"/>
+                        <rect key="frame" x="76" y="286.33333333333331" width="319" height="84.666666666666686"/>
                         <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -102,7 +115,7 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yf6-CD-UKj">
-                        <rect key="frame" x="76" y="289" width="44" height="38"/>
+                        <rect key="frame" x="76" y="286.33333333333331" width="44" height="38"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="38" id="kQx-da-Yfy"/>
                             <constraint firstAttribute="width" constant="44" id="mVN-VS-Hd0"/>
@@ -115,7 +128,10 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LAo-b9-bUB">
-                        <rect key="frame" x="120.00000000000001" y="297" width="39.666666666666671" height="19.333333333333314"/>
+                        <rect key="frame" x="120" y="294.33333333333331" width="267" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="Sym-1C-ND0"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" red="0.082352941176470587" green="0.090196078431372548" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -131,10 +147,12 @@
                     <constraint firstItem="a2Y-YU-bMz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="76" id="QEv-ps-lof"/>
                     <constraint firstItem="Ifh-1c-Lt5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="RPg-M1-6QL"/>
                     <constraint firstAttribute="trailing" secondItem="bt2-ns-MVo" secondAttribute="trailing" constant="16" id="VRc-pw-Nre"/>
+                    <constraint firstItem="bt2-ns-MVo" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="a2Y-YU-bMz" secondAttribute="trailing" constant="10" id="ee1-Ec-ueu"/>
                     <constraint firstAttribute="trailing" secondItem="Ifh-1c-Lt5" secondAttribute="trailing" constant="16" id="f3O-NQ-M7F"/>
                     <constraint firstItem="L2W-T1-YK2" firstAttribute="top" secondItem="a2Y-YU-bMz" secondAttribute="bottom" constant="13" id="i6a-zd-wyL"/>
                     <constraint firstItem="LAo-b9-bUB" firstAttribute="leading" secondItem="Yf6-CD-UKj" secondAttribute="trailing" id="jMA-yn-FwE"/>
                     <constraint firstItem="a2Y-YU-bMz" firstAttribute="top" secondItem="PrB-LY-qwa" secondAttribute="bottom" constant="10" id="laa-4Y-bKa"/>
+                    <constraint firstAttribute="trailing" secondItem="LAo-b9-bUB" secondAttribute="trailing" constant="24" id="like-names-trailing"/>
                     <constraint firstItem="PrB-LY-qwa" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="76" id="nQ1-eL-POM"/>
                     <constraint firstItem="Yf6-CD-UKj" firstAttribute="top" secondItem="a2Y-YU-bMz" secondAttribute="bottom" constant="13" id="ncC-fV-H9b"/>
                     <constraint firstAttribute="bottom" secondItem="L2W-T1-YK2" secondAttribute="bottom" constant="10" id="rN4-td-tGP"/>
@@ -147,6 +165,7 @@
                 <outlet property="croak_avatarImageView" destination="5Cg-Bf-Aif" id="square-cell-avatar"/>
                 <outlet property="croak_contentLabel" destination="a2Y-YU-bMz" id="square-cell-content"/>
                 <outlet property="croak_likeCountLabel" destination="LAo-b9-bUB" id="square-cell-like-count"/>
+                <outlet property="croak_loveButton" destination="Yf6-CD-UKj" id="square-cell-love-button"/>
                 <outlet property="croak_nameLabel" destination="iHL-5S-O7y" id="square-cell-name"/>
                 <outlet property="croak_postImageView" destination="PrB-LY-qwa" id="square-cell-post-image"/>
                 <outlet property="croak_timeLabel" destination="YGB-D6-nOk" id="square-cell-time"/>
