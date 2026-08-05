@@ -7,9 +7,11 @@
 #import "Croak_SearchVC.h"
 #import "Croak_UserSession.h"
 #import "SVProgressHUD.h"
+#import <UserNotifications/UserNotifications.h>
 #import "UIImageView+WebCache.h"
 
 static NSString * const CroakMessageListCellIdentifier = @"Croak_MessageListViewCell";
+static CGFloat const CroakEmptyStateImageLength = 154.0;
 
 @interface Croak_MessageListVC () <UITableViewDelegate, UITableViewDataSource>
 
@@ -40,6 +42,7 @@ static NSString * const CroakMessageListCellIdentifier = @"Croak_MessageListView
     self.croak_tableView.dataSource = self;
     self.croak_tableView.rowHeight = 64.0;
     self.croak_tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self croak_updateEmptyState];
     [self croak_loadMessagesIfNeeded];
 }
 
@@ -60,7 +63,7 @@ static NSString * const CroakMessageListCellIdentifier = @"Croak_MessageListView
 }
 
 - (IBAction)croak_turnAction:(id)sender {
-    
+    [self croak_prepareAndOpenNotificationSettings];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -100,7 +103,7 @@ static NSString * const CroakMessageListCellIdentifier = @"Croak_MessageListView
     } else {
         self.croak_messages = [[Croak_AppDataStore sharedStore] croak_chatSessionsForAccount:account] ?: @[];
     }
-    [self.croak_tableView reloadData];
+    [self croak_reloadTableView];
 }
 
 - (void)croak_loadMessagesIfNeeded {
@@ -111,7 +114,7 @@ static NSString * const CroakMessageListCellIdentifier = @"Croak_MessageListView
     NSString *account = [self croak_trimmedString:Croak_UserSession.croak_currentAccount];
     if (account.length == 0) {
         self.croak_messages = @[];
-        [self.croak_tableView reloadData];
+        [self croak_reloadTableView];
         return;
     }
 
@@ -123,15 +126,81 @@ static NSString * const CroakMessageListCellIdentifier = @"Croak_MessageListView
         if (error) {
             self.croak_hasLoadedMessages = NO;
             self.croak_messages = @[];
-            [self.croak_tableView reloadData];
+            [self croak_reloadTableView];
             [SVProgressHUD showErrorWithStatus:error.localizedDescription];
             return;
         }
 
         self.croak_messages = users ?: @[];
         [self croak_updateCurrentUserHeader];
-        [self.croak_tableView reloadData];
+        [self croak_reloadTableView];
     }];
+}
+
+- (void)croak_reloadTableView {
+    [self.croak_tableView reloadData];
+    [self croak_updateEmptyState];
+}
+
+- (void)croak_prepareAndOpenNotificationSettings {
+    UNUserNotificationCenter *notificationCenter = UNUserNotificationCenter.currentNotificationCenter;
+    [notificationCenter getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings *settings) {
+        if (settings.authorizationStatus == UNAuthorizationStatusNotDetermined) {
+            UNAuthorizationOptions options = UNAuthorizationOptionAlert | UNAuthorizationOptionBadge | UNAuthorizationOptionSound;
+            [notificationCenter requestAuthorizationWithOptions:options
+                                              completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (!error && granted) {
+                        [UIApplication.sharedApplication registerForRemoteNotifications];
+                    }
+                    [self croak_openNotificationSettingsURL];
+                });
+            }];
+            return;
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self croak_openNotificationSettingsURL];
+        });
+    }];
+}
+
+- (void)croak_openNotificationSettingsURL {
+    NSURL *notificationSettingsURL = [NSURL URLWithString:UIApplicationOpenNotificationSettingsURLString];
+    if (!notificationSettingsURL) {
+        [SVProgressHUD showErrorWithStatus:@"Notification settings cannot be opened."];
+        return;
+    }
+
+    [UIApplication.sharedApplication openURL:notificationSettingsURL
+                                     options:@{}
+                           completionHandler:^(BOOL success) {
+        if (!success) {
+            [SVProgressHUD showErrorWithStatus:@"Notification settings cannot be opened."];
+        }
+    }];
+}
+
+- (void)croak_updateEmptyState {
+    self.croak_tableView.backgroundView = self.croak_messages.count > 0 ? nil : [self croak_emptyBackgroundView];
+}
+
+- (UIView *)croak_emptyBackgroundView {
+    UIView *containerView = [[UIView alloc] initWithFrame:self.croak_tableView.bounds];
+    containerView.backgroundColor = [UIColor clearColor];
+
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Nothing_yet"]];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [containerView addSubview:imageView];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [imageView.centerXAnchor constraintEqualToAnchor:containerView.centerXAnchor],
+        [imageView.centerYAnchor constraintEqualToAnchor:containerView.centerYAnchor constant:-40.0],
+        [imageView.widthAnchor constraintEqualToConstant:CroakEmptyStateImageLength],
+        [imageView.heightAnchor constraintEqualToConstant:CroakEmptyStateImageLength]
+    ]];
+    return containerView;
 }
 
 - (void)croak_updateCurrentUserHeader {

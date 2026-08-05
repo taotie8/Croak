@@ -15,6 +15,7 @@
 
 static NSString * const CroakMineSquareCellIdentifier = @"Croak_SquareTableViewCell";
 static NSString * const CroakMineSquareCellNibName = @"Croak_SquareTableViewCell";
+static CGFloat const CroakEmptyStateImageLength = 154.0;
 
 @interface Croak_MineVC () <UITableViewDelegate, UITableViewDataSource>
 
@@ -53,7 +54,7 @@ static NSString * const CroakMineSquareCellNibName = @"Croak_SquareTableViewCell
     self.croak_tableView.delegate = self;
     self.croak_tableView.dataSource = self;
     self.croak_tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    [self.croak_tableView reloadData];
+    [self croak_reloadTableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -62,7 +63,10 @@ static NSString * const CroakMineSquareCellNibName = @"Croak_SquareTableViewCell
 }
 
 - (IBAction)croak_editAction:(id)sender {
-    [self.navigationController pushViewController:[Croak_EditPersonVC new] animated:YES];
+    Croak_EditPersonVC *editPersonVC = [[Croak_EditPersonVC alloc] init];
+    editPersonVC.croak_userInfo = [[Croak_AppDataStore sharedStore] croak_currentUserInfo];
+    editPersonVC.croak_returnToPreviousPageAfterSave = YES;
+    [self.navigationController pushViewController:editPersonVC animated:YES];
 }
 
 - (IBAction)croak_settingAction:(id)sender {
@@ -132,8 +136,7 @@ static NSString * const CroakMineSquareCellNibName = @"Croak_SquareTableViewCell
         NSMutableArray<NSDictionary<NSString *, id> *> *posts = [self.croak_posts mutableCopy];
         [posts removeObjectAtIndex:(NSUInteger)indexPath.row];
         self.croak_posts = posts;
-        [self croak_updateEmptyState];
-        [self.croak_tableView reloadData];
+        [self croak_reloadTableView];
     };
     [self.navigationController pushViewController:detailsVC animated:YES];
 }
@@ -154,8 +157,7 @@ static NSString * const CroakMineSquareCellNibName = @"Croak_SquareTableViewCell
         [SVProgressHUD dismiss];
         if (error) {
             self.croak_posts = @[];
-            [self croak_updateEmptyState];
-            [self.croak_tableView reloadData];
+            [self croak_reloadTableView];
             [SVProgressHUD showErrorWithStatus:error.localizedDescription];
             return;
         }
@@ -174,8 +176,7 @@ static NSString * const CroakMineSquareCellNibName = @"Croak_SquareTableViewCell
         self.croak_diamondsLabel.text = @"0";
         self.croak_posts = @[];
         [self croak_setProfileImageWithName:@""];
-        [self croak_updateEmptyState];
-        [self.croak_tableView reloadData];
+        [self croak_reloadTableView];
         return;
     }
 
@@ -206,8 +207,7 @@ static NSString * const CroakMineSquareCellNibName = @"Croak_SquareTableViewCell
     }];
 
     self.croak_posts = posts;
-    [self croak_updateEmptyState];
-    [self.croak_tableView reloadData];
+    [self croak_reloadTableView];
 }
 
 - (void)croak_showMoreForCell:(Croak_SquareTableViewCell *)cell {
@@ -282,8 +282,7 @@ static NSString * const CroakMineSquareCellNibName = @"Croak_SquareTableViewCell
             NSMutableArray<NSDictionary<NSString *, id> *> *posts = [self.croak_posts mutableCopy];
             [posts removeObjectAtIndex:(NSUInteger)indexPath.row];
             self.croak_posts = posts;
-            [self croak_updateEmptyState];
-            [self.croak_tableView reloadData];
+            [self croak_reloadTableView];
         }
         [SVProgressHUD showSuccessWithStatus:@"Deleted."];
     }];
@@ -340,18 +339,36 @@ static NSString * const CroakMineSquareCellNibName = @"Croak_SquareTableViewCell
     self.croak_posts = posts;
 }
 
+- (void)croak_reloadTableView {
+    [self.croak_tableView reloadData];
+    [self croak_updateEmptyState];
+}
+
 - (void)croak_updateEmptyState {
     if (self.croak_posts.count > 0) {
         self.croak_tableView.backgroundView = nil;
         return;
     }
 
-    UILabel *emptyLabel = [[UILabel alloc] initWithFrame:self.croak_tableView.bounds];
-    emptyLabel.text = @"No posts yet.";
-    emptyLabel.textAlignment = NSTextAlignmentCenter;
-    emptyLabel.textColor = [UIColor colorWithWhite:0.55 alpha:1.0];
-    emptyLabel.font = [UIFont systemFontOfSize:15.0 weight:UIFontWeightMedium];
-    self.croak_tableView.backgroundView = emptyLabel;
+    self.croak_tableView.backgroundView = [self croak_emptyBackgroundView];
+}
+
+- (UIView *)croak_emptyBackgroundView {
+    UIView *containerView = [[UIView alloc] initWithFrame:self.croak_tableView.bounds];
+    containerView.backgroundColor = [UIColor clearColor];
+
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Nothing_yet"]];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [containerView addSubview:imageView];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [imageView.centerXAnchor constraintEqualToAnchor:containerView.centerXAnchor],
+        [imageView.centerYAnchor constraintEqualToAnchor:containerView.centerYAnchor constant:-40.0],
+        [imageView.widthAnchor constraintEqualToConstant:CroakEmptyStateImageLength],
+        [imageView.heightAnchor constraintEqualToConstant:CroakEmptyStateImageLength]
+    ]];
+    return containerView;
 }
 
 - (NSString *)croak_displayNameFromUserInfo:(NSDictionary<NSString *, id> *)userInfo {

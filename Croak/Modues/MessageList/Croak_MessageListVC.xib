@@ -81,7 +81,7 @@
                     <rect key="frame" x="16" y="194" width="361" height="50"/>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uNs-L9-OmP">
-                    <rect key="frame" x="16" y="228" width="361" height="50"/>
+                    <rect key="frame" x="16" y="194" width="361" height="50"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="CRT-ap-ZVQ"/>
                     </constraints>
@@ -124,9 +124,9 @@
                 <constraint firstItem="mmF-gu-DpO" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="kr0-oY-YKq"/>
                 <constraint firstItem="mmF-gu-DpO" firstAttribute="top" secondItem="kgx-dh-wct" secondAttribute="bottom" constant="12" id="mRm-gg-rnZ"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="xZF-Uu-cCl" secondAttribute="trailing" constant="16" id="ua6-f9-qVx"/>
+                <constraint firstItem="uNs-L9-OmP" firstAttribute="top" secondItem="xZF-Uu-cCl" secondAttribute="top" id="wLl-9m-sX6"/>
                 <constraint firstItem="kgx-dh-wct" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="18" id="wPc-fY-x1e"/>
                 <constraint firstItem="kgx-dh-wct" firstAttribute="top" secondItem="xZF-Uu-cCl" secondAttribute="bottom" constant="22" id="won-SR-YTH"/>
-                <constraint firstItem="uNs-L9-OmP" firstAttribute="top" secondItem="s3K-w7-bOT" secondAttribute="bottom" constant="24" id="wzm-kz-Q0y"/>
                 <constraint firstItem="s3K-w7-bOT" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="zFt-J0-O1h"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="egN-N6-eYI" secondAttribute="trailing" id="zdo-wI-DF8"/>
             </constraints>

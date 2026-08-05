@@ -21,6 +21,8 @@ static NSString * const CroakSquareCommentCellIdentifier = @"Croak_SquareComment
 @property (weak, nonatomic) IBOutlet UITextField *croak_commentTextField;
 @property (nonatomic, assign) UIEdgeInsets croak_originalTableContentInset;
 @property (nonatomic, assign) UIEdgeInsets croak_originalTableScrollIndicatorInsets;
+@property (nonatomic, strong) NSArray<NSDictionary<NSString *, id> *> *croak_comments;
+@property (nonatomic, assign) BOOL croak_isSubmittingComment;
 
 @end
 
@@ -29,6 +31,7 @@ static NSString * const CroakSquareCommentCellIdentifier = @"Croak_SquareComment
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.croak_comments = @[];
     [self.croak_tableView registerNib:[UINib nibWithNibName:CroakSquareDetailsCellIdentifier bundle:nil]
                 forCellReuseIdentifier:CroakSquareDetailsCellIdentifier];
     [self.croak_tableView registerNib:[UINib nibWithNibName:CroakSquareCommentCellIdentifier bundle:nil]
@@ -60,6 +63,7 @@ static NSString * const CroakSquareCommentCellIdentifier = @"Croak_SquareComment
                                            selector:@selector(croak_keyboardWillHide:)
                                                name:UIKeyboardWillHideNotification
                                              object:nil];
+    [self croak_reloadComments];
 }
 
 - (void)dealloc {
@@ -122,9 +126,41 @@ static NSString * const CroakSquareCommentCellIdentifier = @"Croak_SquareComment
 
 - (void)croak_submitCommentAndDismissKeyboard {
     NSString *comment = [self.croak_commentTextField.text stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
-    if (comment.length > 0) {
-        self.croak_commentTextField.text = @"";
+    if (comment.length == 0 || self.croak_isSubmittingComment) {
+        return;
     }
+
+    NSString *account = [self croak_currentAccountForAction];
+    if (account.length == 0) {
+        return;
+    }
+
+    self.croak_isSubmittingComment = YES;
+    [SVProgressHUD show];
+    [[Croak_AppDataStore sharedStore] croak_saveComment:comment
+                                                forPost:[self croak_postInfo]
+                                                account:account
+                                             completion:^(NSDictionary<NSString *,id> *commentInfo,
+                                                          NSDictionary<NSString *,id> *postInfo,
+                                                          NSError *error) {
+        self.croak_isSubmittingComment = NO;
+        [SVProgressHUD dismiss];
+        if (error) {
+            [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+            return;
+        }
+
+        self.croak_commentTextField.text = @"";
+        [self croak_dismissKeyboard];
+        if (postInfo) {
+            [self croak_updatePostInfo:postInfo];
+            if (self.croak_postUpdateHandler) {
+                self.croak_postUpdateHandler(postInfo);
+            }
+        }
+        [self croak_reloadCommentsAndScrollToLatest:YES];
+        [SVProgressHUD showSuccessWithStatus:@"Comment posted."];
+    }];
     [self croak_dismissKeyboard];
 }
 
@@ -148,7 +184,15 @@ static NSString * const CroakSquareCommentCellIdentifier = @"Croak_SquareComment
     if (section == 0) {
         return 1;
     }
-    return 0;
+    return self.croak_comments.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return indexPath.section == 0 ? 594.0 : 84.0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewAutomaticDimension;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -180,9 +224,39 @@ static NSString * const CroakSquareCommentCellIdentifier = @"Croak_SquareComment
                                                                          forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [UIColor clearColor];
+        NSDictionary<NSString *, id> *commentInfo = self.croak_comments[indexPath.row];
+        [cell croak_configureWithName:[self croak_commentAuthorNameFromCommentInfo:commentInfo]
+                               content:[self croak_commentContentFromCommentInfo:commentInfo]
+                                  time:[self croak_timeTextFromDateString:[self croak_commentCreatedAtFromCommentInfo:commentInfo]]
+                            avatarName:[self croak_commentAvatarNameFromCommentInfo:commentInfo]];
         return cell;
     }
     
+}
+
+- (void)croak_reloadComments {
+    [self croak_reloadCommentsAndScrollToLatest:NO];
+}
+
+- (void)croak_reloadCommentsAndScrollToLatest:(BOOL)scrollToLatest {
+    self.croak_comments = [[Croak_AppDataStore sharedStore] croak_commentsForPost:[self croak_postInfo]] ?: @[];
+    [self.croak_tableView reloadData];
+    if (!scrollToLatest || self.croak_comments.count == 0) {
+        return;
+    }
+
+    NSIndexPath *lastCommentIndexPath = [NSIndexPath indexPathForRow:(NSInteger)self.croak_comments.count - 1
+                                                            inSection:1];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([self.croak_tableView numberOfSections] <= lastCommentIndexPath.section ||
+            [self.croak_tableView numberOfRowsInSection:lastCommentIndexPath.section] <= lastCommentIndexPath.row) {
+            return;
+        }
+
+        [self.croak_tableView scrollToRowAtIndexPath:lastCommentIndexPath
+                                    atScrollPosition:UITableViewScrollPositionBottom
+                                            animated:YES];
+    });
 }
 
 - (void)croak_showFriendsCenter {
@@ -483,6 +557,147 @@ static NSString * const CroakSquareCommentCellIdentifier = @"Croak_SquareComment
         return name;
     }
     return @"";
+}
+
+- (NSDictionary<NSString *, id> *)croak_userInfoForUserId:(NSString *)userId {
+    NSString *targetUserId = [self croak_normalizedString:userId];
+    if (targetUserId.length == 0) {
+        return @{};
+    }
+
+    NSArray *users = [Croak_AppDataStore sharedStore].croak_dataLayer[@"hok"];
+    if (![users isKindOfClass:NSArray.class]) {
+        return @{};
+    }
+
+    for (NSDictionary<NSString *, id> *userInfo in users) {
+        if (![userInfo isKindOfClass:NSDictionary.class]) {
+            continue;
+        }
+
+        NSString *candidateUserId = [self croak_normalizedString:userInfo[@"iif"]];
+        if (candidateUserId.length == 0) {
+            candidateUserId = [self croak_normalizedString:userInfo[@"id"]];
+        }
+        if ([candidateUserId isEqualToString:targetUserId]) {
+            return userInfo;
+        }
+    }
+    return @{};
+}
+
+- (NSDictionary<NSString *, id> *)croak_userInfoForCommentInfo:(NSDictionary<NSString *, id> *)commentInfo {
+    id embeddedUserInfo = commentInfo[@"user"];
+    if ([embeddedUserInfo isKindOfClass:NSDictionary.class]) {
+        return embeddedUserInfo;
+    }
+
+    NSString *commentUserId = [self croak_commentUserIdFromCommentInfo:commentInfo];
+    NSDictionary<NSString *, id> *matchedUserInfo = [self croak_userInfoForUserId:commentUserId];
+    if (matchedUserInfo.count > 0) {
+        return matchedUserInfo;
+    }
+
+    if (commentUserId.length > 0 && [commentUserId isEqualToString:[self croak_currentUserId]]) {
+        NSDictionary<NSString *, id> *currentUserInfo = [[Croak_AppDataStore sharedStore] croak_currentUserInfo];
+        if ([currentUserInfo isKindOfClass:NSDictionary.class]) {
+            return currentUserInfo;
+        }
+    }
+    return @{};
+}
+
+- (NSString *)croak_commentAuthorNameFromCommentInfo:(NSDictionary<NSString *, id> *)commentInfo {
+    NSDictionary<NSString *, id> *userInfo = [self croak_userInfoForCommentInfo:commentInfo];
+    NSString *name = [self croak_trimmedString:userInfo[@"kjvmvsaz"]];
+    if (name.length == 0) {
+        name = [self croak_trimmedString:userInfo[@"nickname"]];
+    }
+    if (name.length == 0) {
+        name = [self croak_trimmedString:userInfo[@"kewgxwk"]];
+    }
+    if (name.length == 0) {
+        name = [self croak_trimmedString:commentInfo[@"authorName"]];
+    }
+    if (name.length == 0) {
+        name = [self croak_trimmedString:commentInfo[@"nickname"]];
+    }
+    return name.length > 0 ? name : @"Unknown";
+}
+
+- (NSString *)croak_commentAvatarNameFromCommentInfo:(NSDictionary<NSString *, id> *)commentInfo {
+    NSDictionary<NSString *, id> *userInfo = [self croak_userInfoForCommentInfo:commentInfo];
+    NSString *avatarName = [self croak_avatarNameFromUserInfo:userInfo];
+    if (avatarName.length == 0) {
+        avatarName = [self croak_rawImageNameFromValue:commentInfo[@"authorAvatar"]];
+    }
+    if (avatarName.length == 0) {
+        avatarName = [self croak_rawImageNameFromValue:commentInfo[@"avatar"]];
+    }
+    return avatarName;
+}
+
+- (NSString *)croak_commentUserIdFromCommentInfo:(NSDictionary<NSString *, id> *)commentInfo {
+    NSString *userId = [self croak_normalizedString:commentInfo[@"twcxf"]];
+    if (userId.length == 0) {
+        userId = [self croak_normalizedString:commentInfo[@"userId"]];
+    }
+    if (userId.length == 0) {
+        userId = [self croak_normalizedString:commentInfo[@"fegg"]];
+    }
+    return userId;
+}
+
+- (NSString *)croak_commentContentFromCommentInfo:(NSDictionary<NSString *, id> *)commentInfo {
+    NSString *content = [self croak_trimmedString:commentInfo[@"ycluiw"]];
+    if (content.length == 0) {
+        content = [self croak_trimmedString:commentInfo[@"content"]];
+    }
+    if (content.length == 0) {
+        content = [self croak_trimmedString:commentInfo[@"hctnqmww"]];
+    }
+    return content;
+}
+
+- (NSString *)croak_commentCreatedAtFromCommentInfo:(NSDictionary<NSString *, id> *)commentInfo {
+    NSString *createdAt = [self croak_trimmedString:commentInfo[@"ua"]];
+    if (createdAt.length == 0) {
+        createdAt = [self croak_trimmedString:commentInfo[@"createdAt"]];
+    }
+    if (createdAt.length == 0) {
+        createdAt = [self croak_trimmedString:commentInfo[@"jumog"]];
+    }
+    return createdAt;
+}
+
+- (NSString *)croak_timeTextFromDateString:(NSString *)dateString {
+    NSDate *date = [self croak_dateFromISOString:dateString];
+    if (!date) {
+        return @"";
+    }
+
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+    formatter.dateFormat = @"MMM d";
+    return [formatter stringFromDate:date];
+}
+
+- (NSDate *)croak_dateFromISOString:(NSString *)dateString {
+    if (dateString.length == 0) {
+        return nil;
+    }
+
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+    formatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    formatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    NSDate *date = [formatter dateFromString:dateString];
+    if (date) {
+        return date;
+    }
+
+    formatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
+    return [formatter dateFromString:dateString];
 }
 
 - (NSString *)croak_shortUserId:(NSString *)userId {

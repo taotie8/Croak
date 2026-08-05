@@ -7,6 +7,7 @@
 
 static NSString * const CroakSearchUserCellIdentifier = @"Croak_SearchUserCell";
 static NSString * const CroakSearchUserCellNibName = @"Croak_SearchUserCell";
+static CGFloat const CroakEmptyStateImageLength = 154.0;
 
 @interface Croak_SearchUserVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIGestureRecognizerDelegate>
 
@@ -49,7 +50,7 @@ static NSString * const CroakSearchUserCellNibName = @"Croak_SearchUserCell";
     self.croak_tableView.rowHeight = 68.0;
     self.croak_tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     self.croak_tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    [self.croak_tableView reloadData];
+    [self croak_reloadTableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -79,7 +80,7 @@ static NSString * const CroakSearchUserCellNibName = @"Croak_SearchUserCell";
     NSString *searchText = [keyword stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
     if (searchText.length == 0) {
         self.croak_filterUsers = @[];
-        [self.croak_tableView reloadData];
+        [self croak_reloadTableView];
         return;
     }
 
@@ -89,7 +90,7 @@ static NSString * const CroakSearchUserCellNibName = @"Croak_SearchUserCell";
                [[self croak_userIdFromUserInfo:userInfo] rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound;
     }];
     self.croak_filterUsers = [self.croak_users filteredArrayUsingPredicate:predicate];
-    [self.croak_tableView reloadData];
+    [self croak_reloadTableView];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -138,7 +139,7 @@ static NSString * const CroakSearchUserCellNibName = @"Croak_SearchUserCell";
         if (error) {
             self.croak_users = @[];
             self.croak_filterUsers = @[];
-            [self.croak_tableView reloadData];
+            [self croak_reloadTableView];
             [SVProgressHUD showErrorWithStatus:error.localizedDescription];
             return;
         }
@@ -160,9 +161,36 @@ static NSString * const CroakSearchUserCellNibName = @"Croak_SearchUserCell";
             return;
         }
 
-        [self.croak_tableView reloadData];
+        [self croak_reloadTableView];
         [SVProgressHUD showSuccessWithStatus:@"Request sent."];
     }];
+}
+
+- (void)croak_reloadTableView {
+    [self.croak_tableView reloadData];
+    [self croak_updateEmptyState];
+}
+
+- (void)croak_updateEmptyState {
+    self.croak_tableView.backgroundView = self.croak_filterUsers.count > 0 ? nil : [self croak_emptyBackgroundView];
+}
+
+- (UIView *)croak_emptyBackgroundView {
+    UIView *containerView = [[UIView alloc] initWithFrame:self.croak_tableView.bounds];
+    containerView.backgroundColor = [UIColor clearColor];
+
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Nothing_yet"]];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [containerView addSubview:imageView];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [imageView.centerXAnchor constraintEqualToAnchor:containerView.centerXAnchor],
+        [imageView.centerYAnchor constraintEqualToAnchor:containerView.centerYAnchor constant:-40.0],
+        [imageView.widthAnchor constraintEqualToConstant:CroakEmptyStateImageLength],
+        [imageView.heightAnchor constraintEqualToConstant:CroakEmptyStateImageLength]
+    ]];
+    return containerView;
 }
 
 - (NSString *)croak_displayNameFromUserInfo:(NSDictionary<NSString *, id> *)userInfo {

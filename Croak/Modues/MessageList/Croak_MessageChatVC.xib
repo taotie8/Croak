@@ -79,19 +79,8 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xnV-FT-Pc7">
                             <rect key="frame" x="16" y="44" width="361" height="44"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mnP-rJ-X5w">
-                                    <rect key="frame" x="321" y="0.0" width="36" height="44"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="36" id="IaV-pd-orh"/>
-                                    </constraints>
-                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                    <state key="normal" image="croak_voice_icon"/>
-                                    <connections>
-                                        <action selector="croak_voiceAction:" destination="-1" eventType="touchUpInside" id="chat-voice-act"/>
-                                    </connections>
-                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zsg-Kf-mW1">
-                                    <rect key="frame" x="278" y="0.0" width="38" height="44"/>
+                                    <rect key="frame" x="313" y="0.0" width="38" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="38" id="1b0-oZ-Fg1"/>
                                     </constraints>
@@ -102,7 +91,7 @@
                                     </connections>
                                 </button>
                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Please enter…" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jC6-d1-9yl">
-                                    <rect key="frame" x="12" y="0.0" width="254" height="44"/>
+                                    <rect key="frame" x="12" y="0.0" width="289" height="44"/>
                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
@@ -115,15 +104,12 @@
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="Zsg-Kf-mW1" secondAttribute="bottom" id="18g-mp-xMO"/>
                                 <constraint firstAttribute="height" constant="44" id="3cS-uc-8DO"/>
-                                <constraint firstAttribute="bottom" secondItem="mnP-rJ-X5w" secondAttribute="bottom" id="PLS-ai-lEi"/>
                                 <constraint firstItem="Zsg-Kf-mW1" firstAttribute="leading" secondItem="jC6-d1-9yl" secondAttribute="trailing" constant="12" id="R0x-Gw-3ny"/>
                                 <constraint firstItem="jC6-d1-9yl" firstAttribute="leading" secondItem="xnV-FT-Pc7" secondAttribute="leading" constant="12" id="SqV-6X-n15"/>
                                 <constraint firstItem="jC6-d1-9yl" firstAttribute="top" secondItem="xnV-FT-Pc7" secondAttribute="top" id="Zm2-H8-d5O"/>
                                 <constraint firstAttribute="bottom" secondItem="jC6-d1-9yl" secondAttribute="bottom" id="eQu-Ge-M59"/>
-                                <constraint firstItem="mnP-rJ-X5w" firstAttribute="top" secondItem="xnV-FT-Pc7" secondAttribute="top" id="ecV-nr-eHe"/>
                                 <constraint firstItem="Zsg-Kf-mW1" firstAttribute="top" secondItem="xnV-FT-Pc7" secondAttribute="top" id="jSW-Xu-Ovc"/>
-                                <constraint firstAttribute="trailing" secondItem="mnP-rJ-X5w" secondAttribute="trailing" constant="4" id="qHR-fd-H9w"/>
-                                <constraint firstItem="mnP-rJ-X5w" firstAttribute="leading" secondItem="Zsg-Kf-mW1" secondAttribute="trailing" constant="5" id="xD8-0O-FkH"/>
+                                <constraint firstAttribute="trailing" secondItem="Zsg-Kf-mW1" secondAttribute="trailing" constant="10" id="pmF-4L-Tzr"/>
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yZm-Ba-3KQ">
@@ -180,6 +166,5 @@
         <image name="croak_call_icon" width="32" height="32"/>
         <image name="croak_picture_icon" width="28" height="28"/>
         <image name="croak_send_icon" width="32" height="32"/>
-        <image name="croak_voice_icon" width="24" height="24"/>
     </resources>
 </document>

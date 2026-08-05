@@ -2,6 +2,7 @@
 #import "Croak_FriendsCenterVC.h"
 #import "Croak_API.h"
 #import "Croak_AppDataStore.h"
+#import "Croak_MessageChatVC.h"
 #import "Croak_SquareDetailsVC.h"
 #import "Croak_SquareTableViewCell.h"
 #import "Croak_UserSession.h"
@@ -12,6 +13,7 @@
 #import "UIImageView+WebCache.h"
 
 static NSString * const CroakFriendsCenterPostCellIdentifier = @"Croak_SquareTableViewCell";
+static CGFloat const CroakEmptyStateImageLength = 154.0;
 
 @interface Croak_FriendsCenterVC () <UITableViewDelegate, UITableViewDataSource>
 
@@ -39,6 +41,7 @@ static NSString * const CroakFriendsCenterPostCellIdentifier = @"Croak_SquareTab
     self.croak_tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.croak_tableView registerNib:[UINib nibWithNibName:CroakFriendsCenterPostCellIdentifier bundle:nil]
                 forCellReuseIdentifier:CroakFriendsCenterPostCellIdentifier];
+    [self croak_updateEmptyState];
 
     [self croak_configureUserInfo];
     [self croak_loadUserPosts];
@@ -62,7 +65,36 @@ static NSString * const CroakFriendsCenterPostCellIdentifier = @"Croak_SquareTab
 
 
 - (IBAction)croak_gotoChatAction:(id)sender {
-    
+    NSString *account = [self croak_trimmedString:Croak_UserSession.croak_currentAccount];
+    if (account.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"Please log in first."];
+        return;
+    }
+
+    NSDictionary<NSString *, id> *targetUserInfo = [self.croak_userInfo isKindOfClass:NSDictionary.class] ? self.croak_userInfo : @{};
+    NSString *targetUserId = [self croak_userIdFromUserInfo:targetUserInfo];
+    if (targetUserId.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"User does not exist."];
+        return;
+    }
+
+    if ([Croak_AppDataStore sharedStore].croak_isLoaded) {
+        NSArray<NSDictionary<NSString *, id> *> *chatSessions = [[Croak_AppDataStore sharedStore] croak_chatSessionsForAccount:account] ?: @[];
+        [self croak_openChatWithChatSessions:chatSessions targetUserInfo:targetUserInfo];
+        return;
+    }
+
+    [SVProgressHUD show];
+    [[Croak_AppDataStore sharedStore] croak_fetchChatSessionsForAccount:account
+                                                             completion:^(NSArray<NSDictionary<NSString *,id> *> *users, NSError *error) {
+        [SVProgressHUD dismiss];
+        if (error) {
+            [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+            return;
+        }
+
+        [self croak_openChatWithChatSessions:users ?: @[] targetUserInfo:targetUserInfo];
+    }];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -128,7 +160,7 @@ static NSString * const CroakFriendsCenterPostCellIdentifier = @"Croak_SquareTab
         NSMutableArray<NSDictionary<NSString *, id> *> *posts = [self.croak_posts mutableCopy];
         [posts removeObjectAtIndex:(NSUInteger)indexPath.row];
         self.croak_posts = posts;
-        [self.croak_tableView reloadData];
+        [self croak_reloadTableView];
     };
     detailsVC.croak_userBlockHandler = ^(NSString *userId) {
         __strong typeof(weakSelf) self = weakSelf;
@@ -236,7 +268,7 @@ static NSString * const CroakFriendsCenterPostCellIdentifier = @"Croak_SquareTab
         [posts addObject:postItem];
     }
     self.croak_posts = posts;
-    [self.croak_tableView reloadData];
+    [self croak_reloadTableView];
 }
 
 - (void)croak_openReportDetailsForPostItem:(NSDictionary<NSString *, id> *)postItem {
@@ -281,7 +313,7 @@ static NSString * const CroakFriendsCenterPostCellIdentifier = @"Croak_SquareTab
             NSMutableArray<NSDictionary<NSString *, id> *> *posts = [self.croak_posts mutableCopy];
             [posts removeObjectAtIndex:(NSUInteger)indexPath.row];
             self.croak_posts = posts;
-            [self.croak_tableView reloadData];
+            [self croak_reloadTableView];
         }
         [SVProgressHUD showSuccessWithStatus:@"Deleted."];
     }];
@@ -305,7 +337,7 @@ static NSString * const CroakFriendsCenterPostCellIdentifier = @"Croak_SquareTab
         [SVProgressHUD dismiss];
         if (error) {
             self.croak_posts = @[];
-            [self.croak_tableView reloadData];
+            [self croak_reloadTableView];
             [SVProgressHUD showErrorWithStatus:error.localizedDescription];
             return;
         }
@@ -332,7 +364,7 @@ static NSString * const CroakFriendsCenterPostCellIdentifier = @"Croak_SquareTab
     }];
 
     self.croak_posts = posts;
-    [self.croak_tableView reloadData];
+    [self croak_reloadTableView];
 
 #if DEBUG
     NSLog(@"\n[Croak Friends Center]\nuserId: %@\npostsCount: %lu\nposts: %@",
@@ -391,6 +423,163 @@ static NSString * const CroakFriendsCenterPostCellIdentifier = @"Croak_SquareTab
     NSMutableArray<NSDictionary<NSString *, id> *> *posts = [self.croak_posts mutableCopy];
     posts[(NSUInteger)index] = newPostItem;
     self.croak_posts = posts;
+}
+
+- (void)croak_reloadTableView {
+    [self.croak_tableView reloadData];
+    [self croak_updateEmptyState];
+}
+
+- (void)croak_openChatWithChatSessions:(NSArray<NSDictionary<NSString *, id> *> *)chatSessions
+                         targetUserInfo:(NSDictionary<NSString *, id> *)targetUserInfo {
+    NSString *currentUserId = [self croak_currentUserId];
+    if (currentUserId.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"Please log in first."];
+        return;
+    }
+
+    NSString *targetUserId = [self croak_userIdFromUserInfo:targetUserInfo];
+    if (targetUserId.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"User does not exist."];
+        return;
+    }
+
+    NSDictionary<NSString *, id> *chatItem = [self croak_chatItemForTargetUserId:targetUserId
+                                                                   chatSessions:chatSessions];
+    if (!chatItem) {
+        chatItem = [self croak_localChatItemForTargetUserInfo:targetUserInfo
+                                                currentUserId:currentUserId
+                                                 targetUserId:targetUserId];
+    }
+
+    Croak_MessageChatVC *chatVC = [[Croak_MessageChatVC alloc] init];
+    chatVC.croak_name = [self croak_displayNameFromUserInfo:targetUserInfo];
+    chatVC.croak_avatarName = [self croak_avatarNameFromUserInfo:targetUserInfo];
+    chatVC.croak_sessionId = [self croak_sessionIdFromChatItem:chatItem];
+    chatVC.croak_currentUserId = currentUserId;
+    chatVC.croak_currentAvatarName = [[Croak_AppDataStore sharedStore] croak_currentAvatarName];
+    chatVC.croak_chatMessages = [chatItem[@"messages"] isKindOfClass:NSArray.class] ? chatItem[@"messages"] : @[];
+    chatVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:chatVC animated:YES];
+}
+
+- (NSDictionary<NSString *, id> *)croak_chatItemForTargetUserId:(NSString *)targetUserId
+                                                   chatSessions:(NSArray<NSDictionary<NSString *, id> *> *)chatSessions {
+    NSString *currentUserId = [self croak_currentUserId];
+    for (NSDictionary<NSString *, id> *chatItem in chatSessions) {
+        if (![chatItem isKindOfClass:NSDictionary.class]) {
+            continue;
+        }
+
+        NSDictionary<NSString *, id> *userInfo = [chatItem[@"user"] isKindOfClass:NSDictionary.class] ? chatItem[@"user"] : @{};
+        if ([[self croak_userIdFromUserInfo:userInfo] isEqualToString:targetUserId]) {
+            return chatItem;
+        }
+
+        NSDictionary<NSString *, id> *sessionInfo = [chatItem[@"session"] isKindOfClass:NSDictionary.class] ? chatItem[@"session"] : @{};
+        if ([self croak_chatSessionInfo:sessionInfo containsUserId:currentUserId] &&
+            [self croak_chatSessionInfo:sessionInfo containsUserId:targetUserId]) {
+            return chatItem;
+        }
+    }
+    return nil;
+}
+
+- (NSDictionary<NSString *, id> *)croak_localChatItemForTargetUserInfo:(NSDictionary<NSString *, id> *)targetUserInfo
+                                                          currentUserId:(NSString *)currentUserId
+                                                           targetUserId:(NSString *)targetUserId {
+    NSString *sessionId = [self croak_localSessionIdWithCurrentUserId:currentUserId targetUserId:targetUserId];
+    NSArray<NSDictionary<NSString *, id> *> *messages = [[Croak_AppDataStore sharedStore] croak_chatMessagesForSessionId:sessionId] ?: @[];
+    NSDictionary<NSString *, id> *sessionInfo = @{@"cwkxbxdk": sessionId,
+                                                  @"id": sessionId,
+                                                  @"ztbp": currentUserId,
+                                                  @"userId": currentUserId,
+                                                  @"cy": targetUserId,
+                                                  @"targetUserId": targetUserId,
+                                                  @"bwaayooy": @[currentUserId, targetUserId],
+                                                  @"participantIds": @[currentUserId, targetUserId]};
+    return @{@"session": sessionInfo,
+             @"user": targetUserInfo ?: @{},
+             @"messages": messages,
+             @"lastMessage": @"",
+             @"lastMessageTime": @""};
+}
+
+- (NSString *)croak_sessionIdFromChatItem:(NSDictionary<NSString *, id> *)chatItem {
+    NSDictionary<NSString *, id> *sessionInfo = [chatItem[@"session"] isKindOfClass:NSDictionary.class] ? chatItem[@"session"] : @{};
+    NSString *sessionId = [self croak_trimmedString:sessionInfo[@"cwkxbxdk"]];
+    if (sessionId.length == 0) {
+        sessionId = [self croak_trimmedString:sessionInfo[@"id"]];
+    }
+    return sessionId;
+}
+
+- (BOOL)croak_chatSessionInfo:(NSDictionary<NSString *, id> *)sessionInfo containsUserId:(NSString *)userId {
+    NSString *targetUserId = [self croak_normalizedString:userId];
+    if (targetUserId.length == 0) {
+        return NO;
+    }
+
+    NSString *sessionUserId = [self croak_normalizedString:sessionInfo[@"ztbp"]];
+    if (sessionUserId.length == 0) {
+        sessionUserId = [self croak_normalizedString:sessionInfo[@"userId"]];
+    }
+    NSString *sessionTargetUserId = [self croak_normalizedString:sessionInfo[@"cy"]];
+    if (sessionTargetUserId.length == 0) {
+        sessionTargetUserId = [self croak_normalizedString:sessionInfo[@"targetUserId"]];
+    }
+    if ([sessionUserId isEqualToString:targetUserId] || [sessionTargetUserId isEqualToString:targetUserId]) {
+        return YES;
+    }
+
+    id participantIds = sessionInfo[@"bwaayooy"];
+    if (![participantIds isKindOfClass:NSArray.class]) {
+        participantIds = sessionInfo[@"participantIds"];
+    }
+    if (![participantIds isKindOfClass:NSArray.class]) {
+        return NO;
+    }
+
+    for (id participantId in (NSArray *)participantIds) {
+        if ([[self croak_normalizedString:participantId] isEqualToString:targetUserId]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (NSString *)croak_localSessionIdWithCurrentUserId:(NSString *)currentUserId
+                                       targetUserId:(NSString *)targetUserId {
+    NSString *firstUserId = [self croak_normalizedString:currentUserId];
+    NSString *secondUserId = [self croak_normalizedString:targetUserId];
+    if ([firstUserId compare:secondUserId] == NSOrderedDescending) {
+        NSString *temporaryUserId = firstUserId;
+        firstUserId = secondUserId;
+        secondUserId = temporaryUserId;
+    }
+    return [NSString stringWithFormat:@"croak-local-%@-%@", firstUserId, secondUserId];
+}
+
+- (void)croak_updateEmptyState {
+    self.croak_tableView.backgroundView = self.croak_posts.count > 0 ? nil : [self croak_emptyBackgroundView];
+}
+
+- (UIView *)croak_emptyBackgroundView {
+    UIView *containerView = [[UIView alloc] initWithFrame:self.croak_tableView.bounds];
+    containerView.backgroundColor = [UIColor clearColor];
+
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Nothing_yet"]];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [containerView addSubview:imageView];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [imageView.centerXAnchor constraintEqualToAnchor:containerView.centerXAnchor],
+        [imageView.centerYAnchor constraintEqualToAnchor:containerView.centerYAnchor constant:-40.0],
+        [imageView.widthAnchor constraintEqualToConstant:CroakEmptyStateImageLength],
+        [imageView.heightAnchor constraintEqualToConstant:CroakEmptyStateImageLength]
+    ]];
+    return containerView;
 }
 
 - (NSString *)croak_displayNameFromUserInfo:(NSDictionary<NSString *, id> *)userInfo {

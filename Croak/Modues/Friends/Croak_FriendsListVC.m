@@ -8,10 +8,12 @@
 #import "Croak_FriendsCenterVC.h"
 #import "Croak_UserSession.h"
 #import "SVProgressHUD.h"
+#import <UserNotifications/UserNotifications.h>
 #import "UIImageView+WebCache.h"
 
 static NSString * const CroakFriendsListCellIdentifier = @"Croak_FriendsListCell";
 static NSString * const CroakFriendsListCellNibName = @"Croak_FriendsListCell";
+static CGFloat const CroakEmptyStateImageLength = 154.0;
 
 @interface Croak_FriendsListVC () <UITableViewDelegate, UITableViewDataSource>
 
@@ -38,6 +40,10 @@ static NSString * const CroakFriendsListCellNibName = @"Croak_FriendsListCell";
 
     self.croak_avatarImageView.layer.cornerRadius = 20.0;
     self.croak_avatarImageView.layer.masksToBounds = YES;
+    self.croak_bannerImageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *turnTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                     action:@selector(croak_turnAction:)];
+    [self.croak_bannerImageView addGestureRecognizer:turnTapGesture];
 
     [self.croak_tableView registerNib:[UINib nibWithNibName:CroakFriendsListCellNibName bundle:[NSBundle mainBundle]]
                 forCellReuseIdentifier:CroakFriendsListCellIdentifier];
@@ -45,6 +51,7 @@ static NSString * const CroakFriendsListCellNibName = @"Croak_FriendsListCell";
     self.croak_tableView.dataSource = self;
     self.croak_tableView.rowHeight = 64;
     self.croak_tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self croak_updateEmptyState];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -61,6 +68,10 @@ static NSString * const CroakFriendsListCellNibName = @"Croak_FriendsListCell";
 
 - (IBAction)croak_searchAction:(id)sender {
     [self.navigationController pushViewController:[Croak_SearchUserVC new] animated:YES];
+}
+
+- (void)croak_turnAction:(id)sender {
+    [self croak_prepareAndOpenNotificationSettings];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -115,7 +126,7 @@ static NSString * const CroakFriendsListCellNibName = @"Croak_FriendsListCell";
 #endif
     if (account.length == 0) {
         self.croak_friends = @[];
-        [self.croak_tableView reloadData];
+        [self croak_reloadTableView];
         return;
     }
 
@@ -123,7 +134,7 @@ static NSString * const CroakFriendsListCellNibName = @"Croak_FriendsListCell";
                                                         completion:^(NSArray<NSDictionary<NSString *,id> *> *users, NSError *error) {
         if (error) {
             self.croak_friends = @[];
-            [self.croak_tableView reloadData];
+            [self croak_reloadTableView];
 #if DEBUG
             NSLog(@"\n[Croak Friends Page]\nloadError: %@", error.localizedDescription);
 #endif
@@ -138,8 +149,74 @@ static NSString * const CroakFriendsListCellNibName = @"Croak_FriendsListCell";
               (unsigned long)self.croak_friends.count,
               self.croak_friends);
 #endif
-        [self.croak_tableView reloadData];
+        [self croak_reloadTableView];
     }];
+}
+
+- (void)croak_reloadTableView {
+    [self.croak_tableView reloadData];
+    [self croak_updateEmptyState];
+}
+
+- (void)croak_prepareAndOpenNotificationSettings {
+    UNUserNotificationCenter *notificationCenter = UNUserNotificationCenter.currentNotificationCenter;
+    [notificationCenter getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings *settings) {
+        if (settings.authorizationStatus == UNAuthorizationStatusNotDetermined) {
+            UNAuthorizationOptions options = UNAuthorizationOptionAlert | UNAuthorizationOptionBadge | UNAuthorizationOptionSound;
+            [notificationCenter requestAuthorizationWithOptions:options
+                                              completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (!error && granted) {
+                        [UIApplication.sharedApplication registerForRemoteNotifications];
+                    }
+                    [self croak_openNotificationSettingsURL];
+                });
+            }];
+            return;
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self croak_openNotificationSettingsURL];
+        });
+    }];
+}
+
+- (void)croak_openNotificationSettingsURL {
+    NSURL *notificationSettingsURL = [NSURL URLWithString:UIApplicationOpenNotificationSettingsURLString];
+    if (!notificationSettingsURL) {
+        [SVProgressHUD showErrorWithStatus:@"Notification settings cannot be opened."];
+        return;
+    }
+
+    [UIApplication.sharedApplication openURL:notificationSettingsURL
+                                     options:@{}
+                           completionHandler:^(BOOL success) {
+        if (!success) {
+            [SVProgressHUD showErrorWithStatus:@"Notification settings cannot be opened."];
+        }
+    }];
+}
+
+- (void)croak_updateEmptyState {
+    self.croak_tableView.backgroundView = self.croak_friends.count > 0 ? nil : [self croak_emptyBackgroundView];
+}
+
+- (UIView *)croak_emptyBackgroundView {
+    UIView *containerView = [[UIView alloc] initWithFrame:self.croak_tableView.bounds];
+    containerView.backgroundColor = [UIColor clearColor];
+
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Nothing_yet"]];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [containerView addSubview:imageView];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [imageView.centerXAnchor constraintEqualToAnchor:containerView.centerXAnchor],
+        [imageView.centerYAnchor constraintEqualToAnchor:containerView.centerYAnchor constant:-40.0],
+        [imageView.widthAnchor constraintEqualToConstant:CroakEmptyStateImageLength],
+        [imageView.heightAnchor constraintEqualToConstant:CroakEmptyStateImageLength]
+    ]];
+    return containerView;
 }
 
 - (NSString *)croak_displayNameFromUserInfo:(NSDictionary<NSString *, id> *)userInfo {

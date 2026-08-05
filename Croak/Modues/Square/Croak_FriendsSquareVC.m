@@ -12,6 +12,7 @@
 #import "SVProgressHUD.h"
 
 static NSString * const CroakSquareTableViewCellIdentifier = @"Croak_SquareTableViewCell";
+static CGFloat const CroakEmptyStateImageLength = 154.0;
 
 @interface Croak_FriendsSquareVC ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -37,6 +38,7 @@ static NSString * const CroakSquareTableViewCellIdentifier = @"Croak_SquareTable
     self.croak_tableView.delegate = self;
     self.croak_tableView.dataSource = self;
     self.croak_tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self croak_updateEmptyState];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -110,7 +112,7 @@ static NSString * const CroakSquareTableViewCellIdentifier = @"Croak_SquareTable
         [posts removeObjectAtIndex:(NSUInteger)indexPath.row];
         self.croak_posts = posts;
         [self croak_updateDateHeaderWithPostItem:self.croak_posts.firstObject];
-        [self.croak_tableView reloadData];
+        [self croak_reloadTableView];
     };
     vc.croak_userBlockHandler = ^(NSString *userId) {
         __strong typeof(weakSelf) self = weakSelf;
@@ -235,7 +237,7 @@ static NSString * const CroakSquareTableViewCellIdentifier = @"Croak_SquareTable
             [posts removeObjectAtIndex:(NSUInteger)indexPath.row];
             self.croak_posts = posts;
             [self croak_updateDateHeaderWithPostItem:self.croak_posts.firstObject];
-            [self.croak_tableView reloadData];
+            [self croak_reloadTableView];
         }
         [SVProgressHUD showSuccessWithStatus:@"Deleted."];
     }];
@@ -297,6 +299,33 @@ static NSString * const CroakSquareTableViewCellIdentifier = @"Croak_SquareTable
     self.croak_posts = posts;
 }
 
+- (void)croak_reloadTableView {
+    [self.croak_tableView reloadData];
+    [self croak_updateEmptyState];
+}
+
+- (void)croak_updateEmptyState {
+    self.croak_tableView.backgroundView = self.croak_posts.count > 0 ? nil : [self croak_emptyBackgroundView];
+}
+
+- (UIView *)croak_emptyBackgroundView {
+    UIView *containerView = [[UIView alloc] initWithFrame:self.croak_tableView.bounds];
+    containerView.backgroundColor = [UIColor clearColor];
+
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Nothing_yet"]];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [containerView addSubview:imageView];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [imageView.centerXAnchor constraintEqualToAnchor:containerView.centerXAnchor],
+        [imageView.centerYAnchor constraintEqualToAnchor:containerView.centerYAnchor constant:-40.0],
+        [imageView.widthAnchor constraintEqualToConstant:CroakEmptyStateImageLength],
+        [imageView.heightAnchor constraintEqualToConstant:CroakEmptyStateImageLength]
+    ]];
+    return containerView;
+}
+
 - (void)croak_removePostsForUserId:(NSString *)userId {
     NSString *targetUserId = [self croak_normalizedString:userId];
     if (targetUserId.length == 0) {
@@ -313,14 +342,14 @@ static NSString * const CroakSquareTableViewCellIdentifier = @"Croak_SquareTable
     }
     self.croak_posts = posts;
     [self croak_updateDateHeaderWithPostItem:self.croak_posts.firstObject];
-    [self.croak_tableView reloadData];
+    [self croak_reloadTableView];
 }
 
 - (void)croak_loadFriendPosts {
     NSString *account = [self croak_trimmedString:Croak_UserSession.croak_currentAccount];
     if (account.length == 0) {
         self.croak_posts = @[];
-        [self.croak_tableView reloadData];
+        [self croak_reloadTableView];
         return;
     }
 
@@ -332,14 +361,14 @@ static NSString * const CroakSquareTableViewCellIdentifier = @"Croak_SquareTable
         if (error) {
             self.croak_hasLoadedPosts = NO;
             self.croak_posts = @[];
-            [self.croak_tableView reloadData];
+            [self croak_reloadTableView];
             [SVProgressHUD showErrorWithStatus:error.localizedDescription];
             return;
         }
 
         self.croak_posts = users ?: @[];
         [self croak_updateDateHeaderWithPostItem:self.croak_posts.firstObject];
-        [self.croak_tableView reloadData];
+        [self croak_reloadTableView];
     }];
 }
 
@@ -523,8 +552,7 @@ static NSString * const CroakSquareTableViewCellIdentifier = @"Croak_SquareTable
 }
 
 - (void)croak_updateDateHeaderWithPostItem:(NSDictionary<NSString *, id> *)postItem {
-    NSDictionary<NSString *, id> *postInfo = [postItem[@"post"] isKindOfClass:NSDictionary.class] ? postItem[@"post"] : nil;
-    NSDate *date = [self croak_dateFromISOString:[self croak_createdAtFromPostInfo:postInfo]] ?: NSDate.date;
+    NSDate *date = NSDate.date;
 
     NSDateFormatter *monthFormatter = [[NSDateFormatter alloc] init];
     monthFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];

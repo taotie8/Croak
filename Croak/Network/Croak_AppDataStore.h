@@ -12,6 +12,9 @@ typedef void (^CroakAppDataLikeCompletion)(NSDictionary<NSString *, id> * _Nulla
                                            NSError * _Nullable error);
 typedef void (^CroakAppDataMessageCompletion)(NSDictionary<NSString *, id> * _Nullable messageInfo,
                                               NSError * _Nullable error);
+typedef void (^CroakAppDataCommentCompletion)(NSDictionary<NSString *, id> * _Nullable commentInfo,
+                                              NSDictionary<NSString *, id> * _Nullable postInfo,
+                                              NSError * _Nullable error);
 
 @interface Croak_AppDataStore : NSObject
 
@@ -30,6 +33,10 @@ typedef void (^CroakAppDataMessageCompletion)(NSDictionary<NSString *, id> * _Nu
 - (void)croak_registerWithAccount:(NSString *)account
                           password:(NSString *)password
                         completion:(CroakAppDataUserCompletion)completion;
+
+- (void)croak_updateCurrentUserWithDisplayName:(NSString *)displayName
+                                      birthday:(nullable NSDate *)birthday
+                                    completion:(CroakAppDataUserCompletion)completion;
 
 - (void)croak_deleteAccount:(NSString *)account
                   completion:(CroakAppDataCompletion)completion;
@@ -80,6 +87,13 @@ typedef void (^CroakAppDataMessageCompletion)(NSDictionary<NSString *, id> * _Nu
 - (void)croak_deletePost:(NSDictionary<NSString *, id> *)postInfo
                  account:(NSString *)account
               completion:(CroakAppDataCompletion)completion;
+
+- (NSArray<NSDictionary<NSString *, id> *> *)croak_commentsForPost:(NSDictionary<NSString *, id> *)postInfo;
+
+- (void)croak_saveComment:(NSString *)comment
+                  forPost:(NSDictionary<NSString *, id> *)postInfo
+                  account:(NSString *)account
+               completion:(CroakAppDataCommentCompletion)completion;
 
 - (void)croak_blockUser:(NSDictionary<NSString *, id> *)userInfo
                 account:(NSString *)account

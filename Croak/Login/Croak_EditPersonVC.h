@@ -11,6 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Croak_EditPersonVC : UIViewController
 
+@property (nonatomic, strong, nullable) NSDictionary<NSString *, id> *croak_userInfo;
+@property (nonatomic, assign) BOOL croak_returnToPreviousPageAfterSave;
+
 @end
 
 NS_ASSUME_NONNULL_END

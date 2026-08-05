@@ -7,6 +7,7 @@
 #import "SVProgressHUD.h"
 
 static NSString * const CroakBlackListCellIdentifier = @"Croak_BlackListCell";
+static CGFloat const CroakEmptyStateImageLength = 154.0;
 
 @interface Croak_BlackListVC () <UITableViewDelegate, UITableViewDataSource>
 
@@ -27,6 +28,7 @@ static NSString * const CroakBlackListCellIdentifier = @"Croak_BlackListCell";
     self.croak_tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.croak_tableView registerNib:[UINib nibWithNibName:CroakBlackListCellIdentifier bundle:nil]
                 forCellReuseIdentifier:CroakBlackListCellIdentifier];
+    [self croak_updateEmptyState];
     [self croak_loadBlockedUsers];
 }
 
@@ -55,7 +57,7 @@ static NSString * const CroakBlackListCellIdentifier = @"Croak_BlackListCell";
     NSString *account = [self croak_trimmedString:Croak_UserSession.croak_currentAccount];
     if (account.length == 0) {
         self.croak_users = @[];
-        [self.croak_tableView reloadData];
+        [self croak_reloadTableView];
         [SVProgressHUD showErrorWithStatus:@"Please log in first."];
         return;
     }
@@ -78,7 +80,7 @@ static NSString * const CroakBlackListCellIdentifier = @"Croak_BlackListCell";
 
 - (void)croak_updateBlockedUsersForAccount:(NSString *)account {
     self.croak_users = [[Croak_AppDataStore sharedStore] croak_blockedUsersForAccount:account];
-    [self.croak_tableView reloadData];
+    [self croak_reloadTableView];
 }
 
 - (void)croak_unblockUserForCell:(Croak_BlackListCell *)cell {
@@ -101,9 +103,36 @@ static NSString * const CroakBlackListCellIdentifier = @"Croak_BlackListCell";
         NSMutableArray<NSDictionary<NSString *, id> *> *users = [self.croak_users mutableCopy];
         [users removeObjectAtIndex:(NSUInteger)indexPath.row];
         self.croak_users = users;
-        [self.croak_tableView reloadData];
+        [self croak_reloadTableView];
         [SVProgressHUD showSuccessWithStatus:@"Unblocked."];
     }];
+}
+
+- (void)croak_reloadTableView {
+    [self.croak_tableView reloadData];
+    [self croak_updateEmptyState];
+}
+
+- (void)croak_updateEmptyState {
+    self.croak_tableView.backgroundView = self.croak_users.count > 0 ? nil : [self croak_emptyBackgroundView];
+}
+
+- (UIView *)croak_emptyBackgroundView {
+    UIView *containerView = [[UIView alloc] initWithFrame:self.croak_tableView.bounds];
+    containerView.backgroundColor = [UIColor clearColor];
+
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Nothing_yet"]];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [containerView addSubview:imageView];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [imageView.centerXAnchor constraintEqualToAnchor:containerView.centerXAnchor],
+        [imageView.centerYAnchor constraintEqualToAnchor:containerView.centerYAnchor constant:-40.0],
+        [imageView.widthAnchor constraintEqualToConstant:CroakEmptyStateImageLength],
+        [imageView.heightAnchor constraintEqualToConstant:CroakEmptyStateImageLength]
+    ]];
+    return containerView;
 }
 
 - (void)croak_findTableViewInView:(UIView *)view {

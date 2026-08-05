@@ -17,7 +17,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="369" height="84"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="croak_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="nVa-Ix-EPb">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="croak_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="nVa-Ix-EPb">
                         <rect key="frame" x="14" y="10" width="36" height="36"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="36" id="Ext-IN-Hm4"/>
@@ -39,7 +39,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A82-7f-HzH">
-                        <rect key="frame" x="62" y="39" width="291" height="14.333333333333336"/>
+                        <rect key="frame" x="62" y="39" width="291" height="29"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -55,17 +55,24 @@
                     <constraint firstItem="nVa-Ix-EPb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="9nF-9D-eyZ"/>
                     <constraint firstItem="A82-7f-HzH" firstAttribute="top" secondItem="GcK-pQ-OsJ" secondAttribute="bottom" constant="4" id="E1f-mB-uga"/>
                     <constraint firstItem="GcK-pQ-OsJ" firstAttribute="leading" secondItem="nVa-Ix-EPb" secondAttribute="trailing" constant="12" id="LEh-LG-aYD"/>
+                    <constraint firstItem="Gcb-uC-s7c" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="GcK-pQ-OsJ" secondAttribute="trailing" constant="8" id="NmT-8e-LnK"/>
                     <constraint firstItem="nVa-Ix-EPb" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="14" id="Nqo-37-cEy"/>
                     <constraint firstItem="A82-7f-HzH" firstAttribute="leading" secondItem="nVa-Ix-EPb" secondAttribute="trailing" constant="12" id="WCB-lw-fWw"/>
                     <constraint firstItem="Gcb-uC-s7c" firstAttribute="centerY" secondItem="GcK-pQ-OsJ" secondAttribute="centerY" id="YxX-Xb-Ddi"/>
                     <constraint firstAttribute="trailing" secondItem="A82-7f-HzH" secondAttribute="trailing" constant="16" id="aeF-zc-NTO"/>
                     <constraint firstAttribute="trailing" secondItem="Gcb-uC-s7c" secondAttribute="trailing" constant="16" id="j6a-hl-YrD"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="A82-7f-HzH" secondAttribute="bottom" constant="5" id="rNr-2K-8a0"/>
+                    <constraint firstAttribute="bottom" secondItem="A82-7f-HzH" secondAttribute="bottom" constant="16" id="rNr-2K-8a0"/>
                     <constraint firstItem="GcK-pQ-OsJ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="wsv-Tj-snc"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
-            <point key="canvasLocation" x="171.75572519083968" y="119.01408450704226"/>
+            <connections>
+                <outlet property="croak_avatarImageView" destination="nVa-Ix-EPb" id="comment-cell-avatar"/>
+                <outlet property="croak_contentLabel" destination="A82-7f-HzH" id="comment-cell-content"/>
+                <outlet property="croak_nameLabel" destination="GcK-pQ-OsJ" id="comment-cell-name"/>
+                <outlet property="croak_timeLabel" destination="Gcb-uC-s7c" id="comment-cell-time"/>
+            </connections>
+            <point key="canvasLocation" x="94" y="108"/>
         </tableViewCell>
     </objects>
     <resources>

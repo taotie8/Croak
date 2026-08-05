@@ -11,6 +11,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Croak_SearchVC">
             <connections>
                 <outlet property="croak_emptyImageView" destination="BK1-am-Owk" id="src-em-img"/>
+                <outlet property="croak_resultTitleLabel" destination="jHn-7m-ep5" id="src-re-lbl"/>
                 <outlet property="croak_searchButton" destination="0Yp-Dv-mrT" id="src-se-btn"/>
                 <outlet property="croak_searchContentView" destination="nU0-2J-GI8" id="src-se-vie"/>
                 <outlet property="croak_searchTextField" destination="LW2-mL-asb" id="src-se-tfd"/>

@@ -48,7 +48,7 @@
 
     NSString *name = [self croak_trimmedString:self.croak_name];
     self.croak_nameLabel.text = name.length > 0 ? name : @"Friend";
-    self.croak_statusLabel.text = @"Calling...";
+    self.croak_statusLabel.text = @"Connecting...";
 
     [self croak_setImageView:self.croak_backgroundImageView
                    imageName:self.croak_avatarName
@@ -108,10 +108,10 @@
                 }
 
                 if (!cameraGranted) {
-                    self.croak_statusLabel.text = @"Camera access denied.";
+                    self.croak_statusLabel.text = @"Connecting...";
                     self.croak_cameraTipLabel.hidden = NO;
                 } else {
-                    self.croak_statusLabel.text = microphoneGranted ? @"Connected 00:00" : @"Microphone access denied.";
+                    self.croak_statusLabel.text = @"Connecting...";
                     [self croak_startCameraSessionWithMicrophone:microphoneGranted];
                 }
                 [self croak_startTimerIfNeeded];
@@ -179,7 +179,7 @@
     }
 
     if (!hasVideoInput) {
-        self.croak_statusLabel.text = @"Camera unavailable.";
+        self.croak_statusLabel.text = @"Connecting...";
         self.croak_cameraTipLabel.hidden = NO;
         return;
     }
@@ -218,14 +218,7 @@
 
 - (void)croak_callTimerDidTick {
     self.croak_elapsedSeconds += 1;
-    NSInteger minutes = self.croak_elapsedSeconds / 60;
-    NSInteger seconds = self.croak_elapsedSeconds % 60;
-    NSString *timeText = [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
-    if ([self.croak_statusLabel.text containsString:@"denied"] ||
-        [self.croak_statusLabel.text containsString:@"unavailable"]) {
-        return;
-    }
-    self.croak_statusLabel.text = [NSString stringWithFormat:@"Connected %@", timeText];
+    self.croak_statusLabel.text = @"Connecting...";
 }
 
 - (IBAction)croak_callEndAction:(id)sender {

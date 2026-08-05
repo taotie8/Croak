@@ -175,6 +175,119 @@ typedef NSArray<NSDictionary<NSString *, id> *> * _Nonnull (^CroakAppDataUsersBu
     }];
 }
 
+- (void)croak_updateCurrentUserWithDisplayName:(NSString *)displayName
+                                      birthday:(NSDate *)birthday
+                                    completion:(CroakAppDataUserCompletion)completion {
+    NSString *trimmedAccount = [self croak_trimmedString:Croak_UserSession.croak_currentAccount];
+    NSString *trimmedName = [self croak_trimmedString:displayName];
+    if (trimmedAccount.length == 0) {
+        if (completion) {
+            completion(nil, [self croak_errorWithCode:CroakAppDataStoreErrorInvalidInput
+                                              message:@"Please log in first."]);
+        }
+        return;
+    }
+    if (trimmedName.length == 0) {
+        if (completion) {
+            completion(nil, [self croak_errorWithCode:CroakAppDataStoreErrorInvalidInput
+                                              message:@"Please enter nickname."]);
+        }
+        return;
+    }
+
+    if (!self.croak_isLoaded) {
+        __weak typeof(self) weakSelf = self;
+        [self croak_fetchAllDataWithCompletion:^(NSError *error) {
+            __strong typeof(weakSelf) self = weakSelf;
+            if (!self) {
+                return;
+            }
+            if (error) {
+                if (completion) {
+                    completion(nil, error);
+                }
+                return;
+            }
+            [self croak_updateCurrentUserWithDisplayName:trimmedName
+                                                birthday:birthday
+                                              completion:completion];
+        }];
+        return;
+    }
+
+    NSMutableArray<NSMutableDictionary<NSString *, id> *> *users = [self croak_mutableUsersArrayCreatingIfNeeded:NO];
+    NSMutableDictionary<NSString *, id> *targetUser = nil;
+    NSUInteger targetIndex = NSNotFound;
+    for (NSUInteger index = 0; index < users.count; index++) {
+        id userInfo = users[index];
+        if (![userInfo isKindOfClass:NSDictionary.class]) {
+            continue;
+        }
+
+        NSString *account = [[self croak_stringFromValue:((NSDictionary *)userInfo)[@"kewgxwk"]] lowercaseString];
+        if (![account isEqualToString:[trimmedAccount lowercaseString]]) {
+            continue;
+        }
+
+        if ([userInfo isKindOfClass:NSMutableDictionary.class]) {
+            targetUser = userInfo;
+        } else {
+            targetUser = [(NSDictionary *)userInfo mutableCopy];
+            users[index] = targetUser;
+        }
+        targetIndex = index;
+        break;
+    }
+
+    if (!targetUser || targetIndex == NSNotFound) {
+        if (completion) {
+            completion(nil, [self croak_errorWithCode:CroakAppDataStoreErrorInvalidInput
+                                              message:@"Account does not exist."]);
+        }
+        return;
+    }
+
+    id oldName = targetUser[@"kjvmvsaz"];
+    id oldNickname = targetUser[@"nickname"];
+    id oldBirthday = targetUser[@"fzlucn"];
+    id oldClearBirthday = targetUser[@"birthday"];
+
+    targetUser[@"kjvmvsaz"] = trimmedName;
+    if (oldNickname) {
+        targetUser[@"nickname"] = trimmedName;
+    }
+    if (birthday) {
+        NSString *birthdayString = [self croak_ISO8601StringFromDate:birthday];
+        targetUser[@"fzlucn"] = birthdayString;
+        if (oldClearBirthday) {
+            targetUser[@"birthday"] = birthdayString;
+        }
+    }
+
+    __weak typeof(self) weakSelf = self;
+    [self croak_saveDataLayerWithCompletion:^(NSError *saveError) {
+        __strong typeof(weakSelf) self = weakSelf;
+        if (!self) {
+            return;
+        }
+        if (saveError) {
+            [self croak_restoreObject:oldName forKey:@"kjvmvsaz" inDictionary:targetUser];
+            [self croak_restoreObject:oldNickname forKey:@"nickname" inDictionary:targetUser];
+            [self croak_restoreObject:oldBirthday forKey:@"fzlucn" inDictionary:targetUser];
+            [self croak_restoreObject:oldClearBirthday forKey:@"birthday" inDictionary:targetUser];
+            if (completion) {
+                completion(nil, saveError);
+            }
+            return;
+        }
+
+        NSDictionary<NSString *, id> *updatedUser = [self croak_userWithAccount:trimmedAccount] ?: targetUser;
+        if (completion) {
+            completion(updatedUser, nil);
+        }
+    }];
+}
+
 - (void)croak_deleteAccount:(NSString *)account
                   completion:(CroakAppDataCompletion)completion {
     NSString *trimmedAccount = [self croak_trimmedString:account];
@@ -204,25 +317,29 @@ typedef NSArray<NSDictionary<NSString *, id> *> * _Nonnull (^CroakAppDataUsersBu
         }
 
         NSString *userId = [self croak_userIdFromUserInfo:userInfo];
+        NSMutableDictionary<NSString *, id> *originalDataLayer = [self croak_mutableJSONObjectFromObject:self.croak_dataLayer ?: @{}];
+        id originalBlockedUsers = [NSUserDefaults.standardUserDefaults objectForKey:CroakAppDataStoreBlockedUsersDefaultsKey];
+        id originalLocalMessages = [NSUserDefaults.standardUserDefaults objectForKey:CroakAppDataStoreLocalChatMessagesDefaultsKey];
         NSMutableArray<NSMutableDictionary<NSString *, id> *> *users = [self croak_mutableUsersArrayCreatingIfNeeded:NO];
-        NSMutableArray *removedUsers = [NSMutableArray array];
         for (NSInteger index = (NSInteger)users.count - 1; index >= 0; index--) {
             NSDictionary<NSString *, id> *candidate = users[(NSUInteger)index];
             NSString *candidateAccount = [[self croak_stringFromValue:candidate[@"kewgxwk"]] lowercaseString];
             NSString *candidateUserId = [self croak_userIdFromUserInfo:candidate];
             if ([candidateAccount isEqualToString:[trimmedAccount lowercaseString]] ||
                 (userId.length > 0 && [candidateUserId isEqualToString:userId])) {
-                [removedUsers addObject:candidate];
                 [users removeObjectAtIndex:(NSUInteger)index];
             }
         }
 
-        NSArray *removedRelations = [self croak_removeFollowRelationsForUserId:userId];
+        [self croak_removeDeletedAccountDataForUserId:userId account:trimmedAccount];
 
         [self croak_saveDataLayerWithCompletion:^(NSError *saveError) {
             if (saveError) {
-                [users addObjectsFromArray:removedUsers];
-                [self croak_restoreFollowRelations:removedRelations];
+                self.croak_dataLayer = originalDataLayer;
+                [self croak_restoreUserDefaultsObject:originalBlockedUsers
+                                               forKey:CroakAppDataStoreBlockedUsersDefaultsKey];
+                [self croak_restoreUserDefaultsObject:originalLocalMessages
+                                               forKey:CroakAppDataStoreLocalChatMessagesDefaultsKey];
                 if (completion) {
                     completion(saveError);
                 }
@@ -915,6 +1032,187 @@ typedef NSArray<NSDictionary<NSString *, id> *> * _Nonnull (^CroakAppDataUsersBu
     }];
 }
 
+- (NSArray<NSDictionary<NSString *, id> *> *)croak_commentsForPost:(NSDictionary<NSString *, id> *)postInfo {
+    NSString *postId = [self croak_postIdFromPostInfo:postInfo];
+    if (postId.length == 0) {
+        return @[];
+    }
+
+    NSMutableArray<NSDictionary<NSString *, id> *> *comments = [NSMutableArray array];
+    NSMutableSet<NSString *> *seenCommentIds = [NSMutableSet set];
+    void (^appendCommentIfNeeded)(NSDictionary<NSString *, id> *) = ^(NSDictionary<NSString *, id> *commentInfo) {
+        if (![commentInfo isKindOfClass:NSDictionary.class]) {
+            return;
+        }
+        if (![[self croak_commentPostIdFromCommentInfo:commentInfo] isEqualToString:postId]) {
+            return;
+        }
+
+        NSString *commentId = [self croak_commentIdFromCommentInfo:commentInfo];
+        if (commentId.length > 0 && [seenCommentIds containsObject:commentId]) {
+            return;
+        }
+        if (commentId.length > 0) {
+            [seenCommentIds addObject:commentId];
+        }
+        [comments addObject:commentInfo];
+    };
+
+    for (NSDictionary<NSString *, id> *commentInfo in [self croak_commentRecords]) {
+        appendCommentIfNeeded(commentInfo);
+    }
+
+    NSDictionary<NSString *, id> *matchedPostInfo = [self croak_mutablePostMatchingPostInfo:postInfo] ?: postInfo;
+    for (NSDictionary<NSString *, id> *commentInfo in [self croak_postCommentRecordsFromPostInfo:matchedPostInfo]) {
+        appendCommentIfNeeded(commentInfo);
+    }
+
+    [comments sortUsingComparator:^NSComparisonResult(NSDictionary<NSString *, id> *firstObject,
+                                                      NSDictionary<NSString *, id> *secondObject) {
+        NSString *firstDate = [self croak_commentCreatedAtFromCommentInfo:firstObject];
+        NSString *secondDate = [self croak_commentCreatedAtFromCommentInfo:secondObject];
+        return [firstDate compare:secondDate];
+    }];
+    return comments;
+}
+
+- (void)croak_saveComment:(NSString *)comment
+                  forPost:(NSDictionary<NSString *, id> *)postInfo
+                  account:(NSString *)account
+               completion:(CroakAppDataCommentCompletion)completion {
+    NSString *trimmedAccount = [self croak_trimmedString:account];
+    NSString *trimmedComment = [self croak_trimmedString:comment];
+    if (trimmedAccount.length == 0) {
+        if (completion) {
+            completion(nil, nil, [self croak_errorWithCode:CroakAppDataStoreErrorInvalidInput
+                                                    message:@"Please log in first."]);
+        }
+        return;
+    }
+    if (trimmedComment.length == 0) {
+        if (completion) {
+            completion(nil, nil, [self croak_errorWithCode:CroakAppDataStoreErrorInvalidInput
+                                                    message:@"Please enter a comment."]);
+        }
+        return;
+    }
+
+    [self croak_fetchAllDataWithCompletion:^(NSError *error) {
+        if (error) {
+            if (completion) {
+                completion(nil, nil, error);
+            }
+            return;
+        }
+
+        NSDictionary<NSString *, id> *currentUser = [self croak_userWithAccount:trimmedAccount];
+        NSString *currentUserId = [self croak_userIdFromUserInfo:currentUser];
+        if (currentUserId.length == 0) {
+            if (completion) {
+                completion(nil, nil, [self croak_errorWithCode:CroakAppDataStoreErrorInvalidInput
+                                                        message:@"Please log in first."]);
+            }
+            return;
+        }
+
+        NSMutableDictionary<NSString *, id> *mutablePostInfo = [self croak_mutablePostMatchingPostInfo:postInfo];
+        if (!mutablePostInfo) {
+            if (completion) {
+                completion(nil, nil, [self croak_errorWithCode:CroakAppDataStoreErrorInvalidInput
+                                                        message:@"Post does not exist."]);
+            }
+            return;
+        }
+
+        NSMutableArray *comments = [self croak_mutableCommentsArrayCreatingIfNeeded:YES];
+        NSString *createdAt = [self croak_ISO8601StringFromDate:NSDate.date];
+        NSString *targetPostId = [self croak_postIdFromPostInfo:mutablePostInfo];
+        NSMutableDictionary<NSString *, id> *newComment = [@{
+            @"wwhlmup": NSUUID.UUID.UUIDString,
+            @"ua": createdAt,
+            @"yuirmfx": targetPostId,
+            @"twcxf": currentUserId,
+            @"ycluiw": trimmedComment
+        } mutableCopy];
+
+        NSNumber *oldCommentCount = [self croak_commentCountNumberFromPostInfo:mutablePostInfo];
+        NSInteger currentCommentCount = oldCommentCount ? [oldCommentCount integerValue] : [self croak_commentsForPost:mutablePostInfo].count;
+        [comments addObject:newComment];
+        [self croak_setCommentCount:(currentCommentCount + 1) inPostInfo:mutablePostInfo];
+
+        [self croak_saveDataLayerWithCompletion:^(NSError *saveError) {
+            if (saveError) {
+                [comments removeObject:newComment];
+                [self croak_restoreCommentCountNumber:oldCommentCount inPostInfo:mutablePostInfo];
+                if (completion) {
+                    completion(nil, mutablePostInfo, saveError);
+                }
+                return;
+            }
+
+            [self croak_verifyServerSavedComment:newComment
+                                          postId:targetPostId
+                             previousCommentCount:currentCommentCount
+                                      retryCount:3
+                                      completion:completion];
+        }];
+    }];
+}
+
+- (void)croak_verifyServerSavedComment:(NSDictionary<NSString *, id> *)commentInfo
+                                postId:(NSString *)postId
+                  previousCommentCount:(NSInteger)previousCommentCount
+                            retryCount:(NSInteger)retryCount
+                            completion:(CroakAppDataCommentCompletion)completion {
+    NSString *commentId = [self croak_commentIdFromCommentInfo:commentInfo];
+    [self croak_fetchAllDataWithCompletion:^(NSError *fetchError) {
+        if (fetchError) {
+            if (completion) {
+                completion(nil, nil, fetchError);
+            }
+            return;
+        }
+
+        NSMutableDictionary<NSString *, id> *updatedPostInfo = [self croak_mutablePostMatchingPostInfo:@{@"id": postId ?: @""}];
+        if (!updatedPostInfo) {
+            if (completion) {
+                completion(nil, nil, [self croak_errorWithCode:CroakAppDataStoreErrorSaveFailed
+                                                       message:@"Comment was not saved on the server."]);
+            }
+            return;
+        }
+
+        NSDictionary<NSString *, id> *serverCommentInfo = [self croak_commentWithId:commentId
+                                                                            forPost:updatedPostInfo];
+        if (!serverCommentInfo) {
+            if (retryCount > 0) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.8 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self croak_verifyServerSavedComment:commentInfo
+                                                  postId:postId
+                                    previousCommentCount:previousCommentCount
+                                              retryCount:retryCount - 1
+                                              completion:completion];
+                });
+                return;
+            }
+
+            if (completion) {
+                completion(nil, updatedPostInfo, [self croak_errorWithCode:CroakAppDataStoreErrorSaveFailed
+                                                                    message:@"Comment was not saved on the server."]);
+            }
+            return;
+        }
+
+        NSInteger serverCommentCount = [self croak_commentsForPost:updatedPostInfo].count;
+        NSInteger nextCommentCount = MAX(previousCommentCount + 1, serverCommentCount);
+        [self croak_setCommentCount:nextCommentCount inPostInfo:updatedPostInfo];
+
+        if (completion) {
+            completion(serverCommentInfo, updatedPostInfo, nil);
+        }
+    }];
+}
+
 - (void)croak_blockUser:(NSDictionary<NSString *, id> *)userInfo
                 account:(NSString *)account
              completion:(CroakAppDataCompletion)completion {
@@ -1121,7 +1419,7 @@ typedef NSArray<NSDictionary<NSString *, id> *> * _Nonnull (^CroakAppDataUsersBu
         }
 
         if ([self croak_responseObjectContainsDataLayer:responseObject]) {
-            [self croak_updateWithResponseObject:responseObject];
+            [self croak_mergeDataLayerFromResponseObject:responseObject];
         }
         if (completion) {
             completion(nil);
@@ -1136,6 +1434,23 @@ typedef NSArray<NSDictionary<NSString *, id> *> * _Nonnull (^CroakAppDataUsersBu
     }
     self.croak_loaded = YES;
 
+}
+
+- (void)croak_mergeDataLayerFromResponseObject:(id)responseObject {
+    NSMutableDictionary<NSString *, id> *responseDataLayer = [self croak_mutableDataLayerFromResponseObject:responseObject];
+    if (!responseDataLayer.count) {
+        return;
+    }
+    if (!self.croak_dataLayer) {
+        self.croak_dataLayer = [NSMutableDictionary dictionary];
+    }
+
+    [responseDataLayer enumerateKeysAndObjectsUsingBlock:^(NSString *key, id value, BOOL *stop) {
+        if (key && value) {
+            self.croak_dataLayer[key] = value;
+        }
+    }];
+    self.croak_loaded = YES;
 }
 
 - (NSMutableDictionary<NSString *, id> *)croak_mutableDataLayerFromResponseObject:(id)responseObject {
@@ -1186,7 +1501,7 @@ typedef NSArray<NSDictionary<NSString *, id> *> * _Nonnull (^CroakAppDataUsersBu
         return YES;
     }
 
-    NSArray<NSString *> *dataKeys = @[@"hok", @"tqdee", @"fcfmx", @"zfbo", @"lcknfxsa"];
+    NSArray<NSString *> *dataKeys = @[@"hok", @"tqdee", @"fcfmx", @"sfn", @"comments", @"zfbo", @"lcknfxsa"];
     for (NSString *key in dataKeys) {
         if (dictionary[key]) {
             return YES;
@@ -1288,12 +1603,22 @@ typedef NSArray<NSDictionary<NSString *, id> *> * _Nonnull (^CroakAppDataUsersBu
     return [self croak_dictionaryRecordsForKey:@"lcknfxsa"];
 }
 
+- (NSArray<NSDictionary<NSString *, id> *> *)croak_commentRecords {
+    NSMutableArray<NSDictionary<NSString *, id> *> *records = [[self croak_dictionaryRecordsForKey:@"sfn"] mutableCopy];
+    [records addObjectsFromArray:[self croak_dictionaryRecordsForKey:@"comments"]];
+    return records ?: @[];
+}
+
 - (NSArray<NSDictionary<NSString *, id> *> *)croak_localChatMessageRecords {
     return [self croak_localDictionaryRecordsForKey:CroakAppDataStoreLocalChatMessagesDefaultsKey];
 }
 
 - (NSString *)croak_postUserIdFromPostInfo:(NSDictionary<NSString *, id> *)postInfo {
-    return [self croak_normalizedIdFromValue:postInfo[@"fegg"]];
+    NSString *userId = [self croak_normalizedIdFromValue:postInfo[@"fegg"]];
+    if (userId.length == 0) {
+        userId = [self croak_normalizedIdFromValue:postInfo[@"userId"]];
+    }
+    return userId;
 }
 
 - (NSString *)croak_postCreatedAtFromPostInfo:(NSDictionary<NSString *, id> *)postInfo {
@@ -1301,11 +1626,19 @@ typedef NSArray<NSDictionary<NSString *, id> *> * _Nonnull (^CroakAppDataUsersBu
 }
 
 - (NSString *)croak_postIdFromPostInfo:(NSDictionary<NSString *, id> *)postInfo {
-    return [self croak_stringFromValue:postInfo[@"uxicmgnb"]];
+    NSString *postId = [self croak_stringFromValue:postInfo[@"uxicmgnb"]];
+    if (postId.length == 0) {
+        postId = [self croak_stringFromValue:postInfo[@"id"]];
+    }
+    return postId;
 }
 
 - (NSString *)croak_chatSessionIdFromSessionInfo:(NSDictionary<NSString *, id> *)sessionInfo {
-    return [self croak_stringFromValue:sessionInfo[@"cwkxbxdk"]];
+    NSString *sessionId = [self croak_stringFromValue:sessionInfo[@"cwkxbxdk"]];
+    if (sessionId.length == 0) {
+        sessionId = [self croak_stringFromValue:sessionInfo[@"id"]];
+    }
+    return sessionId;
 }
 
 - (NSString *)croak_chatSessionCreatedAtFromSessionInfo:(NSDictionary<NSString *, id> *)sessionInfo {
@@ -1313,15 +1646,26 @@ typedef NSArray<NSDictionary<NSString *, id> *> * _Nonnull (^CroakAppDataUsersBu
 }
 
 - (NSString *)croak_chatSessionUserIdFromSessionInfo:(NSDictionary<NSString *, id> *)sessionInfo {
-    return [self croak_normalizedIdFromValue:sessionInfo[@"ztbp"]];
+    NSString *userId = [self croak_normalizedIdFromValue:sessionInfo[@"ztbp"]];
+    if (userId.length == 0) {
+        userId = [self croak_normalizedIdFromValue:sessionInfo[@"userId"]];
+    }
+    return userId;
 }
 
 - (NSString *)croak_chatSessionTargetUserIdFromSessionInfo:(NSDictionary<NSString *, id> *)sessionInfo {
-    return [self croak_normalizedIdFromValue:sessionInfo[@"cy"]];
+    NSString *userId = [self croak_normalizedIdFromValue:sessionInfo[@"cy"]];
+    if (userId.length == 0) {
+        userId = [self croak_normalizedIdFromValue:sessionInfo[@"targetUserId"]];
+    }
+    return userId;
 }
 
 - (NSArray<NSString *> *)croak_chatSessionParticipantIdsFromSessionInfo:(NSDictionary<NSString *, id> *)sessionInfo {
     id participantIds = sessionInfo[@"bwaayooy"];
+    if (![participantIds isKindOfClass:NSArray.class]) {
+        participantIds = sessionInfo[@"participantIds"];
+    }
     if (![participantIds isKindOfClass:NSArray.class]) {
         return @[];
     }
@@ -1395,19 +1739,35 @@ typedef NSArray<NSDictionary<NSString *, id> *> * _Nonnull (^CroakAppDataUsersBu
 }
 
 - (NSString *)croak_chatSessionLastMessageFromSessionInfo:(NSDictionary<NSString *, id> *)sessionInfo {
-    return [self croak_stringFromValue:sessionInfo[@"lqoh"]];
+    NSString *lastMessage = [self croak_stringFromValue:sessionInfo[@"lqoh"]];
+    if (lastMessage.length == 0) {
+        lastMessage = [self croak_stringFromValue:sessionInfo[@"lastMessage"]];
+    }
+    return lastMessage;
 }
 
 - (NSString *)croak_chatSessionLastMessageTimeFromSessionInfo:(NSDictionary<NSString *, id> *)sessionInfo {
-    return [self croak_stringFromValue:sessionInfo[@"xhzj"]];
+    NSString *lastMessageTime = [self croak_stringFromValue:sessionInfo[@"xhzj"]];
+    if (lastMessageTime.length == 0) {
+        lastMessageTime = [self croak_stringFromValue:sessionInfo[@"lastMessageTime"]];
+    }
+    return lastMessageTime;
 }
 
 - (NSString *)croak_chatMessageSessionIdFromMessageInfo:(NSDictionary<NSString *, id> *)messageInfo {
-    return [self croak_stringFromValue:messageInfo[@"uvz"]];
+    NSString *sessionId = [self croak_stringFromValue:messageInfo[@"uvz"]];
+    if (sessionId.length == 0) {
+        sessionId = [self croak_stringFromValue:messageInfo[@"sessionId"]];
+    }
+    return sessionId;
 }
 
 - (NSString *)croak_chatMessageContentFromMessageInfo:(NSDictionary<NSString *, id> *)messageInfo {
-    return [self croak_stringFromValue:messageInfo[@"syuvoah"]];
+    NSString *content = [self croak_stringFromValue:messageInfo[@"syuvoah"]];
+    if (content.length == 0) {
+        content = [self croak_stringFromValue:messageInfo[@"content"]];
+    }
+    return content;
 }
 
 - (NSString *)croak_chatMessageSentAtFromMessageInfo:(NSDictionary<NSString *, id> *)messageInfo {
@@ -1415,7 +1775,110 @@ typedef NSArray<NSDictionary<NSString *, id> *> * _Nonnull (^CroakAppDataUsersBu
     if (sentAt.length == 0) {
         sentAt = [self croak_stringFromValue:messageInfo[@"bhvw"]];
     }
+    if (sentAt.length == 0) {
+        sentAt = [self croak_stringFromValue:messageInfo[@"sentAt"]];
+    }
+    if (sentAt.length == 0) {
+        sentAt = [self croak_stringFromValue:messageInfo[@"createdAt"]];
+    }
     return sentAt;
+}
+
+- (NSString *)croak_chatMessageSenderUserIdFromMessageInfo:(NSDictionary<NSString *, id> *)messageInfo {
+    NSString *senderUserId = [self croak_normalizedIdFromValue:messageInfo[@"jhrrdwm"]];
+    if (senderUserId.length == 0) {
+        senderUserId = [self croak_normalizedIdFromValue:messageInfo[@"senderId"]];
+    }
+    if (senderUserId.length == 0) {
+        senderUserId = [self croak_normalizedIdFromValue:messageInfo[@"userId"]];
+    }
+    return senderUserId;
+}
+
+- (NSString *)croak_commentPostIdFromCommentInfo:(NSDictionary<NSString *, id> *)commentInfo {
+    NSString *postId = [self croak_stringFromValue:commentInfo[@"yuirmfx"]];
+    if (postId.length == 0) {
+        postId = [self croak_stringFromValue:commentInfo[@"postId"]];
+    }
+    if (postId.length == 0) {
+        postId = [self croak_stringFromValue:commentInfo[@"wuzm"]];
+    }
+    return postId;
+}
+
+- (NSString *)croak_commentUserIdFromCommentInfo:(NSDictionary<NSString *, id> *)commentInfo {
+    NSString *userId = [self croak_normalizedIdFromValue:commentInfo[@"twcxf"]];
+    if (userId.length == 0) {
+        userId = [self croak_normalizedIdFromValue:commentInfo[@"userId"]];
+    }
+    if (userId.length == 0) {
+        userId = [self croak_normalizedIdFromValue:commentInfo[@"fegg"]];
+    }
+    return userId;
+}
+
+- (NSString *)croak_commentContentFromCommentInfo:(NSDictionary<NSString *, id> *)commentInfo {
+    NSString *content = [self croak_stringFromValue:commentInfo[@"ycluiw"]];
+    if (content.length == 0) {
+        content = [self croak_stringFromValue:commentInfo[@"content"]];
+    }
+    if (content.length == 0) {
+        content = [self croak_stringFromValue:commentInfo[@"hctnqmww"]];
+    }
+    return content;
+}
+
+- (NSString *)croak_commentCreatedAtFromCommentInfo:(NSDictionary<NSString *, id> *)commentInfo {
+    NSString *createdAt = [self croak_stringFromValue:commentInfo[@"ua"]];
+    if (createdAt.length == 0) {
+        createdAt = [self croak_stringFromValue:commentInfo[@"createdAt"]];
+    }
+    if (createdAt.length == 0) {
+        createdAt = [self croak_stringFromValue:commentInfo[@"jumog"]];
+    }
+    return createdAt;
+}
+
+- (NSString *)croak_commentIdFromCommentInfo:(NSDictionary<NSString *, id> *)commentInfo {
+    NSString *commentId = [self croak_stringFromValue:commentInfo[@"wwhlmup"]];
+    if (commentId.length == 0) {
+        commentId = [self croak_stringFromValue:commentInfo[@"id"]];
+    }
+    return commentId;
+}
+
+- (NSNumber *)croak_commentCountNumberFromPostInfo:(NSDictionary<NSString *, id> *)postInfo {
+    id commentCount = postInfo[@"gla"];
+    if (!commentCount) {
+        commentCount = postInfo[@"commentsCount"];
+    }
+    if ([commentCount isKindOfClass:NSNumber.class]) {
+        return commentCount;
+    }
+    if ([commentCount isKindOfClass:NSString.class] && [(NSString *)commentCount length] > 0) {
+        return @([(NSString *)commentCount integerValue]);
+    }
+    return nil;
+}
+
+- (void)croak_setCommentCount:(NSInteger)commentCount inPostInfo:(NSMutableDictionary<NSString *, id> *)postInfo {
+    NSNumber *countNumber = @(MAX(0, commentCount));
+    postInfo[@"gla"] = countNumber;
+    if (postInfo[@"commentsCount"]) {
+        postInfo[@"commentsCount"] = countNumber;
+    }
+}
+
+- (void)croak_restoreCommentCountNumber:(NSNumber *)commentCount inPostInfo:(NSMutableDictionary<NSString *, id> *)postInfo {
+    if (commentCount) {
+        postInfo[@"gla"] = commentCount;
+        if (postInfo[@"commentsCount"]) {
+            postInfo[@"commentsCount"] = commentCount;
+        }
+    } else {
+        [postInfo removeObjectForKey:@"gla"];
+        [postInfo removeObjectForKey:@"commentsCount"];
+    }
 }
 
 - (NSMutableDictionary<NSString *, id> *)croak_mutablePostMatchingPostInfo:(NSDictionary<NSString *, id> *)postInfo {
@@ -1448,6 +1911,122 @@ typedef NSArray<NSDictionary<NSString *, id> *> * _Nonnull (^CroakAppDataUsersBu
         return mutablePosts;
     }
     return nil;
+}
+
+- (NSMutableArray *)croak_mutableCommentsArrayCreatingIfNeeded:(BOOL)createIfNeeded {
+    if (!self.croak_dataLayer && createIfNeeded) {
+        self.croak_dataLayer = [NSMutableDictionary dictionary];
+    }
+
+    id comments = self.croak_dataLayer[@"sfn"];
+    if ([comments isKindOfClass:NSMutableArray.class]) {
+        return comments;
+    }
+    if ([comments isKindOfClass:NSArray.class]) {
+        NSMutableArray *mutableComments = [comments mutableCopy];
+        self.croak_dataLayer[@"sfn"] = mutableComments;
+        return mutableComments;
+    }
+    if (createIfNeeded) {
+        NSMutableArray *mutableComments = [NSMutableArray array];
+        self.croak_dataLayer[@"sfn"] = mutableComments;
+        return mutableComments;
+    }
+    return nil;
+}
+
+- (NSArray<NSDictionary<NSString *, id> *> *)croak_postCommentRecordsFromPostInfo:(NSDictionary<NSString *, id> *)postInfo {
+    id comments = postInfo[@"comments"];
+    if (![comments isKindOfClass:NSArray.class]) {
+        return @[];
+    }
+
+    NSMutableArray<NSDictionary<NSString *, id> *> *validComments = [NSMutableArray array];
+    for (id commentInfo in (NSArray *)comments) {
+        if ([commentInfo isKindOfClass:NSDictionary.class]) {
+            [validComments addObject:commentInfo];
+        }
+    }
+    return validComments;
+}
+
+- (NSMutableArray *)croak_mutablePostCommentsArrayCreatingIfNeeded:(BOOL)createIfNeeded
+                                                       inPostInfo:(NSMutableDictionary<NSString *, id> *)postInfo {
+    id comments = postInfo[@"comments"];
+    if ([comments isKindOfClass:NSMutableArray.class]) {
+        return comments;
+    }
+    if ([comments isKindOfClass:NSArray.class]) {
+        NSMutableArray *mutableComments = [comments mutableCopy];
+        postInfo[@"comments"] = mutableComments;
+        return mutableComments;
+    }
+    if (createIfNeeded) {
+        NSMutableArray *mutableComments = [NSMutableArray array];
+        postInfo[@"comments"] = mutableComments;
+        return mutableComments;
+    }
+    return nil;
+}
+
+- (void)croak_removeCommentMatchingId:(NSString *)commentId fromComments:(NSMutableArray *)comments {
+    if (commentId.length == 0 || ![comments isKindOfClass:NSMutableArray.class]) {
+        return;
+    }
+
+    for (NSInteger index = (NSInteger)comments.count - 1; index >= 0; index--) {
+        id commentInfo = comments[(NSUInteger)index];
+        if (![commentInfo isKindOfClass:NSDictionary.class]) {
+            continue;
+        }
+
+        if ([[self croak_commentIdFromCommentInfo:(NSDictionary *)commentInfo] isEqualToString:commentId]) {
+            [comments removeObjectAtIndex:(NSUInteger)index];
+        }
+    }
+}
+
+- (NSDictionary<NSString *, id> *)croak_commentWithId:(NSString *)commentId
+                                              forPost:(NSDictionary<NSString *, id> *)postInfo {
+    if (commentId.length == 0) {
+        return nil;
+    }
+
+    for (NSDictionary<NSString *, id> *commentInfo in [self croak_commentsForPost:postInfo]) {
+        if ([[self croak_commentIdFromCommentInfo:commentInfo] isEqualToString:commentId]) {
+            return commentInfo;
+        }
+    }
+    return nil;
+}
+
+- (void)croak_updateCommentCountsFromCurrentComments {
+    NSMutableArray *posts = [self croak_mutablePostsArray];
+    if (!posts.count) {
+        return;
+    }
+
+    for (NSUInteger index = 0; index < posts.count; index++) {
+        id postInfo = posts[index];
+        if (![postInfo isKindOfClass:NSDictionary.class]) {
+            continue;
+        }
+
+        NSMutableDictionary<NSString *, id> *mutablePostInfo = [postInfo isKindOfClass:NSMutableDictionary.class] ? postInfo : [postInfo mutableCopy];
+        if (mutablePostInfo != postInfo) {
+            posts[index] = mutablePostInfo;
+        }
+
+        NSInteger commentCount = [self croak_commentsForPost:mutablePostInfo].count;
+        if (commentCount == 0) {
+            continue;
+        }
+
+        NSNumber *storedCommentCount = [self croak_commentCountNumberFromPostInfo:mutablePostInfo];
+        if (!storedCommentCount || commentCount > storedCommentCount.integerValue) {
+            [self croak_setCommentCount:commentCount inPostInfo:mutablePostInfo];
+        }
+    }
 }
 
 - (NSArray *)croak_likedUserIdsFromPostInfo:(NSDictionary<NSString *, id> *)postInfo {
@@ -1601,8 +2180,235 @@ typedef NSArray<NSDictionary<NSString *, id> *> * _Nonnull (^CroakAppDataUsersBu
     [mutableRelations addObjectsFromArray:relations];
 }
 
+- (void)croak_removeDeletedAccountDataForUserId:(NSString *)userId account:(NSString *)account {
+    NSString *targetUserId = [self croak_normalizedIdFromValue:userId];
+    if (targetUserId.length == 0) {
+        return;
+    }
+
+    [self croak_removeFollowRelationsForUserId:targetUserId];
+    [self croak_removePostDataForUserId:targetUserId];
+    NSSet<NSString *> *removedSessionIds = [self croak_removeChatSessionsForUserId:targetUserId];
+    [self croak_removeChatMessagesForUserId:targetUserId removedSessionIds:removedSessionIds];
+    [self croak_removeLocalChatMessagesForUserId:targetUserId removedSessionIds:removedSessionIds];
+    [self croak_removeBlockedUserReferencesForAccount:account userId:targetUserId];
+}
+
+- (void)croak_removePostDataForUserId:(NSString *)userId {
+    NSMutableArray *posts = [self croak_mutablePostsArray];
+    if (!posts) {
+        return;
+    }
+
+    NSMutableSet<NSString *> *removedPostIds = [NSMutableSet set];
+    for (NSInteger index = (NSInteger)posts.count - 1; index >= 0; index--) {
+        id postInfo = posts[(NSUInteger)index];
+        if (![postInfo isKindOfClass:NSDictionary.class]) {
+            continue;
+        }
+
+        if ([[self croak_postUserIdFromPostInfo:postInfo] isEqualToString:userId]) {
+            NSString *postId = [self croak_postIdFromPostInfo:postInfo];
+            if (postId.length > 0) {
+                [removedPostIds addObject:postId];
+            }
+            [posts removeObjectAtIndex:(NSUInteger)index];
+            continue;
+        }
+
+        NSMutableDictionary *mutablePostInfo = [postInfo isKindOfClass:NSMutableDictionary.class] ? postInfo : [postInfo mutableCopy];
+        if (mutablePostInfo != postInfo) {
+            posts[(NSUInteger)index] = mutablePostInfo;
+        }
+        NSMutableArray *likedUserIds = [self croak_mutableLikedUserIdsInPostInfo:mutablePostInfo creatingIfNeeded:NO];
+        [self croak_removeUserId:userId fromLikedUserIds:likedUserIds];
+    }
+    [self croak_removeCommentsForUserId:userId removedPostIds:removedPostIds];
+}
+
+- (void)croak_removeCommentsForUserId:(NSString *)userId removedPostIds:(NSSet<NSString *> *)removedPostIds {
+    NSMutableArray *comments = [self croak_mutableCommentsArrayCreatingIfNeeded:NO];
+    if (comments) {
+        [self croak_removeCommentsForUserId:userId
+                             removedPostIds:removedPostIds
+                              fromComments:comments];
+    }
+
+    for (NSMutableDictionary<NSString *, id> *postInfo in [self croak_mutablePostsArray]) {
+        if (![postInfo isKindOfClass:NSMutableDictionary.class]) {
+            continue;
+        }
+
+        NSMutableArray *postComments = [self croak_mutablePostCommentsArrayCreatingIfNeeded:NO
+                                                                                inPostInfo:postInfo];
+        [self croak_removeCommentsForUserId:userId
+                             removedPostIds:removedPostIds
+                              fromComments:postComments];
+    }
+}
+
+- (void)croak_removeCommentsForUserId:(NSString *)userId
+                       removedPostIds:(NSSet<NSString *> *)removedPostIds
+                        fromComments:(NSMutableArray *)comments {
+    if (![comments isKindOfClass:NSMutableArray.class]) {
+        return;
+    }
+
+    for (NSInteger index = (NSInteger)comments.count - 1; index >= 0; index--) {
+        id commentInfo = comments[(NSUInteger)index];
+        if (![commentInfo isKindOfClass:NSDictionary.class]) {
+            continue;
+        }
+
+        NSString *commentUserId = [self croak_commentUserIdFromCommentInfo:commentInfo];
+        NSString *commentPostId = [self croak_commentPostIdFromCommentInfo:commentInfo];
+        if ([commentUserId isEqualToString:userId] ||
+            (commentPostId.length > 0 && [removedPostIds containsObject:commentPostId])) {
+            [comments removeObjectAtIndex:(NSUInteger)index];
+        }
+    }
+}
+
+- (NSSet<NSString *> *)croak_removeChatSessionsForUserId:(NSString *)userId {
+    NSMutableArray *sessions = [self croak_mutableChatSessionsArray];
+    if (!sessions) {
+        return [NSSet set];
+    }
+
+    NSMutableSet<NSString *> *removedSessionIds = [NSMutableSet set];
+    for (NSInteger index = (NSInteger)sessions.count - 1; index >= 0; index--) {
+        id sessionInfo = sessions[(NSUInteger)index];
+        if (![sessionInfo isKindOfClass:NSDictionary.class]) {
+            continue;
+        }
+
+        if (![self croak_chatSession:sessionInfo containsUserId:userId]) {
+            continue;
+        }
+
+        NSString *sessionId = [self croak_chatSessionIdFromSessionInfo:sessionInfo];
+        if (sessionId.length > 0) {
+            [removedSessionIds addObject:sessionId];
+        }
+        [sessions removeObjectAtIndex:(NSUInteger)index];
+    }
+    return [removedSessionIds copy];
+}
+
+- (void)croak_removeChatMessagesForUserId:(NSString *)userId removedSessionIds:(NSSet<NSString *> *)removedSessionIds {
+    NSMutableArray *messages = [self croak_mutableChatMessagesArray];
+    if (!messages) {
+        return;
+    }
+
+    for (NSInteger index = (NSInteger)messages.count - 1; index >= 0; index--) {
+        id messageInfo = messages[(NSUInteger)index];
+        if (![messageInfo isKindOfClass:NSDictionary.class]) {
+            continue;
+        }
+
+        NSString *sessionId = [self croak_chatMessageSessionIdFromMessageInfo:messageInfo];
+        NSString *senderUserId = [self croak_chatMessageSenderUserIdFromMessageInfo:messageInfo];
+        if ((sessionId.length > 0 && [removedSessionIds containsObject:sessionId]) ||
+            [senderUserId isEqualToString:userId]) {
+            [messages removeObjectAtIndex:(NSUInteger)index];
+        }
+    }
+}
+
+- (void)croak_removeLocalChatMessagesForUserId:(NSString *)userId removedSessionIds:(NSSet<NSString *> *)removedSessionIds {
+    id storedValue = [NSUserDefaults.standardUserDefaults objectForKey:CroakAppDataStoreLocalChatMessagesDefaultsKey];
+    if (![storedValue isKindOfClass:NSArray.class]) {
+        return;
+    }
+
+    NSMutableArray<NSDictionary<NSString *, id> *> *remainingMessages = [NSMutableArray array];
+    for (id messageInfo in (NSArray *)storedValue) {
+        if (![messageInfo isKindOfClass:NSDictionary.class]) {
+            continue;
+        }
+
+        NSString *sessionId = [self croak_chatMessageSessionIdFromMessageInfo:messageInfo];
+        NSString *senderUserId = [self croak_chatMessageSenderUserIdFromMessageInfo:messageInfo];
+        NSString *ownerUserId = [self croak_normalizedIdFromValue:((NSDictionary *)messageInfo)[@"croakLocalOwnerUserId"]];
+        if ((sessionId.length > 0 && [removedSessionIds containsObject:sessionId]) ||
+            [senderUserId isEqualToString:userId] ||
+            [ownerUserId isEqualToString:userId]) {
+            continue;
+        }
+
+        [remainingMessages addObject:messageInfo];
+    }
+
+    [NSUserDefaults.standardUserDefaults setObject:remainingMessages
+                                            forKey:CroakAppDataStoreLocalChatMessagesDefaultsKey];
+    [NSUserDefaults.standardUserDefaults synchronize];
+}
+
+- (void)croak_removeBlockedUserReferencesForAccount:(NSString *)account userId:(NSString *)userId {
+    NSMutableDictionary<NSString *, NSMutableArray<NSString *> *> *blockedUserIdsByAccount = [self croak_mutableBlockedUserIdsByAccount];
+    NSString *ownerAccount = [self croak_normalizedAccountKey:account];
+    if (ownerAccount.length > 0) {
+        [blockedUserIdsByAccount removeObjectForKey:ownerAccount];
+    }
+
+    NSArray<NSString *> *accounts = blockedUserIdsByAccount.allKeys;
+    for (NSString *blockedAccount in accounts) {
+        NSMutableArray<NSString *> *blockedUserIds = blockedUserIdsByAccount[blockedAccount];
+        if (![blockedUserIds isKindOfClass:NSMutableArray.class]) {
+            continue;
+        }
+
+        [self croak_removeUserId:userId fromLikedUserIds:blockedUserIds];
+        if (blockedUserIds.count == 0) {
+            [blockedUserIdsByAccount removeObjectForKey:blockedAccount];
+        }
+    }
+
+    [self croak_saveBlockedUserIdsByAccount:blockedUserIdsByAccount];
+}
+
+- (NSMutableArray *)croak_mutableChatSessionsArray {
+    id sessions = self.croak_dataLayer[@"zfbo"];
+    if ([sessions isKindOfClass:NSMutableArray.class]) {
+        return sessions;
+    }
+    if ([sessions isKindOfClass:NSArray.class]) {
+        NSMutableArray *mutableSessions = [sessions mutableCopy];
+        self.croak_dataLayer[@"zfbo"] = mutableSessions;
+        return mutableSessions;
+    }
+    return nil;
+}
+
+- (NSMutableArray *)croak_mutableChatMessagesArray {
+    id messages = self.croak_dataLayer[@"lcknfxsa"];
+    if ([messages isKindOfClass:NSMutableArray.class]) {
+        return messages;
+    }
+    if ([messages isKindOfClass:NSArray.class]) {
+        NSMutableArray *mutableMessages = [messages mutableCopy];
+        self.croak_dataLayer[@"lcknfxsa"] = mutableMessages;
+        return mutableMessages;
+    }
+    return nil;
+}
+
+- (void)croak_restoreUserDefaultsObject:(id)object forKey:(NSString *)key {
+    if (object) {
+        [NSUserDefaults.standardUserDefaults setObject:object forKey:key];
+    } else {
+        [NSUserDefaults.standardUserDefaults removeObjectForKey:key];
+    }
+    [NSUserDefaults.standardUserDefaults synchronize];
+}
+
 - (NSString *)croak_userIdFromUserInfo:(NSDictionary<NSString *, id> *)userInfo {
-    return [self croak_normalizedIdFromValue:userInfo[@"iif"]];
+    NSString *userId = [self croak_normalizedIdFromValue:userInfo[@"iif"]];
+    if (userId.length == 0) {
+        userId = [self croak_normalizedIdFromValue:userInfo[@"id"]];
+    }
+    return userId;
 }
 
 - (NSString *)croak_userIdForAccount:(NSString *)account {
@@ -1713,6 +2519,14 @@ typedef NSArray<NSDictionary<NSString *, id> *> * _Nonnull (^CroakAppDataUsersBu
         rawName = [(NSNumber *)value stringValue];
     }
     return [[self croak_trimmedString:rawName] length] > 0 ? rawName : @"";
+}
+
+- (void)croak_restoreObject:(id)object forKey:(NSString *)key inDictionary:(NSMutableDictionary<NSString *, id> *)dictionary {
+    if (object) {
+        dictionary[key] = object;
+    } else {
+        [dictionary removeObjectForKey:key];
+    }
 }
 
 - (NSError *)croak_errorWithCode:(NSInteger)code message:(NSString *)message {
