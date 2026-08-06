@@ -226,8 +226,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Croak/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Croak;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Croak uses the camera for video calls.";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Croak uses the microphone for video calls.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Croak needs your permission to use the camera so you can make video calls with friends.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Croak needs your permission to use the microphone so you can make voice calls with friends.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Croak needs your permission to access your photo library so you can post updates, send chat images, and update your profile photo.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -269,8 +270,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Croak/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Croak;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Croak uses the camera for video calls.";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Croak uses the microphone for video calls.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Croak needs your permission to use the camera so you can make video calls with friends.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Croak needs your permission to use the microphone so you can make voice calls with friends.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Croak needs your permission to access your photo library so you can post updates, send chat images, and update your profile photo.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

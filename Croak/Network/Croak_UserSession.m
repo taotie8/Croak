@@ -2,6 +2,7 @@
 
 static NSString * const CroakUserSessionAccessTokenKey = @"CroakUserSessionAccessTokenKey";
 static NSString * const CroakUserSessionCurrentAccountKey = @"CroakUserSessionCurrentAccountKey";
+static NSString * const CroakUserSessionCompletedProfilePrefix = @"CroakUserSessionCompletedProfile.";
 
 @implementation Croak_UserSession
 
@@ -40,6 +41,37 @@ static NSString * const CroakUserSessionCurrentAccountKey = @"CroakUserSessionCu
         [defaults removeObjectForKey:CroakUserSessionCurrentAccountKey];
     }
     [defaults synchronize];
+}
+
++ (BOOL)croak_hasCompletedRequiredProfileForAccount:(NSString *)account {
+    NSString *profileKey = [self croak_completedProfileKeyForAccount:account];
+    if (profileKey.length == 0) {
+        return NO;
+    }
+    return [NSUserDefaults.standardUserDefaults boolForKey:profileKey];
+}
+
++ (void)croak_setCompletedRequiredProfile:(BOOL)completed forAccount:(NSString *)account {
+    NSString *profileKey = [self croak_completedProfileKeyForAccount:account];
+    if (profileKey.length == 0) {
+        return;
+    }
+
+    NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
+    if (completed) {
+        [defaults setBool:YES forKey:profileKey];
+    } else {
+        [defaults removeObjectForKey:profileKey];
+    }
+    [defaults synchronize];
+}
+
++ (NSString *)croak_completedProfileKeyForAccount:(NSString *)account {
+    NSString *trimmedAccount = [account isKindOfClass:NSString.class] ? [account stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet] : @"";
+    if (trimmedAccount.length == 0) {
+        return @"";
+    }
+    return [CroakUserSessionCompletedProfilePrefix stringByAppendingString:[trimmedAccount lowercaseString]];
 }
 
 @end

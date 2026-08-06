@@ -155,12 +155,12 @@
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="qNj-tb-utc" secondAttribute="trailing" id="GNq-AD-i9I"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="gil-wX-8En" secondAttribute="trailing" constant="16" id="I7Y-Yn-uhq"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="qfM-ZB-A8u" secondAttribute="trailing" constant="16" id="J4y-9j-yRL"/>
+                <constraint firstItem="DIc-5k-tfn" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Ve7-xb-1HD"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="aJR-hC-xPe" secondAttribute="trailing" id="YL7-I2-Ves"/>
                 <constraint firstItem="gil-wX-8En" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="coK-Cr-UgF"/>
                 <constraint firstItem="aJR-hC-xPe" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="eDt-qs-U5M"/>
                 <constraint firstItem="gil-wX-8En" firstAttribute="top" secondItem="wH2-Kh-BKK" secondAttribute="bottom" constant="32" id="ehv-ZX-9zX"/>
                 <constraint firstItem="DIc-5k-tfn" firstAttribute="top" secondItem="qfM-ZB-A8u" secondAttribute="bottom" constant="154" id="hEN-bv-xvC"/>
-                <constraint firstItem="DIc-5k-tfn" firstAttribute="centerX" secondItem="qfM-ZB-A8u" secondAttribute="centerX" id="hNZ-kP-YL8"/>
                 <constraint firstItem="wH2-Kh-BKK" firstAttribute="top" secondItem="qNj-tb-utc" secondAttribute="bottom" constant="20" id="qY8-GW-e0y"/>
                 <constraint firstItem="qfM-ZB-A8u" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="sbj-cv-EEP"/>
             </constraints>

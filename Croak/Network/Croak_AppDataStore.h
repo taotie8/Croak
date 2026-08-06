@@ -15,6 +15,8 @@ typedef void (^CroakAppDataMessageCompletion)(NSDictionary<NSString *, id> * _Nu
 typedef void (^CroakAppDataCommentCompletion)(NSDictionary<NSString *, id> * _Nullable commentInfo,
                                               NSDictionary<NSString *, id> * _Nullable postInfo,
                                               NSError * _Nullable error);
+typedef void (^CroakAppDataPostCompletion)(NSDictionary<NSString *, id> * _Nullable postInfo,
+                                           NSError * _Nullable error);
 
 @interface Croak_AppDataStore : NSObject
 
@@ -37,6 +39,16 @@ typedef void (^CroakAppDataCommentCompletion)(NSDictionary<NSString *, id> * _Nu
 - (void)croak_updateCurrentUserWithDisplayName:(NSString *)displayName
                                       birthday:(nullable NSDate *)birthday
                                     completion:(CroakAppDataUserCompletion)completion;
+
+- (void)croak_addDiamonds:(NSInteger)diamonds
+                  account:(NSString *)account
+               completion:(CroakAppDataUserCompletion)completion;
+
+- (void)croak_publishPostWithContent:(NSString *)content
+                            imageName:(nullable NSString *)imageName
+                              account:(NSString *)account
+                                 cost:(NSInteger)cost
+                           completion:(CroakAppDataPostCompletion)completion;
 
 - (void)croak_deleteAccount:(NSString *)account
                   completion:(CroakAppDataCompletion)completion;

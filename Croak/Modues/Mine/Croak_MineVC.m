@@ -88,7 +88,7 @@ static CGFloat const CroakEmptyStateImageLength = 154.0;
     if (!cell) {
         cell = [[NSBundle mainBundle] loadNibNamed:CroakMineSquareCellNibName owner:nil options:nil].firstObject;
     }
-
+    [cell.croak_moreButton setHidden:YES];
     NSDictionary<NSString *, id> *postItem = self.croak_posts[indexPath.row];
     NSDictionary<NSString *, id> *postInfo = [postItem[@"post"] isKindOfClass:NSDictionary.class] ? postItem[@"post"] : @{};
     NSDictionary<NSString *, id> *userInfo = [postItem[@"user"] isKindOfClass:NSDictionary.class] ? postItem[@"user"] : @{};

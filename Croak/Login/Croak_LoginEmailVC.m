@@ -3,7 +3,6 @@
 #import "Croak_AppDataStore.h"
 #import "Croak_UserSession.h"
 #import "Croak_EditPersonVC.h"
-#import "Croak_TabBarController.h"
 #import "SVProgressHUD.h"
 
 @interface Croak_LoginEmailVC ()
@@ -25,10 +24,9 @@
     
     if (self.croak_login) {
         self.croak_title_label.text = @"Login";
-        [self.croak_button setTitle:@"Login" forState:UIControlStateNormal];
     } else {
         self.croak_title_label.text = @"Sign up";
-        [self.croak_button setTitle:@"Sign up" forState:UIControlStateNormal];
+        [self.croak_button setImage:[UIImage imageNamed:@"croak_sig_up"] forState:UIControlStateNormal];
     }
 
 }
@@ -67,8 +65,12 @@
         }
 
         Croak_UserSession.croak_currentAccount = [self croak_accountFromUserInfo:userInfo fallback:account];
+        if (![self croak_userInfoHasBirthday:userInfo]) {
+            [Croak_UserSession croak_setCompletedRequiredProfile:NO
+                                                       forAccount:Croak_UserSession.croak_currentAccount];
+        }
         [SVProgressHUD showSuccessWithStatus:@"Login successful."];
-        [self croak_showMainInterface];
+        [self croak_showEditProfileWithUserInfo:userInfo];
     }];
 }
 
@@ -84,22 +86,25 @@
         }
 
         Croak_UserSession.croak_currentAccount = [self croak_accountFromUserInfo:userInfo fallback:account];
+        [Croak_UserSession croak_setCompletedRequiredProfile:NO
+                                                   forAccount:Croak_UserSession.croak_currentAccount];
         [SVProgressHUD showSuccessWithStatus:@"Registration successful."];
-        [self.navigationController pushViewController:[Croak_EditPersonVC new] animated:YES];
+        [self croak_showEditProfileWithUserInfo:userInfo];
     }];
 }
 
-- (void)croak_showMainInterface {
-    UIWindow *window = self.view.window ?: UIApplication.sharedApplication.delegate.window;
-    Croak_TabBarController *tabBarController = [[Croak_TabBarController alloc] init];
-    window.rootViewController = tabBarController;
-    [window makeKeyAndVisible];
+- (void)croak_showEditProfileWithUserInfo:(NSDictionary<NSString *, id> *)userInfo {
+    Croak_EditPersonVC *editPersonVC = [[Croak_EditPersonVC alloc] init];
+    editPersonVC.croak_userInfo = userInfo;
+    [self.navigationController pushViewController:editPersonVC animated:YES];
+}
 
-    [UIView transitionWithView:window
-                      duration:0.25
-                      options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:nil
-                    completion:nil];
+- (BOOL)croak_userInfoHasBirthday:(NSDictionary<NSString *, id> *)userInfo {
+    NSString *birthdayText = [self croak_trimmedString:userInfo[@"fzlucn"]];
+    if (birthdayText.length == 0) {
+        birthdayText = [self croak_trimmedString:userInfo[@"birthday"]];
+    }
+    return birthdayText.length > 0;
 }
 
 - (NSString *)croak_accountFromUserInfo:(NSDictionary<NSString *, id> *)userInfo fallback:(NSString *)fallback {

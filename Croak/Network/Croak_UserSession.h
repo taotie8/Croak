@@ -9,6 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (BOOL)croak_isLoggedIn;
 + (void)croak_clearSession;
++ (BOOL)croak_hasCompletedRequiredProfileForAccount:(nullable NSString *)account;
++ (void)croak_setCompletedRequiredProfile:(BOOL)completed forAccount:(nullable NSString *)account;
 
 @end
 

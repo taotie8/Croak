@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *croak_contentLabel;
 @property (weak, nonatomic) IBOutlet UILabel *croak_likeCountLabel;
 @property (weak, nonatomic) IBOutlet UIButton *croak_loveButton;
+@property (weak, nonatomic) IBOutlet UIButton *croak_moreButton;
 @property (nonatomic, copy, nullable) void (^croak_loveActionHandler)(Croak_SquareTableViewCell *cell);
 @property (nonatomic, copy, nullable) void (^croak_avatarActionHandler)(Croak_SquareTableViewCell *cell);
 @property (nonatomic, copy, nullable) void (^croak_moreActionHandler)(Croak_SquareTableViewCell *cell);

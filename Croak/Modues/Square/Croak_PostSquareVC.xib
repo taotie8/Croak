@@ -13,6 +13,8 @@
                 <outlet property="croak_avatarImageView" destination="fnf-kf-QsO" id="post-avatar-image"/>
                 <outlet property="croak_contentTextView" destination="27Y-lN-edY" id="post-content-text"/>
                 <outlet property="croak_imageContentView" destination="HTF-Rn-NtB" id="post-image-content"/>
+                <outlet property="croak_insufficientCoinsContentView" destination="hQ5-ac-8XP" id="post-insufficient-content"/>
+                <outlet property="croak_insufficientCoinsView" destination="Ema-A7-Gma" id="post-insufficient-view"/>
                 <outlet property="croak_nameLabel" destination="8Zt-AS-XmA" id="post-name-label"/>
                 <outlet property="croak_placeholderLabel" destination="Pvl-7h-8fT" id="post-placeholder-label"/>
                 <outlet property="croak_postImageView" destination="kl5-cd-s1B" id="post-image-view"/>
@@ -160,6 +162,15 @@
                         <action selector="croak_postAction:" destination="-1" eventType="touchUpInside" id="post-submit-action"/>
                     </connections>
                 </button>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="diamonds_icon" translatesAutoresizingMaskIntoConstraints="NO" id="9zk-xz-5gT">
+                    <rect key="frame" x="247.66666666666666" y="738" width="24.333333333333343" height="24"/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="49" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Cm-YR-ILe">
+                    <rect key="frame" x="282" y="740" width="17" height="20"/>
+                    <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -173,18 +184,22 @@
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="twf-QQ-2Pb" secondAttribute="trailing" constant="16" id="AZo-YY-wO0"/>
                 <constraint firstItem="twf-QQ-2Pb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="Evo-o1-LVN"/>
                 <constraint firstItem="twf-QQ-2Pb" firstAttribute="top" secondItem="fnf-kf-QsO" secondAttribute="bottom" constant="12" id="H3A-LC-ltX"/>
+                <constraint firstItem="3Cm-YR-ILe" firstAttribute="leading" secondItem="9zk-xz-5gT" secondAttribute="trailing" constant="10" id="Iwg-0c-UNY"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="8DT-GX-s3M" secondAttribute="bottom" constant="12" id="NLb-gJ-XM0"/>
                 <constraint firstItem="HTF-Rn-NtB" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="NmG-FU-7uB"/>
                 <constraint firstItem="rGT-if-nfJ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="OjX-Zr-NHZ"/>
                 <constraint firstItem="Pvl-7h-8fT" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="PlW-nc-fnk"/>
+                <constraint firstItem="9zk-xz-5gT" firstAttribute="trailing" secondItem="8DT-GX-s3M" secondAttribute="trailing" constant="-58" id="QOE-uV-FCe"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="27Y-lN-edY" secondAttribute="trailing" constant="10" id="bPN-CH-GyA"/>
+                <constraint firstItem="3Cm-YR-ILe" firstAttribute="centerY" secondItem="9zk-xz-5gT" secondAttribute="centerY" id="c89-qO-NPI"/>
                 <constraint firstItem="8Zt-AS-XmA" firstAttribute="leading" secondItem="fnf-kf-QsO" secondAttribute="trailing" constant="12" id="eLX-H4-y1I"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="rGT-if-nfJ" secondAttribute="trailing" id="flN-fz-fhL"/>
                 <constraint firstItem="8DT-GX-s3M" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="qMc-Oc-mAt"/>
+                <constraint firstItem="8DT-GX-s3M" firstAttribute="centerY" secondItem="9zk-xz-5gT" secondAttribute="centerY" id="qVa-aG-FLw"/>
                 <constraint firstItem="rGT-if-nfJ" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="vwH-Hv-u24"/>
                 <constraint firstItem="fnf-kf-QsO" firstAttribute="top" secondItem="rGT-if-nfJ" secondAttribute="bottom" constant="20" id="zl4-Jn-mzW"/>
             </constraints>
-            <point key="canvasLocation" x="-19" y="106"/>
+            <point key="canvasLocation" x="-19.083969465648853" y="105.63380281690141"/>
         </view>
         <view contentMode="scaleToFill" id="vU9-vc-G32">
             <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
@@ -250,11 +265,76 @@
             </constraints>
             <point key="canvasLocation" x="698.47328244274809" y="104.92957746478874"/>
         </view>
+        <view contentMode="scaleToFill" id="Ema-A7-Gma">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NF7-gX-e8n">
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hQ5-ac-8XP">
+                    <rect key="frame" x="54.666666666666657" y="255" width="284" height="342"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="croak_enough" translatesAutoresizingMaskIntoConstraints="NO" id="niM-TP-ciX">
+                            <rect key="frame" x="0.0" y="0.0" width="284" height="342"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YFr-RM-Fk3">
+                            <rect key="frame" x="28" y="200" width="75" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="75" id="TNb-I5-eQe"/>
+                                <constraint firstAttribute="height" constant="40" id="grd-XP-p5p"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <connections>
+                                <action selector="croak_cancelInsufficientCoinsViewAction:" destination="-1" eventType="touchUpInside" id="post-insufficient-cancel-action"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YBC-ej-Xmh">
+                            <rect key="frame" x="106" y="200" width="138" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="67n-Em-u97"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <connections>
+                                <action selector="croak_confirmInsufficientCoinsViewAction:" destination="-1" eventType="touchUpInside" id="post-insufficient-confirm-action"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="niM-TP-ciX" secondAttribute="trailing" id="2Jl-k2-aHl"/>
+                        <constraint firstItem="YFr-RM-Fk3" firstAttribute="leading" secondItem="hQ5-ac-8XP" secondAttribute="leading" constant="28" id="5Mr-G5-Jkh"/>
+                        <constraint firstAttribute="trailing" secondItem="YBC-ej-Xmh" secondAttribute="trailing" constant="40" id="7QP-gh-p5P"/>
+                        <constraint firstAttribute="height" constant="342" id="CWe-1X-4jy"/>
+                        <constraint firstAttribute="width" constant="284" id="O3i-Rt-eOl"/>
+                        <constraint firstItem="YBC-ej-Xmh" firstAttribute="leading" secondItem="YFr-RM-Fk3" secondAttribute="trailing" constant="3" id="bSf-ZL-d8a"/>
+                        <constraint firstItem="niM-TP-ciX" firstAttribute="leading" secondItem="hQ5-ac-8XP" secondAttribute="leading" id="f4d-f3-Q5b"/>
+                        <constraint firstItem="niM-TP-ciX" firstAttribute="top" secondItem="hQ5-ac-8XP" secondAttribute="top" id="ghm-KI-4tw"/>
+                        <constraint firstItem="YBC-ej-Xmh" firstAttribute="top" secondItem="hQ5-ac-8XP" secondAttribute="top" constant="200" id="reC-Ab-BYj"/>
+                        <constraint firstItem="YFr-RM-Fk3" firstAttribute="top" secondItem="hQ5-ac-8XP" secondAttribute="top" constant="200" id="zzp-kt-U6m"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="iBR-s0-CJv"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="NF7-gX-e8n" firstAttribute="leading" secondItem="iBR-s0-CJv" secondAttribute="leading" id="1C7-fi-DJU"/>
+                <constraint firstItem="hQ5-ac-8XP" firstAttribute="centerX" secondItem="Ema-A7-Gma" secondAttribute="centerX" id="9Sd-pF-gx9"/>
+                <constraint firstItem="NF7-gX-e8n" firstAttribute="top" secondItem="Ema-A7-Gma" secondAttribute="top" id="EPu-n1-ED7"/>
+                <constraint firstItem="hQ5-ac-8XP" firstAttribute="centerY" secondItem="Ema-A7-Gma" secondAttribute="centerY" id="TY8-gu-yfp"/>
+                <constraint firstItem="iBR-s0-CJv" firstAttribute="trailing" secondItem="NF7-gX-e8n" secondAttribute="trailing" id="bJH-PO-Sfz"/>
+                <constraint firstAttribute="bottom" secondItem="NF7-gX-e8n" secondAttribute="bottom" id="pFQ-SA-nbV"/>
+            </constraints>
+            <point key="canvasLocation" x="1540" y="105"/>
+        </view>
     </objects>
     <resources>
         <image name="croak_add" width="28" height="28"/>
         <image name="croak_avatar" width="72" height="72"/>
         <image name="croak_back" width="28" height="28"/>
+        <image name="croak_enough" width="284" height="342"/>
         <image name="croak_reminder" width="284" height="257.33334350585938"/>
+        <image name="diamonds_icon" width="24.333333969116211" height="24"/>
     </resources>
 </document>

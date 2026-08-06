@@ -2,8 +2,8 @@
 #import "Croak_AgreementLinks.h"
 #import "SVProgressHUD.h"
 
-NSString * const CroakPrivacyPolicyURLString = @"https://croak.app/privacy-policy";
-NSString * const CroakUserAgreementURLString = @"https://croak.app/user-agreement";
+NSString * const CroakPrivacyPolicyURLString = @"https://app.qingwbanl.com/privacy";
+NSString * const CroakUserAgreementURLString = @"https://app.qingwbanl.com/user/agreement";
 
 @implementation Croak_AgreementLinks
 

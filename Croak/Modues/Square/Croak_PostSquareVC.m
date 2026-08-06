@@ -2,10 +2,13 @@
 #import "Croak_PostSquareVC.h"
 #import "Croak_API.h"
 #import "Croak_AppDataStore.h"
+#import "Croak_DiamondsVC.h"
 #import "Croak_UserSession.h"
 #import <PhotosUI/PhotosUI.h>
 #import "SVProgressHUD.h"
 #import "UIImageView+WebCache.h"
+
+static NSInteger const CroakPostSquareCost = 49;
 
 @interface Croak_PostSquareVC () <UITextViewDelegate, UIGestureRecognizerDelegate, PHPickerViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
@@ -18,6 +21,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *croak_postImageView;
 @property (strong, nonatomic) IBOutlet UIView *croak_successView;
 @property (weak, nonatomic) IBOutlet UIView *croak_successContentView;
+@property (strong, nonatomic) IBOutlet UIView *croak_insufficientCoinsView;
+@property (weak, nonatomic) IBOutlet UIView *croak_insufficientCoinsContentView;
 @property (nonatomic, weak) UIButton *croak_postButton;
 @property (nonatomic, weak) UIButton *croak_addImageButton;
 @property (nonatomic, strong, nullable) UIImage *croak_selectedPostImage;
@@ -97,6 +102,18 @@
         return;
     }
 
+    NSString *account = [self croak_trimmedString:Croak_UserSession.croak_currentAccount];
+    if (account.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"Please log in first."];
+        return;
+    }
+
+    NSString *imageName = [self croak_encodedSelectedPostImageIfNeeded];
+    if (self.croak_selectedPostImage && imageName.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"Image does not exist."];
+        return;
+    }
+
     self.croak_postButton = sender ?: self.croak_postButton;
     self.croak_isPosting = YES;
     self.croak_postButton.enabled = NO;
@@ -104,22 +121,34 @@
     [SVProgressHUD showWithStatus:@"Publishing..."];
 
 #if DEBUG
-    NSLog(@"\n[Croak Simulated Post]\naccount: %@\ncontent: %@\nhasImage: %@",
+    NSLog(@"\n[Croak Post]\naccount: %@\ncontent: %@\nhasImage: %@",
           [self croak_trimmedString:Croak_UserSession.croak_currentAccount],
           content,
           self.croak_selectedPostImage ? @"YES" : @"NO");
 #endif
 
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    [[Croak_AppDataStore sharedStore] croak_publishPostWithContent:content
+                                                          imageName:imageName
+                                                            account:account
+                                                               cost:CroakPostSquareCost
+                                                         completion:^(NSDictionary<NSString *,id> *postInfo, NSError *error) {
         [SVProgressHUD dismiss];
         self.croak_isPosting = NO;
         self.croak_postButton.enabled = YES;
         self.croak_addImageButton.enabled = YES;
+        if (error) {
+            if ([[self croak_trimmedString:error.localizedDescription] isEqualToString:@"Not enough diamonds."]) {
+                [self croak_showInsufficientCoinsView];
+            } else {
+                [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+            }
+            return;
+        }
         if (!self.croak_viewVisible) {
             return;
         }
         [self croak_showSuccessView];
-    });
+    }];
 }
 
 - (IBAction)croak_cancelSuccessViewAction:(id)sender {
@@ -130,6 +159,18 @@
     [self croak_resetDraft];
     [self croak_hideSuccessViewWithCompletion:^{
         [self.navigationController popViewControllerAnimated:YES];
+    }];
+}
+
+- (IBAction)croak_cancelInsufficientCoinsViewAction:(id)sender {
+    [self croak_hideInsufficientCoinsView];
+}
+
+- (IBAction)croak_confirmInsufficientCoinsViewAction:(id)sender {
+    [self croak_hideInsufficientCoinsViewWithCompletion:^{
+        Croak_DiamondsVC *diamondsVC = [[Croak_DiamondsVC alloc] init];
+        diamondsVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:diamondsVC animated:YES];
     }];
 }
 
@@ -360,6 +401,42 @@ didFinishPickingMediaWithInfo:(NSDictionary<UIImagePickerControllerInfoKey,id> *
     return @"";
 }
 
+- (NSString *)croak_encodedSelectedPostImageIfNeeded {
+    if (!self.croak_selectedPostImage) {
+        return @"";
+    }
+
+    UIImage *image = [self croak_scaledImage:self.croak_selectedPostImage maxPixelLength:960.0];
+    NSData *imageData = UIImageJPEGRepresentation(image, 0.78);
+    if (!imageData.length) {
+        return @"";
+    }
+    return [@"data:image/jpeg;base64," stringByAppendingString:[imageData base64EncodedStringWithOptions:0]];
+}
+
+- (UIImage *)croak_scaledImage:(UIImage *)image maxPixelLength:(CGFloat)maxPixelLength {
+    if (!image || maxPixelLength <= 0) {
+        return image;
+    }
+
+    CGSize originalSize = image.size;
+    CGFloat longestSide = MAX(originalSize.width, originalSize.height);
+    if (longestSide <= maxPixelLength || longestSide <= 0) {
+        return image;
+    }
+
+    CGFloat scale = maxPixelLength / longestSide;
+    CGSize targetSize = CGSizeMake(floor(originalSize.width * scale), floor(originalSize.height * scale));
+    if (targetSize.width <= 0 || targetSize.height <= 0) {
+        return image;
+    }
+
+    UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithSize:targetSize];
+    return [renderer imageWithActions:^(UIGraphicsImageRendererContext *context) {
+        [image drawInRect:CGRectMake(0, 0, targetSize.width, targetSize.height)];
+    }];
+}
+
 - (void)croak_showSuccessView {
     if (!self.croak_successView.superview) {
         self.croak_successView.frame = self.view.bounds;
@@ -395,6 +472,47 @@ didFinishPickingMediaWithInfo:(NSDictionary<UIImagePickerControllerInfoKey,id> *
     } completion:^(BOOL finished) {
         self.croak_successContentView.transform = CGAffineTransformIdentity;
         [self.croak_successView removeFromSuperview];
+        if (completion) {
+            completion();
+        }
+    }];
+}
+
+- (void)croak_showInsufficientCoinsView {
+    if (!self.croak_insufficientCoinsView.superview) {
+        self.croak_insufficientCoinsView.frame = self.view.bounds;
+        self.croak_insufficientCoinsView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.view addSubview:self.croak_insufficientCoinsView];
+    }
+
+    self.croak_insufficientCoinsView.hidden = NO;
+    self.croak_insufficientCoinsView.alpha = 0.0;
+    self.croak_insufficientCoinsContentView.transform = CGAffineTransformMakeScale(0.82, 0.82);
+    [self.croak_insufficientCoinsView layoutIfNeeded];
+
+    [UIView animateWithDuration:0.28
+                          delay:0
+         usingSpringWithDamping:0.78
+          initialSpringVelocity:0.8
+                        options:UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+        self.croak_insufficientCoinsView.alpha = 1.0;
+        self.croak_insufficientCoinsContentView.transform = CGAffineTransformIdentity;
+    } completion:nil];
+}
+
+- (void)croak_hideInsufficientCoinsView {
+    [self croak_hideInsufficientCoinsViewWithCompletion:nil];
+}
+
+- (void)croak_hideInsufficientCoinsViewWithCompletion:(void (^)(void))completion {
+    [UIView animateWithDuration:0.18
+                     animations:^{
+        self.croak_insufficientCoinsView.alpha = 0.0;
+        self.croak_insufficientCoinsContentView.transform = CGAffineTransformMakeScale(0.92, 0.92);
+    } completion:^(BOOL finished) {
+        self.croak_insufficientCoinsContentView.transform = CGAffineTransformIdentity;
+        [self.croak_insufficientCoinsView removeFromSuperview];
         if (completion) {
             completion();
         }

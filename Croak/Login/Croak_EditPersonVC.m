@@ -4,6 +4,7 @@
 #import "Croak_TabBarController.h"
 #import "Croak_AppDataStore.h"
 #import "Croak_API.h"
+#import "Croak_UserSession.h"
 #import "SVProgressHUD.h"
 #import "UIImageView+WebCache.h"
 
@@ -63,6 +64,14 @@
         [SVProgressHUD showErrorWithStatus:@"Please enter nickname."];
         return;
     }
+    if (!self.croak_selectedBirthday) {
+        [SVProgressHUD showErrorWithStatus:@"Please select your birthday."];
+        return;
+    }
+    if (![self croak_isBirthdayAllowed:self.croak_selectedBirthday]) {
+        [SVProgressHUD showErrorWithStatus:@"You must be 18 years old or above to continue."];
+        return;
+    }
 
     self.croak_isSaving = YES;
     [SVProgressHUD showWithStatus:@"Saving..."];
@@ -77,6 +86,8 @@
         }
 
         self.croak_userInfo = userInfo;
+        [Croak_UserSession croak_setCompletedRequiredProfile:YES
+                                                   forAccount:Croak_UserSession.croak_currentAccount];
         NSString *successMessage = self.croak_didSelectAvatar ? @"Profile updated successfully. Avatar is under review!" : @"Saved.";
         [SVProgressHUD showSuccessWithStatus:successMessage];
         if (self.croak_returnToPreviousPageAfterSave) {
@@ -337,6 +348,13 @@
     NSDateComponents *components = [[NSDateComponents alloc] init];
     components.year = -18;
     return [NSCalendar.currentCalendar dateByAddingComponents:components toDate:NSDate.date options:0] ?: NSDate.date;
+}
+
+- (BOOL)croak_isBirthdayAllowed:(NSDate *)birthday {
+    if (!birthday) {
+        return NO;
+    }
+    return [birthday compare:[self croak_latestAllowedBirthdayDate]] != NSOrderedDescending;
 }
 
 - (NSDate *)croak_earliestAllowedBirthdayDate {

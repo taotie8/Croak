@@ -288,6 +288,222 @@ typedef NSArray<NSDictionary<NSString *, id> *> * _Nonnull (^CroakAppDataUsersBu
     }];
 }
 
+- (void)croak_addDiamonds:(NSInteger)diamonds
+                  account:(NSString *)account
+               completion:(CroakAppDataUserCompletion)completion {
+    NSString *trimmedAccount = [self croak_trimmedString:account];
+    if (trimmedAccount.length == 0) {
+        if (completion) {
+            completion(nil, [self croak_errorWithCode:CroakAppDataStoreErrorInvalidInput
+                                              message:@"Please log in first."]);
+        }
+        return;
+    }
+    if (diamonds <= 0) {
+        if (completion) {
+            completion(nil, [self croak_errorWithCode:CroakAppDataStoreErrorInvalidInput
+                                              message:@"Invalid diamond amount."]);
+        }
+        return;
+    }
+
+    [self croak_fetchAllDataWithCompletion:^(NSError *error) {
+        if (error) {
+            if (completion) {
+                completion(nil, error);
+            }
+            return;
+        }
+
+        NSMutableArray<NSMutableDictionary<NSString *, id> *> *users = [self croak_mutableUsersArrayCreatingIfNeeded:NO];
+        NSMutableDictionary<NSString *, id> *targetUser = nil;
+        for (NSUInteger index = 0; index < users.count; index++) {
+            id userInfo = users[index];
+            if (![userInfo isKindOfClass:NSDictionary.class]) {
+                continue;
+            }
+
+            NSString *userAccount = [[self croak_stringFromValue:((NSDictionary *)userInfo)[@"kewgxwk"]] lowercaseString];
+            if (![userAccount isEqualToString:[trimmedAccount lowercaseString]]) {
+                continue;
+            }
+
+            if ([userInfo isKindOfClass:NSMutableDictionary.class]) {
+                targetUser = userInfo;
+            } else {
+                targetUser = [(NSDictionary *)userInfo mutableCopy];
+                users[index] = targetUser;
+            }
+            break;
+        }
+
+        if (!targetUser) {
+            if (completion) {
+                completion(nil, [self croak_errorWithCode:CroakAppDataStoreErrorInvalidInput
+                                                  message:@"Account does not exist."]);
+            }
+            return;
+        }
+
+        id oldDiamonds = targetUser[@"yin"];
+        id oldBalance = targetUser[@"balance"];
+        NSInteger currentDiamonds = [self croak_diamondsBalanceFromUserInfo:targetUser];
+        [self croak_setDiamondsBalance:MAX(0, currentDiamonds + diamonds) inUserInfo:targetUser];
+
+        [self croak_saveDataLayerWithCompletion:^(NSError *saveError) {
+            if (saveError) {
+                [self croak_restoreObject:oldDiamonds forKey:@"yin" inDictionary:targetUser];
+                [self croak_restoreObject:oldBalance forKey:@"balance" inDictionary:targetUser];
+                if (completion) {
+                    completion(nil, saveError);
+                }
+                return;
+            }
+
+            NSDictionary<NSString *, id> *updatedUser = [self croak_userWithAccount:trimmedAccount] ?: targetUser;
+            if (completion) {
+                completion(updatedUser, nil);
+            }
+        }];
+    }];
+}
+
+- (void)croak_publishPostWithContent:(NSString *)content
+                            imageName:(NSString *)imageName
+                              account:(NSString *)account
+                                 cost:(NSInteger)cost
+                           completion:(CroakAppDataPostCompletion)completion {
+    NSString *trimmedAccount = [self croak_trimmedString:account];
+    NSString *trimmedContent = [self croak_trimmedString:content];
+    NSString *trimmedImageName = [self croak_stringFromValue:imageName];
+    if (trimmedAccount.length == 0) {
+        if (completion) {
+            completion(nil, [self croak_errorWithCode:CroakAppDataStoreErrorInvalidInput
+                                              message:@"Please log in first."]);
+        }
+        return;
+    }
+    if (trimmedContent.length == 0 && trimmedImageName.length == 0) {
+        if (completion) {
+            completion(nil, [self croak_errorWithCode:CroakAppDataStoreErrorInvalidInput
+                                              message:@"Please enter content or choose an image."]);
+        }
+        return;
+    }
+    if (cost < 0) {
+        if (completion) {
+            completion(nil, [self croak_errorWithCode:CroakAppDataStoreErrorInvalidInput
+                                              message:@"Invalid diamond amount."]);
+        }
+        return;
+    }
+
+    [self croak_fetchAllDataWithCompletion:^(NSError *error) {
+        if (error) {
+            if (completion) {
+                completion(nil, error);
+            }
+            return;
+        }
+
+        NSMutableArray<NSMutableDictionary<NSString *, id> *> *users = [self croak_mutableUsersArrayCreatingIfNeeded:NO];
+        NSMutableDictionary<NSString *, id> *targetUser = nil;
+        for (NSUInteger index = 0; index < users.count; index++) {
+            id userInfo = users[index];
+            if (![userInfo isKindOfClass:NSDictionary.class]) {
+                continue;
+            }
+
+            NSString *userAccount = [[self croak_stringFromValue:((NSDictionary *)userInfo)[@"kewgxwk"]] lowercaseString];
+            if (![userAccount isEqualToString:[trimmedAccount lowercaseString]]) {
+                continue;
+            }
+
+            if ([userInfo isKindOfClass:NSMutableDictionary.class]) {
+                targetUser = userInfo;
+            } else {
+                targetUser = [(NSDictionary *)userInfo mutableCopy];
+                users[index] = targetUser;
+            }
+            break;
+        }
+
+        if (!targetUser) {
+            if (completion) {
+                completion(nil, [self croak_errorWithCode:CroakAppDataStoreErrorInvalidInput
+                                                  message:@"Account does not exist."]);
+            }
+            return;
+        }
+
+        NSInteger currentDiamonds = [self croak_diamondsBalanceFromUserInfo:targetUser];
+        if (currentDiamonds < cost) {
+            if (completion) {
+                completion(nil, [self croak_errorWithCode:CroakAppDataStoreErrorInvalidInput
+                                                  message:@"Not enough diamonds."]);
+            }
+            return;
+        }
+
+        NSMutableArray *posts = [self croak_mutablePostsArrayCreatingIfNeeded:YES];
+        if (![posts isKindOfClass:NSMutableArray.class]) {
+            if (completion) {
+                completion(nil, [self croak_errorWithCode:CroakAppDataStoreErrorSaveFailed
+                                                  message:@"Failed to save post."]);
+            }
+            return;
+        }
+
+        NSString *postId = NSUUID.UUID.UUIDString;
+        NSString *createdAt = [self croak_ISO8601StringFromDate:NSDate.date];
+        NSString *currentUserId = [self croak_userIdFromUserInfo:targetUser];
+        NSArray *images = trimmedImageName.length > 0 ? @[trimmedImageName] : @[];
+        NSString *postType = trimmedImageName.length > 0 ? @"image" : @"text";
+        NSMutableDictionary<NSString *, id> *newPost = [@{
+            @"uxicmgnb": postId,
+            @"id": postId,
+            @"jumog": createdAt,
+            @"createdAt": createdAt,
+            @"fegg": currentUserId ?: @"",
+            @"userId": currentUserId ?: @"",
+            @"hctnqmww": trimmedContent ?: @"",
+            @"content": trimmedContent ?: @"",
+            @"yuylv": images,
+            @"images": images,
+            @"ri": @[],
+            @"likedUserIds": @[],
+            @"gla": @(0),
+            @"commentsCount": @(0),
+            @"comments": @[],
+            @"type": postType,
+            @"tag": @[],
+            @"videoCover": @"",
+            @"videoUrl": @""
+        } mutableCopy];
+
+        id oldDiamonds = targetUser[@"yin"];
+        id oldBalance = targetUser[@"balance"];
+        [self croak_setDiamondsBalance:(currentDiamonds - cost) inUserInfo:targetUser];
+        [posts insertObject:newPost atIndex:0];
+
+        [self croak_saveDataLayerWithCompletion:^(NSError *saveError) {
+            if (saveError) {
+                [posts removeObject:newPost];
+                [self croak_restoreObject:oldDiamonds forKey:@"yin" inDictionary:targetUser];
+                [self croak_restoreObject:oldBalance forKey:@"balance" inDictionary:targetUser];
+                if (completion) {
+                    completion(nil, saveError);
+                }
+                return;
+            }
+
+            if (completion) {
+                completion(newPost, nil);
+            }
+        }];
+    }];
+}
+
 - (void)croak_deleteAccount:(NSString *)account
                   completion:(CroakAppDataCompletion)completion {
     NSString *trimmedAccount = [self croak_trimmedString:account];
@@ -1901,12 +2117,25 @@ typedef NSArray<NSDictionary<NSString *, id> *> * _Nonnull (^CroakAppDataUsersBu
 }
 
 - (NSMutableArray *)croak_mutablePostsArray {
+    return [self croak_mutablePostsArrayCreatingIfNeeded:NO];
+}
+
+- (NSMutableArray *)croak_mutablePostsArrayCreatingIfNeeded:(BOOL)createIfNeeded {
+    if (!self.croak_dataLayer && createIfNeeded) {
+        self.croak_dataLayer = [NSMutableDictionary dictionary];
+    }
+
     id posts = self.croak_dataLayer[@"fcfmx"];
     if ([posts isKindOfClass:NSMutableArray.class]) {
         return posts;
     }
     if ([posts isKindOfClass:NSArray.class]) {
         NSMutableArray *mutablePosts = [posts mutableCopy];
+        self.croak_dataLayer[@"fcfmx"] = mutablePosts;
+        return mutablePosts;
+    }
+    if (createIfNeeded) {
+        NSMutableArray *mutablePosts = [NSMutableArray array];
         self.croak_dataLayer[@"fcfmx"] = mutablePosts;
         return mutablePosts;
     }
@@ -2519,6 +2748,22 @@ typedef NSArray<NSDictionary<NSString *, id> *> * _Nonnull (^CroakAppDataUsersBu
         rawName = [(NSNumber *)value stringValue];
     }
     return [[self croak_trimmedString:rawName] length] > 0 ? rawName : @"";
+}
+
+- (NSInteger)croak_diamondsBalanceFromUserInfo:(NSDictionary<NSString *, id> *)userInfo {
+    NSString *diamonds = [self croak_stringFromValue:userInfo[@"yin"]];
+    if (diamonds.length == 0) {
+        diamonds = [self croak_stringFromValue:userInfo[@"balance"]];
+    }
+    return [diamonds integerValue];
+}
+
+- (void)croak_setDiamondsBalance:(NSInteger)diamonds inUserInfo:(NSMutableDictionary<NSString *, id> *)userInfo {
+    NSNumber *diamondsNumber = @(MAX(0, diamonds));
+    userInfo[@"yin"] = diamondsNumber;
+    if (userInfo[@"balance"]) {
+        userInfo[@"balance"] = diamondsNumber;
+    }
 }
 
 - (void)croak_restoreObject:(id)object forKey:(NSString *)key inDictionary:(NSMutableDictionary<NSString *, id> *)dictionary {

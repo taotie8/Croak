@@ -6,6 +6,7 @@
 #import "Croak_MessageImageCell.h"
 #import "Croak_UserSession.h"
 #import "Croak_VideoCallsVC.h"
+#import "Streak_ViewController.h"
 #import <PhotosUI/PhotosUI.h>
 #import "SVProgressHUD.h"
 #import "UIImageView+WebCache.h"
@@ -17,6 +18,13 @@ static NSString * const CroakMessageTypeImage = @"image";
 static NSString * const CroakMessageLocalTypeKey = @"croakLocalType";
 static NSString * const CroakMessageLocalImageNameKey = @"croakLocalImageName";
 
+typedef NS_ENUM(NSInteger, CroakMessageEmojiIndex) {
+    CroakMessageEmojiIndexZZZ = 0,
+    CroakMessageEmojiIndexZZA,
+    CroakMessageEmojiIndexZZB,
+    CroakMessageEmojiIndexZZC,
+};
+
 @interface Croak_MessageChatVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, PHPickerViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *croak_nameLabel;
@@ -24,6 +32,9 @@ static NSString * const CroakMessageLocalImageNameKey = @"croakLocalImageName";
 @property (weak, nonatomic) IBOutlet UIView *croak_inputContentView;
 @property (weak, nonatomic) IBOutlet UITextField *croak_inputTextField;
 @property (weak, nonatomic) IBOutlet UITableView *croak_tableView;
+@property (weak, nonatomic) IBOutlet UIView *emojiView;
+@property (weak, nonatomic) IBOutlet UIView *croak_dayStreakView;
+@property (weak, nonatomic) IBOutlet UILabel *croak_dayStreakLabel;
 @property (nonatomic, strong) NSMutableArray<NSDictionary<NSString *, id> *> *croak_messages;
 @property (nonatomic, assign) BOOL croak_isSendingMessage;
 @property (nonatomic, assign) UIEdgeInsets croak_originalTableContentInset;
@@ -36,7 +47,7 @@ static NSString * const CroakMessageLocalImageNameKey = @"croakLocalImageName";
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.view.backgroundColor = UIColor.whiteColor;
+    self.view.backgroundColor = [UIColor colorWithRed:245.0/255 green:245.0/255 blue:247.0/255 alpha:1.0];
 
     NSString *name = self.croak_name.length > 0 ? self.croak_name : @"Ava";
     NSString *avatarName = self.croak_avatarName.length > 0 ? self.croak_avatarName : @"croak_avatar";
@@ -49,6 +60,7 @@ static NSString * const CroakMessageLocalImageNameKey = @"croakLocalImageName";
     self.croak_inputContentView.layer.masksToBounds = YES;
     self.croak_inputTextField.delegate = self;
     self.croak_inputTextField.returnKeyType = UIReturnKeySend;
+    self.emojiView.hidden = YES;
 
     self.croak_messages = [[self croak_displayMessagesWithAvatarName:avatarName] mutableCopy];
     if (self.croak_messages.count == 0) {
@@ -104,6 +116,7 @@ static NSString * const CroakMessageLocalImageNameKey = @"croakLocalImageName";
 }
 
 - (IBAction)croak_sendAction:(id)sender {
+    [self croak_hideEmojiView];
     NSString *message = [self.croak_inputTextField.text stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
     if (message.length == 0) {
         return;
@@ -147,11 +160,13 @@ static NSString * const CroakMessageLocalImageNameKey = @"croakLocalImageName";
 
 - (IBAction)croak_voiceAction:(id)sender {
     [self.view endEditing:YES];
+    [self croak_hideEmojiView];
     [SVProgressHUD showInfoWithStatus:@"Voice messages are not available."];
 }
 
 - (IBAction)croak_pictureAction:(id)sender {
     [self.view endEditing:YES];
+    [self croak_hideEmojiView];
     if (self.croak_isSendingMessage) {
         return;
     }
@@ -171,6 +186,35 @@ static NSString * const CroakMessageLocalImageNameKey = @"croakLocalImageName";
     PHPickerViewController *picker = [[PHPickerViewController alloc] initWithConfiguration:configuration];
     picker.delegate = self;
     [self presentViewController:picker animated:YES completion:nil];
+}
+
+- (IBAction)croak_emojiAction:(id)sender {
+    [self.view endEditing:YES];
+    self.emojiView.hidden = NO;
+    [self.view bringSubviewToFront:self.emojiView];
+}
+
+- (IBAction)croak_hideEmojiViewAction:(id)sender {
+    [self croak_hideEmojiView];
+}
+
+- (IBAction)croak_sendEmojiAction:(UIButton *)sender {
+    NSString *emojiImageName = [self croak_emojiImageNameForTag:sender.tag];
+    if (emojiImageName.length == 0) {
+        return;
+    }
+
+    [self croak_sendImageMessageWithImageName:emojiImageName];
+}
+
+- (IBAction)croak_dayStreakAction:(id)sender {
+    [self.view endEditing:YES];
+    [self croak_hideEmojiView];
+
+    Streak_ViewController *streakVC = [[Streak_ViewController alloc] initWithNibName:@"Streak_ViewController" bundle:nil];
+    streakVC.croak_avatarName = self.croak_avatarName.length > 0 ? self.croak_avatarName : @"croak_avatar";
+    streakVC.croak_dayStreakText = [self croak_trimmedString:self.croak_dayStreakLabel.text].length > 0 ? [self croak_trimmedString:self.croak_dayStreakLabel.text] : @"1";
+    [self.navigationController pushViewController:streakVC animated:YES];
 }
 
 - (void)croak_reloadAndScrollToBottom {
@@ -324,9 +368,33 @@ static NSString * const CroakMessageLocalImageNameKey = @"croakLocalImageName";
         return;
     }
 
+    self.croak_isSendingMessage = NO;
+    [self croak_sendImageMessageWithImageName:imageName];
+}
+
+- (void)croak_sendImageMessageWithImageName:(NSString *)imageName {
+    NSString *targetImageName = [self croak_rawImageNameFromValue:imageName];
+    if (targetImageName.length == 0) {
+        self.croak_isSendingMessage = NO;
+        [SVProgressHUD showErrorWithStatus:@"Image does not exist."];
+        return;
+    }
+    if (self.croak_isSendingMessage) {
+        return;
+    }
+    if ([self croak_trimmedString:self.croak_sessionId].length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"Chat session does not exist."];
+        return;
+    }
+    if ([self croak_normalizedCurrentUserId].length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"Please log in first."];
+        return;
+    }
+
+    [self croak_hideEmojiView];
     NSString *avatarName = self.croak_avatarName.length > 0 ? self.croak_avatarName : @"croak_avatar";
     self.croak_isSendingMessage = YES;
-    [[Croak_AppDataStore sharedStore] croak_saveLocalChatImageName:imageName
+    [[Croak_AppDataStore sharedStore] croak_saveLocalChatImageName:targetImageName
                                                          sessionId:self.croak_sessionId
                                                       senderUserId:self.croak_currentUserId
                                                         completion:^(NSDictionary<NSString *,id> *messageInfo, NSError *error) {
@@ -345,6 +413,21 @@ static NSString * const CroakMessageLocalImageNameKey = @"croakLocalImageName";
         }
         [self croak_reloadAndScrollToBottom];
     }];
+}
+
+- (NSString *)croak_emojiImageNameForTag:(NSInteger)tag {
+    switch (tag) {
+        case CroakMessageEmojiIndexZZZ:
+            return @"emoji_zzz";
+        case CroakMessageEmojiIndexZZA:
+            return @"emoji_zza";
+        case CroakMessageEmojiIndexZZB:
+            return @"emoji_zzb";
+        case CroakMessageEmojiIndexZZC:
+            return @"emoji_zzc";
+        default:
+            return @"";
+    }
 }
 
 - (NSString *)croak_saveImageToLocalDirectory:(UIImage *)image {
@@ -463,6 +546,11 @@ static NSString * const CroakMessageLocalImageNameKey = @"croakLocalImageName";
 
 - (void)croak_dismissKeyboard {
     [self.view endEditing:YES];
+    [self croak_hideEmojiView];
+}
+
+- (void)croak_hideEmojiView {
+    self.emojiView.hidden = YES;
 }
 
 - (NSString *)croak_normalizedCurrentUserId {
@@ -571,6 +659,11 @@ static NSString * const CroakMessageLocalImageNameKey = @"croakLocalImageName";
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self croak_sendAction:textField];
+    return YES;
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    [self croak_hideEmojiView];
     return YES;
 }
 

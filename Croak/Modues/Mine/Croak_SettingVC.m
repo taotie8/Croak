@@ -254,6 +254,7 @@
 }
 
 - (void)croak_showLoginInterface {
+    [Croak_UserSession croak_clearSession];
     UIWindow *window = self.view.window ?: UIApplication.sharedApplication.delegate.window;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[[Croak_ViewController alloc] init]];
     window.rootViewController = navigationController;

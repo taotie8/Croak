@@ -166,6 +166,7 @@
                 <outlet property="croak_contentLabel" destination="a2Y-YU-bMz" id="square-cell-content"/>
                 <outlet property="croak_likeCountLabel" destination="LAo-b9-bUB" id="square-cell-like-count"/>
                 <outlet property="croak_loveButton" destination="Yf6-CD-UKj" id="square-cell-love-button"/>
+                <outlet property="croak_moreButton" destination="bt2-ns-MVo" id="square-cell-more-button"/>
                 <outlet property="croak_nameLabel" destination="iHL-5S-O7y" id="square-cell-name"/>
                 <outlet property="croak_postImageView" destination="PrB-LY-qwa" id="square-cell-post-image"/>
                 <outlet property="croak_timeLabel" destination="YGB-D6-nOk" id="square-cell-time"/>

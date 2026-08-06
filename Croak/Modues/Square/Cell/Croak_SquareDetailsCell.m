@@ -88,6 +88,11 @@
         return nil;
     }
 
+    UIImage *dataImage = [self croak_imageFromDataURI:imageName];
+    if (dataImage) {
+        return dataImage;
+    }
+
     UIImage *image = [UIImage imageNamed:imageName];
     if (image) {
         return image;
@@ -109,6 +114,9 @@
     if ([[rawName stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet] length] == 0) {
         return nil;
     }
+    if ([rawName hasPrefix:@"data:image"]) {
+        return nil;
+    }
 
     if ([rawName hasPrefix:@"http://"] || [rawName hasPrefix:@"https://"]) {
         return [NSURL URLWithString:[rawName stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet] ?: rawName];
@@ -119,6 +127,24 @@
         return nil;
     }
     return [NSURL URLWithString:[CroakAPIAssetBaseURLString stringByAppendingString:encodedName]];
+}
+
+- (UIImage *)croak_imageFromDataURI:(NSString *)dataURI {
+    if (![dataURI hasPrefix:@"data:image"]) {
+        return nil;
+    }
+
+    NSRange commaRange = [dataURI rangeOfString:@","];
+    if (commaRange.location == NSNotFound || commaRange.location + 1 >= dataURI.length) {
+        return nil;
+    }
+
+    NSString *base64String = [dataURI substringFromIndex:commaRange.location + 1];
+    NSData *imageData = [[NSData alloc] initWithBase64EncodedString:base64String options:0];
+    if (!imageData.length) {
+        return nil;
+    }
+    return [UIImage imageWithData:imageData];
 }
 
 @end
