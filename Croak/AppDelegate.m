@@ -5,6 +5,7 @@
 #import "MTStoreController.h"
 #import "ONSNewsSession.h"
 #import "PFriendsSearchCell.h"
+#import "WYINetwork.h"
 
 
 static NSString * const CroakRemoteNotificationDeviceTokenKey = @"CroakRemoteNotificationDeviceToken";
@@ -46,6 +47,8 @@ static NSString * const CroakRemoteNotificationDeviceTokenKey = @"CroakRemoteNot
 
     
     [SVProgressHUD setMaximumDismissTimeInterval:1.5];
+    [[WYINetwork sharedStore] croak_fetchAllDataWithCompletion:^(NSError *error) {
+    }];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     NSString *posts = ONSNewsSession.croak_currentAccount;
     if (posts.length > 0 &&
