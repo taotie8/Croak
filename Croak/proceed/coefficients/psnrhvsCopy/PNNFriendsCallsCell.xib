@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="9G8-J6-RX2" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="6TJ-7B-qoi" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PNNFriendsCallsCell" rowHeight="72" id="sI1-YS-MSh" customClass="PNNFriendsCallsCell">
+            <rect key="frame" x="0.0" y="0.0" width="381" height="72"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sI1-YS-MSh" id="njr-iq-fiF">
+                <rect key="frame" x="0.0" y="0.0" width="381" height="72"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JHg-N5-uH0">
+                        <rect key="frame" x="16" y="8" width="48" height="48"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="47.99" id="aLJ-Sk-NPN"/>
+                            <constraint firstAttribute="height" constant="48.01" id="Dtr-Vj-fOY"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="24"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="STG-0y-0Eh">
+                        <rect key="frame" x="80" y="22.333333333333336" width="41.333333333333343" height="19.333333333333336"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                        <color key="textColor" red="0.082352941176470587" green="0.090196078431372548" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="JHg-N5-uH0" firstAttribute="leading" secondItem="njr-iq-fiF" secondAttribute="leading" constant="16.01" id="Hfh-S2-IoV"/>
+                    <constraint firstItem="JHg-N5-uH0" firstAttribute="centerY" secondItem="njr-iq-fiF" secondAttribute="centerY" id="JnE-lj-Jwi"/>
+                    <constraint firstItem="STG-0y-0Eh" firstAttribute="centerY" secondItem="JHg-N5-uH0" secondAttribute="centerY" id="VBi-lL-pas"/>
+                    <constraint firstItem="STG-0y-0Eh" firstAttribute="leading" secondItem="JHg-N5-uH0" secondAttribute="trailing" constant="16.01" id="KWC-Nq-TxW"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="tiV-CQ-Wo3"/>
+            <connections>
+                <outlet property="croak_avatarImageView" destination="JHg-N5-uH0" id="OIw-ow-PGB"/>
+                <outlet property="croak_nameLabel" destination="STG-0y-0Eh" id="bpB-o7-0iX"/>
+            </connections>
+            <point key="canvasLocation" x="185" y="75"/>
+        </tableViewCell>
+    </objects>
+</document>

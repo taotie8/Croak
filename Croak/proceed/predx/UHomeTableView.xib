@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="9G8-J6-RX2" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="6TJ-7B-qoi" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="6iV-au-YhG" customClass="UHomeTableView">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6vq-hO-y8V">
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rqN-Xk-0Pr">
+                    <rect key="frame" x="0.0" y="590" width="393" height="262"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R9a-MO-3Eq">
+                            <rect key="frame" x="26" y="24" width="341" height="52"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="51.99" id="8IP-xa-b1P"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Report"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="26"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5a0-k1-0gb">
+                            <rect key="frame" x="26" y="88" width="341" height="52"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="52.01" id="wIh-8L-T6W"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Block">
+                                <color key="titleColor" red="0.90980392156862744" green="0.52549019607843139" blue="0.23921568627450979" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="26"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zz3-9T-IT3">
+                            <rect key="frame" x="26" y="152" width="341" height="52"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="52.01" id="6LL-WG-HpS"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Cancel">
+                                <color key="titleColor" red="0.90980392160000001" green="0.52549019610000003" blue="0.23921568630000001" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="26"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="5a0-k1-0gb" secondAttribute="trailing" constant="26.02" id="4ww-IT-4Lg"/>
+                        <constraint firstAttribute="trailing" secondItem="R9a-MO-3Eq" secondAttribute="trailing" constant="25.98" id="7A5-5o-nDG"/>
+                        <constraint firstItem="R9a-MO-3Eq" firstAttribute="top" secondItem="rqN-Xk-0Pr" secondAttribute="top" constant="23.98" id="jql-Ls-8W9"/>
+                        <constraint firstItem="R9a-MO-3Eq" firstAttribute="leading" secondItem="rqN-Xk-0Pr" secondAttribute="leading" constant="26.02" id="eIE-s4-4B7"/>
+                        <constraint firstAttribute="trailing" secondItem="zz3-9T-IT3" secondAttribute="trailing" constant="26.02" id="16A-Y3-gha"/>
+                        <constraint firstItem="5a0-k1-0gb" firstAttribute="top" secondItem="R9a-MO-3Eq" secondAttribute="bottom" constant="12.03" id="CFL-gl-LwR"/>
+                        <constraint firstItem="zz3-9T-IT3" firstAttribute="top" secondItem="5a0-k1-0gb" secondAttribute="bottom" constant="11.99" id="L7g-rz-6pU"/>
+                        <constraint firstAttribute="height" constant="262.02" id="zlC-vl-tkg"/>
+                        <constraint firstItem="zz3-9T-IT3" firstAttribute="leading" secondItem="rqN-Xk-0Pr" secondAttribute="leading" constant="25.99" id="Egk-Gd-lHO"/>
+                        <constraint firstItem="5a0-k1-0gb" firstAttribute="leading" secondItem="rqN-Xk-0Pr" secondAttribute="leading" constant="26.01" id="HL0-Sd-uc1"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="24"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="59Y-bi-Xd7">
+                    <rect key="frame" x="295" y="542" width="82" height="40"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" image="selectTabBubble"/>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="7Ic-Yb-hG4"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="6vq-hO-y8V" secondAttribute="trailing" id="LHt-vW-OVU"/>
+                <constraint firstItem="6vq-hO-y8V" firstAttribute="leading" secondItem="7Ic-Yb-hG4" secondAttribute="leading" id="a24-u2-gOW"/>
+                <constraint firstItem="7Ic-Yb-hG4" firstAttribute="trailing" secondItem="59Y-bi-Xd7" secondAttribute="trailing" constant="15.96" id="RKm-BZ-FAu"/>
+                <constraint firstItem="rqN-Xk-0Pr" firstAttribute="leading" secondItem="7Ic-Yb-hG4" secondAttribute="leading" id="H3F-nU-QWL"/>
+                <constraint firstAttribute="trailing" secondItem="rqN-Xk-0Pr" secondAttribute="trailing" id="2yD-Ow-tB1"/>
+                <constraint firstItem="rqN-Xk-0Pr" firstAttribute="top" secondItem="59Y-bi-Xd7" secondAttribute="bottom" constant="7.98" id="jkb-ZB-LlF"/>
+                <constraint firstAttribute="bottom" secondItem="6vq-hO-y8V" secondAttribute="bottom" id="7aC-zt-bM4"/>
+                <constraint firstItem="6vq-hO-y8V" firstAttribute="top" secondItem="6iV-au-YhG" secondAttribute="top" id="uTY-KJ-MIb"/>
+                <constraint firstAttribute="bottom" secondItem="rqN-Xk-0Pr" secondAttribute="bottom" id="OVs-83-Ve7"/>
+            </constraints>
+            <point key="canvasLocation" x="-94" y="106"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="selectTabBubble" width="82" height="40"/>
+    </resources>
+</document>

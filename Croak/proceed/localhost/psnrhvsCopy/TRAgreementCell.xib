@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="9G8-J6-RX2" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="6TJ-7B-qoi" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="sI1-YS-MSh" customClass="TRAgreementCell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sI1-YS-MSh" id="njr-iq-fiF">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Egk-cJ-DkS">
+                        <rect key="frame" x="16" y="8" width="48" height="48"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="47.98" id="Jkl-ZN-a4V"/>
+                            <constraint firstAttribute="height" constant="48.02" id="OBd-MZ-WS5"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="24"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dEZ-a2-pnM">
+                        <rect key="frame" x="76" y="22.333333333333336" width="40.666666666666657" height="19.333333333333336"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                        <color key="textColor" red="0.082352941176470587" green="0.090196078431372548" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oFk-zs-lEG">
+                        <rect key="frame" x="276" y="14.666666666666664" width="83" height="35"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="34.98" id="ppP-N3-cve"/>
+                            <constraint firstAttribute="width" constant="83.02" id="I9W-XO-HLw"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" title="-Unblock"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="18"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="dEZ-a2-pnM" firstAttribute="centerY" secondItem="Egk-cJ-DkS" secondAttribute="centerY" id="3Rc-YN-1pk"/>
+                    <constraint firstItem="oFk-zs-lEG" firstAttribute="centerY" secondItem="Egk-cJ-DkS" secondAttribute="centerY" id="mLN-fu-YAH"/>
+                    <constraint firstAttribute="trailing" secondItem="oFk-zs-lEG" secondAttribute="trailing" constant="16.01" id="fqP-L4-3PE"/>
+                    <constraint firstAttribute="bottom" secondItem="Egk-cJ-DkS" secondAttribute="bottom" constant="7.97" id="KQU-ZM-Tv8"/>
+                    <constraint firstItem="Egk-cJ-DkS" firstAttribute="leading" secondItem="njr-iq-fiF" secondAttribute="leading" constant="16.05" id="on5-tK-ZBs"/>
+                    <constraint firstItem="dEZ-a2-pnM" firstAttribute="leading" secondItem="Egk-cJ-DkS" secondAttribute="trailing" constant="12.03" id="M3g-sR-EY7"/>
+                    <constraint firstItem="Egk-cJ-DkS" firstAttribute="top" secondItem="njr-iq-fiF" secondAttribute="top" constant="8.01" id="Hwo-UJ-c1O"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="tiV-CQ-Wo3"/>
+            <point key="canvasLocation" x="207" y="-39"/>
+        </tableViewCell>
+    </objects>
+</document>

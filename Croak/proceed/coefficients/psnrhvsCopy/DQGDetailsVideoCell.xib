@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="9G8-J6-RX2" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="6TJ-7B-qoi" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="DQGDetailsVideoCell" rowHeight="68" id="sI1-YS-MSh" customClass="DQGDetailsVideoCell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="68"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sI1-YS-MSh" id="njr-iq-fiF">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="68"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fME-nc-trA">
+                        <rect key="frame" x="16" y="10" width="48" height="48"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="47.99" id="vfO-2o-F3p"/>
+                            <constraint firstAttribute="width" constant="47.98" id="BJm-x9-LIS"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="24"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="joR-WF-2Xt">
+                        <rect key="frame" x="76" y="23.666666666666671" width="42" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jP7-X2-FQZ">
+                        <rect key="frame" x="245" y="16.666666666666671" width="114" height="35"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="35.01" id="dZx-1j-YTG"/>
+                            <constraint firstAttribute="width" constant="114.02" id="rwH-0r-x7d"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" title="+ Add Friend"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="18"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="croak_addFriendAction:" destination="sI1-YS-MSh" eventType="touchUpInside" id="qCP-EC-0Ec"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="fME-nc-trA" secondAttribute="bottom" constant="9.97" id="dWU-ls-wGb"/>
+                    <constraint firstItem="fME-nc-trA" firstAttribute="leading" secondItem="njr-iq-fiF" secondAttribute="leading" constant="16.01" id="g1i-Vw-s4v"/>
+                    <constraint firstItem="jP7-X2-FQZ" firstAttribute="centerY" secondItem="fME-nc-trA" secondAttribute="centerY" id="VN4-gl-ETz"/>
+                    <constraint firstItem="joR-WF-2Xt" firstAttribute="leading" secondItem="fME-nc-trA" secondAttribute="trailing" constant="11.99" id="5bs-3s-kDg"/>
+                    <constraint firstAttribute="trailing" secondItem="jP7-X2-FQZ" secondAttribute="trailing" constant="16.01" id="rUY-dE-sMW"/>
+                    <constraint firstItem="joR-WF-2Xt" firstAttribute="centerY" secondItem="fME-nc-trA" secondAttribute="centerY" id="4Do-bZ-GbS"/>
+                    <constraint firstItem="fME-nc-trA" firstAttribute="top" secondItem="njr-iq-fiF" secondAttribute="top" constant="10.01" id="fR8-Dm-mng"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="tiV-CQ-Wo3"/>
+            <connections>
+                <outlet property="croak_avatarImageView" destination="fME-nc-trA" id="rco-FC-8qd"/>
+                <outlet property="croak_nameLabel" destination="joR-WF-2Xt" id="BYk-VK-ADa"/>
+            </connections>
+            <point key="canvasLocation" x="19" y="87"/>
+        </tableViewCell>
+    </objects>
+</document>

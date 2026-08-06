@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="9G8-J6-RX2" userLabel="File's Owner" customClass="QChatNewsController">
+            <connections>
+                <outlet property="croak_select_button" destination="Pyr-sK-hpv" id="26R-B0-pn3"/>
+                <outlet property="view" destination="x67-5g-5cx" id="O3W-PD-B4B"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="6TJ-7B-qoi" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="x67-5g-5cx">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="countPurchasePost" translatesAutoresizingMaskIntoConstraints="NO" id="9h4-Y1-Xyb">
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="204"/>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="insetsCurrentBubble" translatesAutoresizingMaskIntoConstraints="NO" id="LOV-rB-XPa">
+                    <rect key="frame" x="36.000000000000014" y="143" width="249.33333333333337" height="119"/>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mainSealedBirthday" translatesAutoresizingMaskIntoConstraints="NO" id="3LY-l5-1Xd">
+                    <rect key="frame" x="140.66666666666666" y="256" width="112" height="112"/>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="indicatorRequestSetting" translatesAutoresizingMaskIntoConstraints="NO" id="Hsm-Vj-ZAa">
+                    <rect key="frame" x="32.666666666666657" y="756" width="328" height="20"/>
+                </imageView>
+                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pyr-sK-hpv">
+                    <rect key="frame" x="24.666666666666671" y="748" width="36" height="36"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="36.04" id="9p0-NV-IRa"/>
+                        <constraint firstAttribute="width" constant="35.98" id="8dt-GG-woM"/>
+                    </constraints>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" image="sendingLength"/>
+                    <connections>
+                        <action selector="croak_selectPrivacyWithUserAndPolicyAction:" destination="9G8-J6-RX2" eventType="touchUpInside" id="ZHJ-q5-THP"/>
+                    </connections>
+                </button>
+                <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZlO-Qi-xNb">
+                    <rect key="frame" x="123.66666666666669" y="748.66666666666663" width="117" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="34.99" id="W3Z-7p-k5y"/>
+                        <constraint firstAttribute="width" constant="116.99" id="rMR-Dr-Lsi"/>
+                    </constraints>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <connections>
+                        <action selector="croak_selectPrivacyWithUserAndPolicyAction:" destination="9G8-J6-RX2" eventType="touchUpInside" id="CXe-ca-1HD"/>
+                    </connections>
+                </button>
+                <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jwN-On-08f">
+                    <rect key="frame" x="271.66666666666669" y="748.66666666666663" width="89" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="88.99" id="gUE-aA-oT2"/>
+                        <constraint firstAttribute="height" constant="35.01" id="GEX-IF-KWF"/>
+                    </constraints>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <connections>
+                        <action selector="croak_selectPrivacyWithUserAndPolicyAction:" destination="9G8-J6-RX2" eventType="touchUpInside" id="rbt-iG-m0g"/>
+                    </connections>
+                </button>
+                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yb0-o2-Dz3">
+                    <rect key="frame" x="74.666666666666686" y="658.66666666666663" width="244" height="60"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" image="centerObjectFilter"/>
+                    <connections>
+                        <action selector="croak_loginWithSignupAction:" destination="9G8-J6-RX2" eventType="touchUpInside" id="U1v-ZT-nhN"/>
+                    </connections>
+                </button>
+                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TpP-9k-8jw">
+                    <rect key="frame" x="75" y="606.66666666666663" width="243" height="44"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" image="settingSending"/>
+                    <connections>
+                        <action selector="croak_loginWithSignupAction:" destination="9G8-J6-RX2" eventType="touchUpInside" id="Q9g-tM-dO5"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="ysK-HQ-c3x"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="jwN-On-08f" firstAttribute="leading" secondItem="ZlO-Qi-xNb" secondAttribute="trailing" constant="31.05" id="f8Z-45-lNK"/>
+                <constraint firstItem="3LY-l5-1Xd" firstAttribute="top" secondItem="ysK-HQ-c3x" secondAttribute="top" constant="137.99" id="eKQ-pK-Lb6"/>
+                <constraint firstItem="9h4-Y1-Xyb" firstAttribute="leading" secondItem="ysK-HQ-c3x" secondAttribute="leading" id="GST-Mb-yMQ"/>
+                <constraint firstItem="Hsm-Vj-ZAa" firstAttribute="leading" secondItem="Pyr-sK-hpv" secondAttribute="leading" constant="7.99" id="WRE-g0-ehO"/>
+                <constraint firstItem="jwN-On-08f" firstAttribute="centerY" secondItem="Pyr-sK-hpv" secondAttribute="centerY" id="KMD-Us-T71"/>
+                <constraint firstItem="LOV-rB-XPa" firstAttribute="top" secondItem="ysK-HQ-c3x" secondAttribute="top" constant="24.99" id="a43-gW-Z2E"/>
+                <constraint firstItem="Yb0-o2-Dz3" firstAttribute="centerX" secondItem="x67-5g-5cx" secondAttribute="centerX" id="hbE-vM-iPF"/>
+                <constraint firstItem="ZlO-Qi-xNb" firstAttribute="centerY" secondItem="Pyr-sK-hpv" secondAttribute="centerY" id="G7F-rx-k1e"/>
+                <constraint firstItem="9h4-Y1-Xyb" firstAttribute="top" secondItem="x67-5g-5cx" secondAttribute="top" id="dJ6-BV-QMi"/>
+                <constraint firstItem="Hsm-Vj-ZAa" firstAttribute="centerX" secondItem="x67-5g-5cx" secondAttribute="centerX" id="H3k-Ih-xgf"/>
+                <constraint firstItem="3LY-l5-1Xd" firstAttribute="centerX" secondItem="x67-5g-5cx" secondAttribute="centerX" id="kQy-Fu-VXT"/>
+                <constraint firstItem="Hsm-Vj-ZAa" firstAttribute="centerY" secondItem="Pyr-sK-hpv" secondAttribute="centerY" id="qZE-sH-PNs"/>
+                <constraint firstItem="ysK-HQ-c3x" firstAttribute="bottom" secondItem="Hsm-Vj-ZAa" secondAttribute="bottom" constant="8.02" id="AgY-fI-Hno"/>
+                <constraint firstItem="ZlO-Qi-xNb" firstAttribute="top" secondItem="Yb0-o2-Dz3" secondAttribute="bottom" constant="30.04" id="8Mz-pc-LHz"/>
+                <constraint firstItem="Yb0-o2-Dz3" firstAttribute="top" secondItem="TpP-9k-8jw" secondAttribute="bottom" constant="8.02" id="5nD-TI-3Sb"/>
+                <constraint firstItem="TpP-9k-8jw" firstAttribute="centerX" secondItem="x67-5g-5cx" secondAttribute="centerX" id="Kga-UG-wEp"/>
+                <constraint firstAttribute="trailing" secondItem="9h4-Y1-Xyb" secondAttribute="trailing" id="AtU-SD-r8p"/>
+                <constraint firstItem="ZlO-Qi-xNb" firstAttribute="leading" secondItem="Pyr-sK-hpv" secondAttribute="trailing" constant="62.96" id="TiO-0K-rZz"/>
+                <constraint firstItem="LOV-rB-XPa" firstAttribute="leading" secondItem="ysK-HQ-c3x" secondAttribute="leading" constant="35.97" id="eQI-IK-vgv"/>
+            </constraints>
+            <point key="canvasLocation" x="-121" y="97"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="countPurchasePost" width="375" height="204"/>
+        <image name="mainSealedBirthday" width="112" height="112"/>
+        <image name="settingSending" width="243" height="44"/>
+        <image name="indicatorRequestSetting" width="328" height="20"/>
+        <image name="sendingLength" width="20" height="20"/>
+        <image name="centerObjectFilter" width="244" height="59.333332061767578"/>
+        <image name="insetsCurrentBubble" width="249.33332824707031" height="119"/>
+    </resources>
+</document>
