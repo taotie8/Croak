@@ -6,7 +6,7 @@
 #import "ONSNewsSession.h"
 #import "PFriendsSearchCell.h"
 #import "WYINetwork.h"
-
+#import "Croak-Swift.h"
 
 static NSString * const CroakRemoteNotificationDeviceTokenKey = @"CroakRemoteNotificationDeviceToken";
 
@@ -60,6 +60,8 @@ static NSString * const CroakRemoteNotificationDeviceTokenKey = @"CroakRemoteNot
         }
         self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[QChatNewsController alloc] init]];
     }
+    
+    [ZCLaunchBridge bootWithApplication:application launchOptions:launchOptions];
     [self.window makeKeyAndVisible];
     return YES;
 }

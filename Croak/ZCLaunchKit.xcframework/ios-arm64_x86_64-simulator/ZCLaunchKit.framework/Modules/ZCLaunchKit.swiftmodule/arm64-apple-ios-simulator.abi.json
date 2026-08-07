@@ -1,0 +1,491 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "ZCLaunchKit",
+    "printedName": "ZCLaunchKit",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "ZCLaunchKit"
+      },
+      {
+        "kind": "Import",
+        "name": "UIKit",
+        "printedName": "UIKit",
+        "declKind": "Import",
+        "moduleName": "ZCLaunchKit"
+      },
+      {
+        "kind": "Import",
+        "name": "WebKit",
+        "printedName": "WebKit",
+        "declKind": "Import",
+        "moduleName": "ZCLaunchKit"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "ZCLaunchKit"
+      },
+      {
+        "kind": "Import",
+        "name": "UIKit",
+        "printedName": "UIKit",
+        "declKind": "Import",
+        "moduleName": "ZCLaunchKit"
+      },
+      {
+        "kind": "Import",
+        "name": "UserNotifications",
+        "printedName": "UserNotifications",
+        "declKind": "Import",
+        "moduleName": "ZCLaunchKit"
+      },
+      {
+        "kind": "Import",
+        "name": "Network",
+        "printedName": "Network",
+        "declKind": "Import",
+        "moduleName": "ZCLaunchKit"
+      },
+      {
+        "kind": "Import",
+        "name": "CoreTelephony",
+        "printedName": "CoreTelephony",
+        "declKind": "Import",
+        "moduleName": "ZCLaunchKit"
+      },
+      {
+        "kind": "Import",
+        "name": "SystemConfiguration",
+        "printedName": "SystemConfiguration",
+        "declKind": "Import",
+        "moduleName": "ZCLaunchKit"
+      },
+      {
+        "kind": "Import",
+        "name": "CommonCrypto",
+        "printedName": "CommonCrypto",
+        "declKind": "Import",
+        "moduleName": "ZCLaunchKit"
+      },
+      {
+        "kind": "Import",
+        "name": "Security",
+        "printedName": "Security",
+        "declKind": "Import",
+        "moduleName": "ZCLaunchKit"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "ZCLaunchKit",
+        "printedName": "ZCLaunchKit",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "boot",
+            "printedName": "boot(_:didFinishLaunchingWithOptions:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "UIApplication",
+                "printedName": "UIKit.UIApplication",
+                "usr": "c:objc(cs)UIApplication"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "[UIKit.UIApplication.LaunchOptionsKey : Any]?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Dictionary",
+                    "printedName": "[UIKit.UIApplication.LaunchOptionsKey : Any]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "LaunchOptionsKey",
+                        "printedName": "UIKit.UIApplication.LaunchOptionsKey",
+                        "usr": "c:@T@UIApplicationLaunchOptionsKey"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ProtocolComposition",
+                        "printedName": "Any"
+                      }
+                    ],
+                    "usr": "s:SD"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11ZCLaunchKitAAO4boot_29didFinishLaunchingWithOptionsSbSo13UIApplicationC_SDySo0i6LaunchH3KeyaypGSgtFZ",
+            "mangledName": "$s11ZCLaunchKitAAO4boot_29didFinishLaunchingWithOptionsSbSo13UIApplicationC_SDySo0i6LaunchH3KeyaypGSgtFZ",
+            "moduleName": "ZCLaunchKit",
+            "static": true,
+            "declAttributes": [
+              "AccessControl",
+              "DiscardableResult"
+            ],
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "s:11ZCLaunchKitAAO",
+        "mangledName": "$s11ZCLaunchKitAAO",
+        "moduleName": "ZCLaunchKit",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "ZCLaunchKit"
+      },
+      {
+        "kind": "Import",
+        "name": "UIKit",
+        "printedName": "UIKit",
+        "declKind": "Import",
+        "moduleName": "ZCLaunchKit"
+      },
+      {
+        "kind": "Import",
+        "name": "StoreKit",
+        "printedName": "StoreKit",
+        "declKind": "Import",
+        "moduleName": "ZCLaunchKit"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "ZCLaunchKit"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "ZCLaunchKit"
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCCanvasStage.swift",
+      "kind": "Array",
+      "offset": 407,
+      "length": 66,
+      "value": "[\"http\", \"https\", \"file\", \"chrome\", \"data\", \"javascript\", \"about\"]"
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCCanvasStage.swift",
+      "kind": "StringLiteral",
+      "offset": 507,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCCanvasStage.swift",
+      "kind": "BooleanLiteral",
+      "offset": 548,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCCanvasStage.swift",
+      "kind": "IntegerLiteral",
+      "offset": 653,
+      "length": 4,
+      "value": "1000"
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCCanvasStage.swift",
+      "kind": "IntegerLiteral",
+      "offset": 691,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCEntryFacade.swift",
+      "kind": "Dictionary",
+      "offset": 281,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCEntryFacade.swift",
+      "kind": "StringLiteral",
+      "offset": 381,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCEntryFacade.swift",
+      "kind": "StringLiteral",
+      "offset": 479,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCEntryFacade.swift",
+      "kind": "StringLiteral",
+      "offset": 581,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCEntryFacade.swift",
+      "kind": "StringLiteral",
+      "offset": 685,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCEntryFacade.swift",
+      "kind": "StringLiteral",
+      "offset": 789,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCEntryFacade.swift",
+      "kind": "StringLiteral",
+      "offset": 893,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCEntryFacade.swift",
+      "kind": "BooleanLiteral",
+      "offset": 991,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCEntryFacade.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1032,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCEntryFacade.swift",
+      "kind": "BooleanLiteral",
+      "offset": 2005,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCEntryFacade.swift",
+      "kind": "BooleanLiteral",
+      "offset": 2042,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCEntryFacade.swift",
+      "kind": "StringLiteral",
+      "offset": 2145,
+      "length": 26,
+      "value": "\"launch.gate.reachability\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCEntryFacade.swift",
+      "kind": "BooleanLiteral",
+      "offset": 2214,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCEntryFacade.swift",
+      "kind": "BooleanLiteral",
+      "offset": 2253,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCEntryFacade.swift",
+      "kind": "StringLiteral",
+      "offset": 2292,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCEntryFacade.swift",
+      "kind": "BooleanLiteral",
+      "offset": 21447,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCEntryFacade.swift",
+      "kind": "BooleanLiteral",
+      "offset": 22131,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCPurchaseLedger.swift",
+      "kind": "StringLiteral",
+      "offset": 219,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCPurchaseLedger.swift",
+      "kind": "StringLiteral",
+      "offset": 458,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCPurchaseLedger.swift",
+      "kind": "BooleanLiteral",
+      "offset": 548,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCPurchaseLedger.swift",
+      "kind": "StringLiteral",
+      "offset": 593,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCRuntimeProfile.swift",
+      "kind": "StringLiteral",
+      "offset": 74,
+      "length": 10,
+      "value": "\"zclaunch\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCRuntimeProfile.swift",
+      "kind": "StringLiteral",
+      "offset": 123,
+      "length": 10,
+      "value": "\"uerhhbdf\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCRuntimeProfile.swift",
+      "kind": "StringLiteral",
+      "offset": 171,
+      "length": 7,
+      "value": "\"adnjf\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCRuntimeProfile.swift",
+      "kind": "StringLiteral",
+      "offset": 218,
+      "length": 6,
+      "value": "\"sqef\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCRuntimeProfile.swift",
+      "kind": "StringLiteral",
+      "offset": 263,
+      "length": 6,
+      "value": "\"kfng\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCRuntimeProfile.swift",
+      "kind": "StringLiteral",
+      "offset": 308,
+      "length": 7,
+      "value": "\"sqkdf\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCRuntimeProfile.swift",
+      "kind": "StringLiteral",
+      "offset": 356,
+      "length": 7,
+      "value": "\"fjfgs\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCRuntimeProfile.swift",
+      "kind": "StringLiteral",
+      "offset": 403,
+      "length": 8,
+      "value": "\"queuhr\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCRuntimeProfile.swift",
+      "kind": "StringLiteral",
+      "offset": 444,
+      "length": 12,
+      "value": "\"zc_tok_arc\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCRuntimeProfile.swift",
+      "kind": "StringLiteral",
+      "offset": 490,
+      "length": 12,
+      "value": "\"zc_sec_arc\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCRuntimeProfile.swift",
+      "kind": "StringLiteral",
+      "offset": 536,
+      "length": 12,
+      "value": "\"zc_dev_arc\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCRuntimeProfile.swift",
+      "kind": "StringLiteral",
+      "offset": 580,
+      "length": 13,
+      "value": "\"zc_push_arc\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCRuntimeProfile.swift",
+      "kind": "StringLiteral",
+      "offset": 633,
+      "length": 18,
+      "value": "\"zc_iap_order_arc\""
+    },
+    {
+      "filePath": "\/Users\/jiao\/Desktop\/Projiect\/ZCKJ_ASO\/PackageBuild\/ZCLaunchKit_20260807\/Source\/ZCLaunchCore\/ZCRuntimeProfile.swift",
+      "kind": "StringLiteral",
+      "offset": 692,
+      "length": 11,
+      "value": "\"zc-device\""
+    }
+  ]
+}
