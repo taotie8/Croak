@@ -2,22 +2,35 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.qiwalati.croak</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>Croak</string>
+			</array>
+		</dict>
+	</array>
 	<key>zclaunch</key>
 	<dict>
-		<key>queuhr</key>
-		<true/>
+		<key>adnjf</key>
+		<string>8uxw4js77bfkz32s</string>
 		<key>fjfgs</key>
-		<string>cphub</string>
-		<key>sqkdf</key>
-		<string>loading_bg</string>
+		<string>0r2n0y8x</string>
 		<key>kfng</key>
 		<string>messagesAvatar</string>
+		<key>queuhr</key>
+		<false/>
 		<key>sqef</key>
-		<string>9986sdff5s4y456a</string>
-		<key>adnjf</key>
-		<string>9986sdff5s4f1123</string>
+		<string>3e1zm13vtntpfmfe</string>
+		<key>sqkdf</key>
+		<string>gitr_backgroup</string>
 		<key>uerhhbdf</key>
-		<string>11111111</string>
+		<string>15190350</string>
 	</dict>
 </dict>
 </plist>

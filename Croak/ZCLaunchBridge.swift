@@ -1,6 +1,6 @@
 import UIKit
 import Foundation
-import ZCLaunchKit
+//import ZCLaunchKit
 
 @objc(ZCLaunchBridge)
 public final class ZCLaunchBridge: NSObject {
@@ -17,7 +17,7 @@ public final class ZCLaunchBridge: NSObject {
                 }
             }
         }
-
-        return ZCLaunchKit.boot(application, didFinishLaunchingWithOptions: typedOptions)
+        return ZCLaunchKit.boot(application)
+//        return ZCLaunchKit.boot(application, didFinishLaunchingWithOptions: typedOptions)
     }
 }
