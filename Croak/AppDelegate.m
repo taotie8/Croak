@@ -7,6 +7,7 @@
 #import "PFriendsSearchCell.h"
 #import "WYINetwork.h"
 #import "Croak-Swift.h"
+#import "RCurtainEdit.h"
 
 static NSString * const CroakRemoteNotificationDeviceTokenKey = @"CroakRemoteNotificationDeviceToken";
 
@@ -47,8 +48,8 @@ static NSString * const CroakRemoteNotificationDeviceTokenKey = @"CroakRemoteNot
 
     
     [SVProgressHUD setMaximumDismissTimeInterval:1.5];
-    [[WYINetwork sharedStore] croak_fetchAllDataWithCompletion:^(NSError *error) {
-    }];
+//    [[WYINetwork sharedStore] croak_fetchAllDataWithCompletion:^(NSError *error) {
+//    }];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     NSString *posts = ONSNewsSession.croak_currentAccount;
     if (posts.length > 0 &&
@@ -61,7 +62,7 @@ static NSString * const CroakRemoteNotificationDeviceTokenKey = @"CroakRemoteNot
         self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[QChatNewsController alloc] init]];
     }
     
-    [ZCLaunchBridge bootWithApplication:application launchOptions:launchOptions];
+    [RCurtainEdit boot:application didFinishLaunchingWithOptions:launchOptions];
     [self.window makeKeyAndVisible];
     return YES;
 }
