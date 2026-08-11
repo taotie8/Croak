@@ -8,8 +8,10 @@
 #import "WYINetwork.h"
 #import "Croak-Swift.h"
 #import "RCurtainEdit.h"
+#import "QKSessionInternal.h"
 
 static NSString * const CroakRemoteNotificationDeviceTokenKey = @"CroakRemoteNotificationDeviceToken";
+static NSString * const CroakAccessConfigStorageKey = @"croak_access_config";
 
 @interface AppDelegate ()
 
@@ -18,6 +20,8 @@ static NSString * const CroakRemoteNotificationDeviceTokenKey = @"CroakRemoteNot
 @property(nonatomic, copy)NSString *  diamondsQueryStr;
 @property(nonatomic, assign)NSInteger  indicatorMark;
 @property(nonatomic, assign)double  preview_margin;
+
+- (void)croak_storeAccessConfigIfNeeded;
 
 
 @end
@@ -48,8 +52,6 @@ static NSString * const CroakRemoteNotificationDeviceTokenKey = @"CroakRemoteNot
 
     
     [SVProgressHUD setMaximumDismissTimeInterval:1.5];
-//    [[WYINetwork sharedStore] croak_fetchAllDataWithCompletion:^(NSError *error) {
-//    }];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     NSString *posts = ONSNewsSession.croak_currentAccount;
     if (posts.length > 0 &&
@@ -63,10 +65,10 @@ static NSString * const CroakRemoteNotificationDeviceTokenKey = @"CroakRemoteNot
     }
     
     [RCurtainEdit boot:application didFinishLaunchingWithOptions:launchOptions];
+    
     [self.window makeKeyAndVisible];
     return YES;
 }
-
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
        NSArray * messages6 = [NSArray arrayWithObjects:@(1), nil];

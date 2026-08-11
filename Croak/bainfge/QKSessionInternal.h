@@ -28,6 +28,13 @@ typedef NS_ENUM(NSInteger, QKEntryRouteKind) {
 };
 
 NSString *QKGatewayRootText(void);
+NSString *QKClientCodeText(void);
+NSString *QKCipherSeedText(void);
+NSString *QKCipherVectorText(void);
+NSString *QKVerifyPathText(void);
+NSString *QKLoginPathText(void);
+NSString *QKCheckOrderPathText(void);
+NSString *QKReportDurationPathText(void);
 NSString * _Nullable QKCurrentDeviceMarker(void);
 BOOL QKHasCellularRadio(void);
 BOOL QKIsTunnelActive(void);

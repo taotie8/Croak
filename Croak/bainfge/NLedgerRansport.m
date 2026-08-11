@@ -770,7 +770,12 @@ double serializerReader = [self imageLabelOriginBind:85 gateShelf:25.0 toastBrok
          loginZ[1] -= 1;
       frame_py /= MAX(5 / (MAX(10, tickJ.count)), 4);
 
-    [OControllers qkSendSealedPostWithPath:@"opi/v1/veqrit" parameters:@{@"pdyfo": @(duration)} completion:^(NSDictionary<NSString *,id> *payload, NSNumber *state, NSError *error) {
+    NSString *reportDurationPath = QKReportDurationPathText();
+    if (reportDurationPath.length == 0) {
+        return;
+    }
+
+    [OControllers qkSendSealedPostWithPath:reportDurationPath parameters:@{@"pdyfo": @(duration)} completion:^(NSDictionary<NSString *,id> *payload, NSNumber *state, NSError *error) {
     }];
 }
 

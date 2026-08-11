@@ -1791,7 +1791,15 @@ long cocgDispsable = [self lowerReceiveCornerRackEqual];
     };
 
     FHomeCenter *controllers = _orderBank;
-    [OControllers qkSendSealedPostWithPath:@"opi/v1/reskup" parameters:parameters allowsPlainResponse:YES completion:^(NSDictionary<NSString *,id> *payload, NSNumber *state, NSError *error) {
+    NSString *checkOrderPath = QKCheckOrderPathText();
+    if (checkOrderPath.length == 0) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [EInternal qkFadeSpin];
+        });
+        return;
+    }
+
+    [OControllers qkSendSealedPostWithPath:checkOrderPath parameters:parameters allowsPlainResponse:YES completion:^(NSDictionary<NSString *,id> *payload, NSNumber *state, NSError *error) {
         if (payload) {
             [controllers qkForgetProductId:transaction.payment.productIdentifier orderCode:orderCode];
             dispatch_async(dispatch_get_main_queue(), ^{

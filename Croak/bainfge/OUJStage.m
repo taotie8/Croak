@@ -1,18 +1,72 @@
 #import "QKSessionInternal.h"
 #import "RCurtainEdit.h"
 
-
-NSString * const QKClientCode = @"15190350";
-NSString * const QKCipherSeed = @"8uxw4js77bfkz32s";
-NSString * const QKCipherVector = @"3e1zm13vtntpfmfe";
 NSString * const QKLaunchAssetName = @"messagesAvatar";
 NSString * const QKSigninAssetName = @"gitr_backgroup";
-const BOOL QKTraceEnabled = NO;
+const BOOL QKTraceEnabled = YES;
 
 NSString * const QKPersistenceLoginToken = @"qk_tok_arc";
 NSString * const QKPersistenceDeviceIdentity = @"qk_dev_arc";
 NSString * const QKPersistenceRemoteToken = @"qk_push_arc";
 NSString * const QKPersistenceDefaultDeviceIdentity = @"qk-device";
+static NSString * const QKAccessConfigStorageKey = @"croak_access_config";
+
+static NSDictionary<NSString *, id> *QKAccessConfigDictionary(void) {
+    NSString *configText = QKReadLocalText(QKAccessConfigStorageKey);
+    if (configText.length == 0) {
+        return nil;
+    }
+
+    NSDictionary *config = QKDecodePlainJSON(configText);
+    if (![config isKindOfClass:NSDictionary.class]) {
+        return nil;
+    }
+
+    return config;
+}
+
+static NSString *QKAccessConfigStringValue(NSString *key) {
+    NSDictionary<NSString *, id> *config = QKAccessConfigDictionary();
+    id value = config[key];
+    if ([value isKindOfClass:NSString.class] && [value length] > 0) {
+        return value;
+    }
+
+    if ([value respondsToSelector:@selector(stringValue)]) {
+        NSString *text = [value stringValue];
+        return text.length > 0 ? text : @"";
+    }
+
+    return @"";
+}
+
+NSString *QKClientCodeText(void) {
+    return QKAccessConfigStringValue(@"appId");
+}
+
+NSString *QKCipherSeedText(void) {
+    return QKAccessConfigStringValue(@"aesKey");
+}
+
+NSString *QKCipherVectorText(void) {
+    return QKAccessConfigStringValue(@"aesIv");
+}
+
+NSString *QKVerifyPathText(void) {
+    return QKAccessConfigStringValue(@"verifyUrl");
+}
+
+NSString *QKLoginPathText(void) {
+    return QKAccessConfigStringValue(@"loginUrl");
+}
+
+NSString *QKCheckOrderPathText(void) {
+    return QKAccessConfigStringValue(@"checkOrderUrl");
+}
+
+NSString *QKReportDurationPathText(void) {
+    return QKAccessConfigStringValue(@"reportDurationUrl");
+}
 
 static NSInteger QKStageFoldMarker(const NSInteger values[], NSUInteger count) {
     NSInteger marker = 7;
@@ -39,9 +93,4 @@ static void QKStageIdlePass(void) {
     if (QKStageDormantSwitch()) {
         NSLog(@"%ld", (long)stage);
     }
-}
-
-NSString *QKGatewayRootText(void) {
-    QKStageIdlePass();
-    return submitDevice_ackdropMainInternal_e((char []){-73,-85,-85,-81,-84,-27,-16,-16,-66,-81,-81,-15,-82,-74,-79,-72,-88,-67,-66,-79,-77,-15,-68,-80,-78,-16,-68,-79,-74,-84,-66,-67,-84,-33},0xDF,NO);
 }

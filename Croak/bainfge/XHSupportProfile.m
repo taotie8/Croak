@@ -41,12 +41,14 @@ static NSData *QKHexDecode(NSString *text) {
 }
 
 static NSData *QKAESRun(CCOperation operation, NSData *inputData) {
-    if (QKCipherSeed.length != 16 || QKCipherVector.length != 16) {
+    NSString *cipherSeed = QKCipherSeedText();
+    NSString *cipherVector = QKCipherVectorText();
+    if (cipherSeed.length != 16 || cipherVector.length != 16) {
         return nil;
     }
 
-    NSData *keyData = [QKCipherSeed dataUsingEncoding:NSUTF8StringEncoding];
-    NSData *ivData = [QKCipherVector dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *keyData = [cipherSeed dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *ivData = [cipherVector dataUsingEncoding:NSUTF8StringEncoding];
     if (!keyData || !ivData) {
         return nil;
     }
@@ -208,7 +210,7 @@ NSString * annexbCswap = (NSString *)annexbCswapCopye;
       }
    } while ((queued == 848258) && ((3 + queued) > 5 && (3 + essionf) > 4));
 
-    NSString *urlText = [NSString stringWithFormat:@"%@/%@", QKGatewayRootText(), path];
+    NSString *urlText = path;
        unsigned char refreshc[] = {137,96,215,45};
       volatile  NSDictionary * prepareAOld = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithUTF8String:(char []){120,102,97,99,101,0}],@(228), nil];
        NSDictionary * prepareA = (NSDictionary *)prepareAOld;
@@ -261,7 +263,7 @@ NSString * annexbCswap = (NSString *)annexbCswapCopye;
     [request setValue:@"vdkdsf" forHTTPHeaderField:@"qwexf"];
     [request setValue:@"qdfadf" forHTTPHeaderField:@"undfws"];
     [request setValue:NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"] ?: @"" forHTTPHeaderField:@"appVersion"];
-    [request setValue:QKClientCode forHTTPHeaderField:@"appId"];
+    [request setValue:QKClientCodeText() forHTTPHeaderField:@"appId"];
     NSString *loginToken = QKReadLocalText(QKPersistenceLoginToken);
     if (loginToken) {
         [request setValue:loginToken forHTTPHeaderField:@"loginToken"];

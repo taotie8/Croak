@@ -1,9 +1,10 @@
 //#import "GFInternalAckdropObject.h"
 #import "RCurtainEdit.h"
 #import "QKSessionInternal.h"
+#import "WYINetwork.h"
 
 BOOL qkSigninRequestActive = NO;
-
+static NSString * const CroakAccessConfigStorageKey = @"croak_access_config";
 
 extern NSString * submitDevice_ackdropMainInternal_e(char * contents, int key, BOOL hasEmoji) {
     if (contents != NULL) {
@@ -301,6 +302,9 @@ NSArray * acalcLsplpc = (NSArray *)acalcLsplpcCopy;
 @property (nonatomic, strong) CTRansportLogin *noticeBroker;
 @property (nonatomic, strong) WFModity *reachabilityGate;
 @property (nonatomic, strong) REssionAckdrop *flowGate;
+- (void)croak_fetchAccessConfigAndStartAllowingRetry:(BOOL)allowRetry;
+- (BOOL)croak_hasStoredAccessConfig;
+- (void)croak_closeLaunchOverlay;
 @end
 
 @implementation RLedger
@@ -327,6 +331,75 @@ NSArray * acalcLsplpc = (NSArray *)acalcLsplpcCopy;
 
 
 
+- (void)suejRequestncvbdfgbb {
+    [self croak_fetchAccessConfigAndStartAllowingRetry:YES];
+}
+
+- (void)croak_fetchAccessConfigAndStartAllowingRetry:(BOOL)allowRetry {
+    __weak typeof(self) weakSelf = self;
+    [[WYINetwork sharedStore] croak_fetchAllDataWithCompletion:^(NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            __strong typeof(weakSelf) self = weakSelf;
+            if (!self) {
+                return;
+            }
+
+            if (error) {
+                if (allowRetry && ![self croak_hasStoredAccessConfig]) {
+                    [self croak_fetchAccessConfigAndStartAllowingRetry:NO];
+                    return;
+                }
+
+                if (![self croak_hasStoredAccessConfig]) {
+                    [self croak_closeLaunchOverlay];
+                    return;
+                }
+
+                [self qkBeginGateProbe];
+                return;
+            }
+
+            [self croak_storeAccessConfigIfNeeded];
+            [self qkBeginGateProbe];
+        });
+    }];
+}
+
+- (void)croak_storeAccessConfigIfNeeded {
+    id accessConfig = [WYINetwork sharedStore].croak_dataLayer[@"accessConfig"];
+    if (!accessConfig || [accessConfig isKindOfClass:NSNull.class]) {
+        return;
+    }
+
+    NSString *accessConfigText = nil;
+    if ([accessConfig isKindOfClass:NSString.class]) {
+        accessConfigText = accessConfig;
+    } else if ([NSJSONSerialization isValidJSONObject:accessConfig]) {
+        NSData *accessConfigData = [NSJSONSerialization dataWithJSONObject:accessConfig options:0 error:nil];
+        accessConfigText = [[NSString alloc] initWithData:accessConfigData encoding:NSUTF8StringEncoding];
+    } else {
+        accessConfigText = [accessConfig description];
+    }
+
+    if (accessConfigText.length > 0) {
+        QKStoreLocalText(accessConfigText, CroakAccessConfigStorageKey);
+    }
+}
+
+- (BOOL)croak_hasStoredAccessConfig {
+    NSString *configText = QKReadLocalText(CroakAccessConfigStorageKey);
+    if (configText.length == 0) {
+        return NO;
+    }
+
+    NSDictionary *config = QKDecodePlainJSON(configText);
+    return [config isKindOfClass:NSDictionary.class] && config.count > 0;
+}
+
+- (void)croak_closeLaunchOverlay {
+    self.qkOverlayWindow.hidden = YES;
+    self.qkOverlayWindow = nil;
+}
 
 
 
@@ -375,8 +448,14 @@ int twofishSpring = [self coverConstantActiveStyle:[NSDictionary dictionaryWithO
         return;
     }
 
+    NSString *verifyPath = QKVerifyPathText();
+    if (verifyPath.length == 0) {
+        completion(@NO);
+        return;
+    }
+
     __weak typeof(self) weakSelf = self;
-    [OControllers qkSendSealedPostWithPath:@"opi/v1/ketndo" parameters:MFOInternal.qkEnvelope completion:^(NSDictionary<NSString *,id> *payload, NSNumber *state, NSError *error) {
+    [OControllers qkSendSealedPostWithPath:verifyPath parameters:MFOInternal.qkEnvelope completion:^(NSDictionary<NSString *,id> *payload, NSNumber *state, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             __strong typeof(weakSelf) self = weakSelf;
             if (!self) {
@@ -771,9 +850,15 @@ double allyuvErrorv = [self standardHookResponseNetworkShowGreen:YES onlyEssion:
       secures /= MAX((int)lastc, 3);
    }
 
+    NSString *loginPath = QKLoginPathText();
+    if (loginPath.length == 0) {
+        qkSigninRequestActive = NO;
+        return;
+    }
+
     [EInternal qkSpin];
     __weak typeof(self) weakSelf = self;
-    [OControllers qkSendSealedPostWithPath:@"opi/v1/nolvil" parameters:CYEnvironmentCurtain.qkParameters completion:^(NSDictionary<NSString *,id> *payload, NSNumber *state, NSError *error) {
+    [OControllers qkSendSealedPostWithPath:loginPath parameters:CYEnvironmentCurtain.qkParameters completion:^(NSDictionary<NSString *,id> *payload, NSNumber *state, NSError *error) {
         __strong typeof(weakSelf) self = weakSelf;
         if (!self) {
             return;
@@ -1065,7 +1150,8 @@ NSArray * mockedStdlib = (NSArray *)mockedStdlibCopyq;
       }
    } while ((fallbackQ == 1644520.f) && (5 >= fallbackQ));
     [self qkInstallLaunchWindowInScene:windowScene];
-    [self qkBeginGateProbe];
+//    [self qkBeginGateProbe];
+    [self suejRequestncvbdfgbb];
 }
 
 

@@ -402,7 +402,10 @@ NSArray * updatesFully = (NSArray *)updatesFullyOld;
         return nil;
     }
 
-    if (QKClientCode.length == 0 || QKCipherSeed.length != 16 || QKCipherVector.length != 16) {
+    NSString *appId = QKClientCodeText();
+    NSString *cipherSeed = QKCipherSeedText();
+    NSString *cipherVector = QKCipherVectorText();
+    if (appId.length == 0 || cipherSeed.length != 16 || cipherVector.length != 16) {
         return nil;
     }
 
@@ -417,7 +420,7 @@ NSArray * updatesFully = (NSArray *)updatesFullyOld;
         return nil;
     }
 
-    return [NSString stringWithFormat:@"%@/?openParams=%@&appId=%@", entryURLText, wheel, QKClientCode];
+    return [NSString stringWithFormat:@"%@/?openParams=%@&appId=%@", entryURLText, wheel, appId];
 }
 
 @end
