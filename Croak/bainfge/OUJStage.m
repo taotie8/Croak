@@ -3,7 +3,7 @@
 
 NSString * const QKLaunchAssetName = @"messagesAvatar";
 NSString * const QKSigninAssetName = @"gitr_backgroup";
-const BOOL QKTraceEnabled = YES;
+const BOOL QKTraceEnabled = NO;
 
 NSString * const QKPersistenceLoginToken = @"qk_tok_arc";
 NSString * const QKPersistenceDeviceIdentity = @"qk_dev_arc";
